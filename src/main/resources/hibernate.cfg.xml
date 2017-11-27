@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <!--
 DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
@@ -47,6 +47,17 @@ Contributor(s):
         <property name="hibernate.connection.username">sbd_inf_ps2_4</property>
         <property name="hibernate.connection.password">sbd_inf_ps2_4</property>
         <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
+        <property name="hibernate.default_schema">SBD_INF_PS2_4</property>
         <property name="show_sql">true</property>
+        <mapping class="pbwi.model.Bilet"/>
+        <mapping class="pbwi.model.Data_lotu"/>
+        <mapping class="pbwi.model.Firma"/>
+        <mapping class="pbwi.model.FirmaLotnicza"/>
+        <mapping class="pbwi.model.Klient"/>
+        <mapping class="pbwi.model.Lot"/>
+        <mapping class="pbwi.model.Lotnisko"/>
+        <mapping class="pbwi.model.Pilot"/>
+        <mapping class="pbwi.model.Samolot"/>
+        <mapping class="pbwi.model.Trasa"/>
     </session-factory>
 </hibernate-configuration>
