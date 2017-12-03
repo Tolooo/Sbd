@@ -2,12 +2,15 @@ package pbwi.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Pilot.findAll", query = "SELECT p FROM Pilot p")
+        , @NamedQuery(name = "Pilot.findByIdPilota", query = "SELECT p FROM Pilot p WHERE p.id_pilota = :idPilota")
+        , @NamedQuery(name = "Pilot.findByImie", query = "SELECT p FROM Pilot p WHERE p.Imie = :imie")
+        , @NamedQuery(name = "Pilot.findByNazwisko", query = "SELECT p FROM Pilot p WHERE p.Nazwisko = :nazwisko")})
 public class Pilot implements Serializable {
 
     @Id
