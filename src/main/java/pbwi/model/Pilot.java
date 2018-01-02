@@ -8,9 +8,7 @@ import java.io.Serializable;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Pilot.findAll", query = "SELECT p FROM Pilot p")
-        , @NamedQuery(name = "Pilot.findByIdPilota", query = "SELECT p FROM Pilot p WHERE p.id_pilota = :idPilota")
-        , @NamedQuery(name = "Pilot.findByImie", query = "SELECT p FROM Pilot p WHERE p.Imie = :imie")
-        , @NamedQuery(name = "Pilot.findByNazwisko", query = "SELECT p FROM Pilot p WHERE p.Nazwisko = :nazwisko")})
+        , @NamedQuery(name = "Pilot.findById", query = "SELECT p FROM Pilot p WHERE p.id_pilota = ?1")})
 public class Pilot implements Serializable {
 
     @Id
@@ -18,9 +16,9 @@ public class Pilot implements Serializable {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id_pilota;
 
-    private String Imie;
+    private String imie;
 
-    private String Nazwisko;
+    private String nazwisko;
 
     public Pilot() {
     }
@@ -34,18 +32,18 @@ public class Pilot implements Serializable {
     }
 
     public String getImie() {
-        return Imie;
+        return imie;
     }
 
     public void setImie(String imie) {
-        Imie = imie;
+        this.imie = imie;
     }
 
     public String getNazwisko() {
-        return Nazwisko;
+        return nazwisko;
     }
 
     public void setNazwisko(String nazwisko) {
-        Nazwisko = nazwisko;
+        this.nazwisko = nazwisko;
     }
 }

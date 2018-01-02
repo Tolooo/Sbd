@@ -1,0 +1,58 @@
+<div class="container">
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>Id biletu:</th>
+                <td colspan="3">{{bilet.id_biletu}}</td>
+            </tr>
+            <tr>
+                <td>Klasa:</th>
+                    <td colspan="3">{{bilet.klasa}}</td>
+            </tr>
+            <tr>
+                <td>Nr miejsca:</th>
+                    <td colspan="3">{{bilet.nr_miejsca}}</td>
+            </tr>
+            <tr>
+                <th colspan="4">Lot:</th>
+            </tr>
+            <tr>
+                <td>Id lotu:</td>
+                <td colspan="3">{{bilet.lot.id_lotu}}</td>
+            </tr>
+            <tr>
+                <th>Firma lotnicza:</th>
+                <td colspan="3">{{bilet.lot.samolot.firmaLotnicza.nazwa}}</td>
+            </tr>
+            <tr>
+                <th colspan="4">Pilot:</th>
+            </tr>
+            <tr>
+                <td>Imie:</td>
+                <td>{{bilet.lot.pilot.imie}}</td>
+                <td>Nazwisko:</td>
+                <td>{{bilet.lot.pilot.nazwisko}}</td>
+            </tr>
+            <th colspan="4">Trasa:</th>
+            </tr>
+            <tr>
+                <td>Początek:</td>
+                <td>{{bilet.lot.trasa.poczatek.miejscowosc}}</td>
+                <td>Koniec:</td>
+                <td>{{bilet.lot.trasa.koniec.miejscowosc}}</td>
+            </tr>
+            <tr>
+                <th colspan="4">Data lotu:</th>
+            </tr>
+            <tr>
+                <td>Wylot:</td>
+                <td>{{bilet.dataLotu.wylot|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>Przylot:</td>
+                <td>{{bilet.dataLotu.przylot|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            </tr>
+            <tr>
+                <td colspan="4"></td>
+            </tr>
+        </table>
+    </div>
+</div>

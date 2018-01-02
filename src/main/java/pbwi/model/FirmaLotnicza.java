@@ -1,5 +1,6 @@
 package pbwi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,6 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "FirmaLotnicza.findAll", query = "SELECT f FROM FirmaLotnicza f")
+        , @NamedQuery(name = "FirmaLotnicza.findById", query = "SELECT f FROM FirmaLotnicza f WHERE f.id_firmyLotniczej = ?1")})
 public class FirmaLotnicza implements Serializable {
 
     @Id
@@ -25,10 +29,12 @@ public class FirmaLotnicza implements Serializable {
 
     private String IATA;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "firmaLotnicza", cascade = CascadeType.ALL)//
+    @JsonIgnore
+    @OneToMany(mappedBy = "firmaLotnicza", cascade = CascadeType.ALL)
     private Set<Samolot> samoloty = new HashSet<Samolot>(0);
 
-    @ManyToMany(fetch = FetchType.LAZY)//
+    @JsonIgnore
+    @ManyToMany
     @JoinTable(name = "FIRMA_LOTNISKO", joinColumns = {
             @JoinColumn(name = "ID_FIRMYLOTNICZEJ", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "ID_LOTNISKA",

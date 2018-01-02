@@ -1,0 +1,78 @@
+<div class="container">
+    <form>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Typ:
+                </span>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="typ" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    IloscMiejsc:
+                </span>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="iloscMiejsc" />
+            </div>
+        </div>
+        <div class="col-sm">
+            <button ng-click="saveSamolot(typ,iloscMiejsc)" type="submit" class="btn btn-submit">Submit</button>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-2">
+            Samolot id
+        </div>
+        <div class="col-sm-2">
+            Typ
+        </div>
+        <div class="col-sm-2">
+            IloscMiejsc
+        </div>
+        <div class="col-sm">
+            Edit
+        </div>
+        <div class="col-sm">
+            Delete
+        </div>
+    </div>
+    <ul class="list-unstyled">
+        <li ng-repeat="samolot in samoloty">
+            <div class="row">
+                <div class="col-sm-2">
+                    <span>
+                        <a ng-href="http://localhost:8081/#!/samoloty/{{samolot.id_samolotu}}">{{samolot.id_samolotu}}</a>
+                    </span>
+                </div>
+                <div class="col-sm-2">
+                    <span ng-if="!samolot.editMode">{{samolot.typ}}</span>
+                    <span ng-if="samolot.editMode">
+                        <input class="form-control" type="text" ng-model="samolot.typ">
+                        <span>
+                </div>
+                <div class="col-sm-2">
+                    <span ng-if="!samolot.editMode">{{samolot.iloscMiejsc}}</span>
+                    <span ng-if="samolot.editMode">
+                        <input class="form-control" type="number" ng-model="samolot.iloscMiejsc">
+                        <span>
+                </div>
+                <div class="col-sm">
+                    <button ng-if="!samolot.editMode" type="button" ng-click="samolot.editMode=true;" value="Edit" class="btn">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button ng-if="samolot.editMode" class="btn" ng-click="updateSamolot(samolot);samolot.editMode=false;">Save</button>
+                </div>
+                <div class="col-sm">
+                    <button type="button" ng-click="deleteSamolot(samolot)" value="Delete" class="btn">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

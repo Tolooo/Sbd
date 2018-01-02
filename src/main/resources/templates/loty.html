@@ -1,0 +1,116 @@
+<div class="container">
+    <form>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Samolot id:
+                </span>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control" type="number" ng-model="samolot" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Pilot id:
+                </span>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control" type="number" ng-model="pilot" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Trasa id:
+                </span>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control" type="number" ng-model="trasa" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Data lotu id:
+                </span>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control" type="number" ng-model="dataLotu" />
+            </div>
+        </div>
+        <div class="col-sm">
+            <button ng-click="saveLot(samolot,pilot,trasa,dataLotu)" type="submit" class="btn btn-submit">Submit</button>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm">
+            Lot id
+        </div>
+        <div class="col-sm">
+            Samolot id
+        </div>
+        <div class="col-sm">
+            Pilot id
+        </div>
+        <div class="col-sm">
+            Trasa id
+        </div>
+        <div class="col-sm">
+            Data lotu id
+        </div>
+        <div class="col-sm-2">
+            Edit
+        </div>
+        <div class="col-sm-2">
+            Delete
+        </div>
+    </div>
+    <ul class="list-unstyled">
+        <li ng-repeat="lot in loty">
+            <div class="row">
+                <div class="col-sm">
+                    <span>
+                        <a ng-href="http://localhost:8081/#!/loty/{{lot.id_lotu}}">{{lot.id_lotu}}</a>
+                    </span>
+                </div>
+                <div class="col-sm">
+                    <span ng-if="!lot.editMode">{{lot.samolot.id_samolotu}}</span>
+                    <span ng-if="lot.editMode">
+                        <input class="form-control" type="text" ng-model="lot.samolot.id_samolotu">
+                        <span>
+                </div>
+                <div class="col-sm">
+                    <span ng-if="!lot.editMode">{{lot.pilot.id_pilota}}</span>
+                    <span ng-if="lot.editMode">
+                        <input class="form-control" type="number" ng-model="lot.pilot.id_pilota">
+                        <span>
+                </div>
+                <div class="col-sm">
+                    <span ng-if="!lot.editMode">{{lot.trasa.id_trasy}}</span>
+                    <span ng-if="lot.editMode">
+                        <input class="form-control" type="text" ng-model="lot.trasa.id_trasy">
+                        <span>
+                </div>
+                <div class="col-sm">
+                    <span ng-if="!lot.editMode">{{lot.dataLotu.id_daty}}</span>
+                    <span ng-if="lot.editMode">
+                        <input class="form-control" type="text" ng-model="lot.dataLotu.id_daty">
+                        <span>
+                </div>
+                <div class="col-sm-2">
+                    <button ng-if="!lot.editMode" type="button" ng-click="lot.editMode=true;" value="Edit" class="btn">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button ng-if="lot.editMode" class="btn" ng-click="updateLot(lot);lot.editMode=false;">Save</button>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" ng-click="deleteLot(lot)" value="Delete" class="btn">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

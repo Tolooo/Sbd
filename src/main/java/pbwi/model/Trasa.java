@@ -6,6 +6,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Trasa.findAll", query = "SELECT t FROM Trasa t")
+        , @NamedQuery(name = "Trasa.findById", query = "SELECT t FROM Trasa t WHERE t.id_trasy = ?1")})
 public class Trasa implements Serializable {
 
     @Id
@@ -13,17 +16,10 @@ public class Trasa implements Serializable {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id_trasy;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "POCZATEK")
-    private Lotnisko Poczatek;
+    private Lotnisko poczatek;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "KONIEC")
-
-    private Lotnisko Koniec;
-
-    public Trasa() {
-    }
 
     public long getId_trasy() {
         return id_trasy;
@@ -34,18 +30,10 @@ public class Trasa implements Serializable {
     }
 
     public Lotnisko getPoczatek() {
-        return Poczatek;
+        return poczatek;
     }
 
     public void setPoczatek(Lotnisko poczatek) {
-        Poczatek = poczatek;
-    }
-
-    public Lotnisko getKoniec() {
-        return Koniec;
-    }
-
-    public void setKoniec(Lotnisko koniec) {
-        Koniec = koniec;
+        this.poczatek = poczatek;
     }
 }

@@ -1,0 +1,78 @@
+<div class="container">
+    <form>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Departure date:
+                </span>
+            </div>
+            <div class="col-sm-3">
+                <input class="form-control" type="datetime-local" ng-model="departureDate" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Date of arrival:
+                </span>
+            </div>
+            <div class="col-sm-3">
+                <input class="form-control" type="datetime-local" ng-model="dateOfArrival" />
+            </div>
+        </div>
+        <div class="col-sm">
+            <button ng-click="saveDate(departureDate,dateOfArrival)" type="submit" class="btn btn-submit">Submit</button>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm">
+            Date id
+        </div>
+        <div class="col-sm-4">
+            Departure date
+        </div>
+        <div class="col-sm-4">
+            Date of arrival
+        </div>
+        <div class="col-sm">
+            Edit
+        </div>
+        <div class="col-sm">
+            Delete
+        </div>
+    </div>
+    <ul class="list-unstyled">
+        <li ng-repeat="date in dates">
+            <div class="row">
+                <div class="col-sm">
+                    <span>
+                        <a ng-href="http://localhost:8081/#!/daty/{{date.id_daty}}">{{date.id_daty}}</a>
+                    </span>
+                </div>
+                <div class="col-sm-4">
+                    <span ng-if="!date.editMode">{{date.wylot|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                    <span ng-if="date.editMode">
+                        <input class="form-control" type="datetime-local" ng-model="date.wylot">
+                        <span>
+                </div>
+                <div class="col-sm-4">
+                    <span ng-if="!date.editMode">{{date.przylot|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                    <span ng-if="date.editMode">
+                        <input class="form-control" type="datetime-local" ng-model="date.przylot">
+                        <span>
+                </div>
+                <div class="col-sm">
+                    <button ng-if="!date.editMode" type="button" ng-click="date.editMode=true;" value="Edit" class="btn">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button ng-if="date.editMode" class="btn" ng-click="updateDate(date);date.editMode=false;">Save</button>
+                </div>
+                <div class="col-sm">
+                    <button type="button" ng-click="deleteDate(date)" value="Delete" class="btn">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

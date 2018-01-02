@@ -1,5 +1,6 @@
 package pbwi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,6 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Lotnisko.findAll", query = "SELECT l FROM Lotnisko l")
+        , @NamedQuery(name = "Lotnisko.findById", query = "SELECT l FROM Lotnisko l WHERE l.id_lotniska = ?1")})
 public class Lotnisko implements Serializable {
 
     @Id
@@ -15,11 +19,12 @@ public class Lotnisko implements Serializable {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id_lotniska;
 
-    private String Miejscowosc;
+    private String miejscowosc;
 
     private String IATA;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "lotniska")//
+    @JsonIgnore
+    @ManyToMany(mappedBy = "lotniska")
     private Set<FirmaLotnicza> firmyLotnicze = new HashSet<FirmaLotnicza>(0);
 
     public Lotnisko() {
@@ -34,11 +39,11 @@ public class Lotnisko implements Serializable {
     }
 
     public String getMiejscowosc() {
-        return Miejscowosc;
+        return miejscowosc;
     }
 
     public void setMiejscowosc(String miejscowosc) {
-        Miejscowosc = miejscowosc;
+        this.miejscowosc = miejscowosc;
     }
 
     public String getIATA() {

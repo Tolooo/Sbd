@@ -2,13 +2,14 @@ package pbwi.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Data_lotu.findAll", query = "SELECT d FROM Data_lotu d")
+        , @NamedQuery(name = "Data_lotu.findById", query = "SELECT d FROM Data_lotu d WHERE d.id_daty = ?1")})
 public class Data_lotu implements Serializable {
 
     @Id
@@ -16,9 +17,9 @@ public class Data_lotu implements Serializable {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id_daty;
 
-    private Date Wylot;
+    private Date wylot;
 
-    private Date Przylot;
+    private Date przylot;
 
     public Data_lotu() {
     }
@@ -32,18 +33,18 @@ public class Data_lotu implements Serializable {
     }
 
     public Date getWylot() {
-        return Wylot;
+        return wylot;
     }
 
     public void setWylot(Date wylot) {
-        Wylot = wylot;
+        this.wylot = wylot;
     }
 
     public Date getPrzylot() {
-        return Przylot;
+        return przylot;
     }
 
     public void setPrzylot(Date przylot) {
-        Przylot = przylot;
+        this.przylot = przylot;
     }
 }

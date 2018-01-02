@@ -6,6 +6,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Samolot.findAll", query = "SELECT s FROM Samolot s")
+        , @NamedQuery(name = "Samolot.findById", query = "SELECT s FROM Samolot s WHERE s.id_samolotu = ?1")})
 public class Samolot implements Serializable {
 
     @Id
@@ -13,11 +16,11 @@ public class Samolot implements Serializable {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id_samolotu;
 
-    private String Typ;
+    private String typ;
 
-    private long IloscMiejsc;
+    private long iloscMiejsc;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ID_FIRMYLOTNICZEJ")
     private FirmaLotnicza firmaLotnicza;
 
@@ -33,19 +36,19 @@ public class Samolot implements Serializable {
     }
 
     public String getTyp() {
-        return Typ;
+        return typ;
     }
 
     public void setTyp(String typ) {
-        Typ = typ;
+        this.typ = typ;
     }
 
     public long getIloscMiejsc() {
-        return IloscMiejsc;
+        return iloscMiejsc;
     }
 
     public void setIloscMiejsc(long iloscMiejsc) {
-        IloscMiejsc = iloscMiejsc;
+        this.iloscMiejsc = iloscMiejsc;
     }
 
     public FirmaLotnicza getFirmaLotnicza() {

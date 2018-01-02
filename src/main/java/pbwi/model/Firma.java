@@ -1,5 +1,6 @@
 package pbwi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,6 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Firma.findAll", query = "SELECT f FROM Firma f")
+        , @NamedQuery(name = "Firma.findById", query = "SELECT f FROM Firma f WHERE f.id_firmy = ?1")})
 public class Firma implements Serializable {
 
     @Id
@@ -15,11 +19,12 @@ public class Firma implements Serializable {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id_firmy;
 
-    private String Nazwa;
+    private String nazwa;
 
     private long NIP;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Bilet_Firma", joinColumns = {
             @JoinColumn(name = "id_firmy", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "id_biletu",
@@ -38,11 +43,11 @@ public class Firma implements Serializable {
     }
 
     public String getNazwa() {
-        return Nazwa;
+        return nazwa;
     }
 
     public void setNazwa(String nazwa) {
-        Nazwa = nazwa;
+        this.nazwa = nazwa;
     }
 
     public long getNIP() {

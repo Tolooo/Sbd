@@ -6,6 +6,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Bilet.findAll", query = "SELECT b FROM Bilet b")
+        , @NamedQuery(name = "Bilet.findById", query = "SELECT b FROM Bilet b WHERE b.id_biletu = ?1")})
 public class Bilet implements Serializable {
 
     @Id
@@ -13,15 +16,16 @@ public class Bilet implements Serializable {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id_biletu;
 
-    private String Klasa;
+    private String klasa;
 
-    private long Nr_miejsca;
+    private long nr_miejsca;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ID_LOTU")
     private Lot lot;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ID_DATY")
     private Data_lotu dataLotu;
 
@@ -37,19 +41,19 @@ public class Bilet implements Serializable {
     }
 
     public String getKlasa() {
-        return Klasa;
+        return klasa;
     }
 
     public void setKlasa(String klasa) {
-        Klasa = klasa;
+        this.klasa = klasa;
     }
 
     public long getNr_miejsca() {
-        return Nr_miejsca;
+        return nr_miejsca;
     }
 
     public void setNr_miejsca(long nr_miejsca) {
-        Nr_miejsca = nr_miejsca;
+        this.nr_miejsca = nr_miejsca;
     }
 
     public Lot getLot() {

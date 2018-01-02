@@ -1,0 +1,121 @@
+<div class="container">
+    <form>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Nazwa:
+                </span>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="nazwa" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Nip:
+                </span>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control" type="number" ng-model="nip" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Kraj:
+                </span>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="kraj" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Adres:
+                </span>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" maxlength="25" ng-model="adres" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Iata:
+                </span>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control" type="number" ng-model="iata" />
+            </div>
+        </div>
+        <div class="col-sm">
+            <button ng-click="saveFirma(nazwa,nip,kraj,adres,iata)" type="submit" class="btn btn-submit">Submit</button>
+        </div>
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Firma lotnicza id</th>
+                <th scope="col">Nazwa</th>
+                <th scope="col">Nip</th>
+                <th scope="col">Kraj</th>
+                <th scope="col">Adres</th>
+                <th scope="col">Iata</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="firmaLotnicza in firmyLotnicze">
+                <th scope="row">
+                    <a ng-href="http://localhost:8081/#!/firmyLotnicze/{{firmaLotnicza.id_firmyLotniczej}}">{{firmaLotnicza.id_firmyLotniczej}}</a>
+                </th>
+
+                <td>
+                    <span ng-if="!firmaLotnicza.editMode">{{firmaLotnicza.nazwa}}</span>
+                    <span ng-if="firmaLotnicza.editMode">
+                        <textarea class="form-control" cols=25 ng-model="firmaLotnicza.nazwa" />
+                        <span>
+                </td>
+                <td>
+                    <span ng-if="!firmaLotnicza.editMode">{{firmaLotnicza.nip}}</span>
+                    <span ng-if="firmaLotnicza.editMode">
+                        <input class="form-control" type="number" ng-model="firmaLotnicza.nip">
+                        <span>
+                </td>
+                <td>
+                    <span ng-if="!firmaLotnicza.editMode">{{firmaLotnicza.kraj}}</span>
+                    <span ng-if="firmaLotnicza.editMode">
+                        <input class="form-control" type="text" ng-model="firmaLotnicza.kraj">
+                        <span>
+                </td>
+                <td>
+                    <span ng-if="!firmaLotnicza.editMode">{{firmaLotnicza.adres}}</span>
+                    <span ng-if="firmaLotnicza.editMode">
+                        <textarea class="form-control" cols=25 ng-model="firmaLotnicza.adres" />
+                        <span>
+                </td>
+                <td>
+                    <span ng-if="!firmaLotnicza.editMode">{{firmaLotnicza.iata}}</span>
+                    <span ng-if="firmaLotnicza.editMode">
+                        <input class="form-control" type="text" ng-model="firmaLotnicza.iata">
+                        <span>
+                </td>
+                <td>
+                    <button ng-if="!firmaLotnicza.editMode" type="button" ng-click="firmaLotnicza.editMode=true;" value="Edit" class="btn">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button ng-if="firmaLotnicza.editMode" class="btn" ng-click="updateFirma(firmaLotnicza);firmaLotnicza.editMode=false;">Save</button>
+                </td>
+                <td>
+                    <button type="button" ng-click="deleteFirma(firmaLotnicza)" value="Delete" class="btn">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

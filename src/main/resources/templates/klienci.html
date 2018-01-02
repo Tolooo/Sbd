@@ -1,0 +1,78 @@
+<div class="container">
+    <form>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Nazwisko:
+                </span>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="nazwisko" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Imie:
+                </span>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="imie" />
+            </div>
+        </div>
+        <div class="col-sm">
+            <button ng-click="saveKlient(nazwisko,imie)" type="submit" class="btn btn-submit">Submit</button>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-2">
+            Klient id
+        </div>
+        <div class="col-sm-2">
+            Nazwisko
+        </div>
+        <div class="col-sm-2">
+            Imie
+        </div>
+        <div class="col-sm">
+            Edit
+        </div>
+        <div class="col-sm">
+            Delete
+        </div>
+    </div>
+    <ul class="list-unstyled">
+        <li ng-repeat="klient in klienci">
+            <div class="row">
+                <div class="col-sm-2">
+                    <span>
+                        <a ng-href="http://localhost:8081/#!/klienci/{{klient.id_klienta}}">{{klient.id_klienta}}</a>
+                    </span>
+                </div>
+                <div class="col-sm-2">
+                    <span ng-if="!klient.editMode">{{klient.nazwisko}}</span>
+                    <span ng-if="klient.editMode">
+                        <input class="form-control" type="text" ng-model="klient.nazwisko">
+                        <span>
+                </div>
+                <div class="col-sm-2">
+                    <span ng-if="!klient.editMode">{{klient.imie}}</span>
+                    <span ng-if="klient.editMode">
+                        <input class="form-control" type="text" ng-model="klient.imie">
+                        <span>
+                </div>
+                <div class="col-sm">
+                    <button ng-if="!klient.editMode" type="button" ng-click="klient.editMode=true;" value="Edit" class="btn">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button ng-if="klient.editMode" class="btn" ng-click="updateKlient(klient);klient.editMode=false;">Save</button>
+                </div>
+                <div class="col-sm">
+                    <button type="button" ng-click="deleteKlient(klient)" value="Delete" class="btn">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

@@ -1,5 +1,6 @@
 package pbwi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,6 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Klient.findAll", query = "SELECT k FROM Klient k")
+        , @NamedQuery(name = "Klient.findById", query = "SELECT k FROM Klient k WHERE k.id_klienta = ?1")})
 public class Klient implements Serializable {
 
     @Id
@@ -15,11 +19,12 @@ public class Klient implements Serializable {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id_klienta;
 
-    private String Imie;
+    private String imie;
 
-    private String Nazwisko;
+    private String nazwisko;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Bilet_Klient", joinColumns = {
             @JoinColumn(name = "id_klienta", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "id_biletu",
@@ -38,19 +43,19 @@ public class Klient implements Serializable {
     }
 
     public String getImie() {
-        return Imie;
+        return imie;
     }
 
     public void setImie(String imie) {
-        Imie = imie;
+        this.imie = imie;
     }
 
     public String getNazwisko() {
-        return Nazwisko;
+        return nazwisko;
     }
 
     public void setNazwisko(String nazwisko) {
-        Nazwisko = nazwisko;
+        this.nazwisko = nazwisko;
     }
 
     public Set<Bilet> getBilety() {

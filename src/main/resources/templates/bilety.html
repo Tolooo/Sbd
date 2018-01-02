@@ -1,0 +1,96 @@
+<div class="container">
+    <form>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Klasa:
+                </span>
+            </div>
+            <div class="col-sm-3">
+                <input class="form-control" type="text" ng-model="klasa" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <span>
+                    Nr miejsca:
+                </span>
+            </div>
+            <div class="col-sm-3">
+                <input class="form-control" type="number" ng-model="nr_miejsca" />
+            </div>
+        </div>
+        <div class="col-sm">
+            <button ng-click="saveBilet(klasa,nr_miejsca)" type="submit" class="btn btn-submit">Submit</button>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-2">
+            Bilet id
+        </div>
+        <div class="col-sm-2">
+            Klasa
+        </div>
+        <div class="col-sm-2">
+            Nr miejsca
+        </div>
+        <div class="col-sm-2">
+            Nr lotu
+        </div>
+        <div class="col-sm-2">
+            Nr daty lotu
+        </div>
+        <div class="col-sm">
+            Edit
+        </div>
+        <div class="col-sm">
+            Delete
+        </div>
+    </div>
+    <ul class="list-unstyled">
+        <li ng-repeat="bilet in bilety">
+            <div class="row">
+                <div class="col-sm-2">
+                    <span>
+                        <a ng-href="http://localhost:8081/#!/bilety/{{bilet.id_biletu}}">{{bilet.id_biletu}}</a>
+                    </span>
+                </div>
+                <div class="col-sm-2">
+                    <span ng-if="!bilet.editMode">{{bilet.klasa}}</span>
+                    <span ng-if="bilet.editMode">
+                        <input class="form-control" type="text" ng-model="bilet.klasa">
+                        <span>
+                </div>
+                <div class="col-sm-2">
+                    <span ng-if="!bilet.editMode">{{bilet.nr_miejsca}}</span>
+                    <span ng-if="bilet.editMode">
+                        <input class="form-control" type="number" ng-model="bilet.nr_miejsca">
+                        <span>
+                </div>
+                <div class="col-sm-2">
+                    <span ng-if="!bilet.editMode">{{bilet.lot.id_lotu}}</span>
+                    <span ng-if="bilet.editMode">
+                        <input class="form-control" type="number" ng-model="bilet.lot.id_lotu">
+                        <span>
+                </div>
+                <div class="col-sm-2">
+                    <span ng-if="!bilet.editMode">{{bilet.dataLotu.id_daty}}</span>
+                    <span ng-if="bilet.editMode">
+                        <input class="form-control" type="number" ng-model="bilet.dataLotu.id_daty">
+                        <span>
+                </div>
+                <div class="col-sm">
+                    <button ng-if="!bilet.editMode" type="button" ng-click="bilet.editMode=true;" value="Edit" class="btn">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button ng-if="bilet.editMode" class="btn" ng-click="updateBilet(bilet);bilet.editMode=false;">Save</button>
+                </div>
+                <div class="col-sm">
+                    <button type="button" ng-click="deleteBilet(bilet)" value="Delete" class="btn">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

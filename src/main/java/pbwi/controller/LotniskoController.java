@@ -4,48 +4,57 @@ import org.hibernate.SessionFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pbwi.HibernateUtil;
-import pbwi.model.Pilot;
+import pbwi.model.FirmaLotnicza;
+import pbwi.model.Lot;
+import pbwi.model.Lotnisko;
 
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:8081")
-@RequestMapping("/piloci")
+@RequestMapping("/lotniska")
 @RestController
-public class PilotController extends AbstractController<Pilot> {
+public class LotniskoController extends AbstractController<Lotnisko> {
     private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-    public PilotController() {
-        super(Pilot.class);
+    public LotniskoController() {
+        super(Lotnisko.class);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Pilot> findAll() {
+    public List<Lotnisko> findAll() {
         return super.findAll();
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-    public Pilot create(@RequestBody Pilot pilot) {
-        return super.create(pilot);
+    public Lotnisko create(@RequestBody Lotnisko lotnisko) {
+        return super.create(lotnisko);
     }
 
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Pilot find(@PathVariable("id") long id) {
+    public Lotnisko find(@PathVariable("id") long id) {
         return super.find(id);
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @RequestMapping(value = "/{id}/firmyLotnicze", method = RequestMethod.GET)
+    public Set<FirmaLotnicza> findAirlines(@PathVariable("id") long id) {
+        return super.find(id).getFirmyLotnicze();
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public Pilot delete(@PathVariable("id") long id) {
+    public Lotnisko delete(@PathVariable("id") long id) {
         return super.delete(id);
     }
 
 
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable("id") long id, @RequestBody Pilot pilot) {
-        super.update(pilot);
+    public void update(@PathVariable("id") long id, @RequestBody Lotnisko lotnisko) {
+        super.update(lotnisko);
     }
 
     @Override
