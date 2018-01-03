@@ -37,8 +37,8 @@ var biletController = function ($scope,$routeParams,$http,$location) {
         delete bilet.editMode;
         $http.put('http://localhost:8080/bilety/' + bilet.id_biletu, bilet);
     };
-    var detailBilet = function(trasa_id){
-        $http.get("http://localhost:8080/bilety/"+trasa_id).then(onBiletComplete, onError);
+    var detailBilet = function(id){
+        $http.get("http://localhost:8080/bilety/"+id).then(onBiletComplete, onError);
 
     }
 

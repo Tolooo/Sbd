@@ -1,11 +1,16 @@
 (function(){
-var firmaController = function ($scope, $http) {
+var firmaController = function ($scope,$routeParams,$http,$location) {
 
-    var onFirmaComplete = function (response) {
+    var onFirmyComplete = function (response) {
         $scope.firmy = response.data;
         $scope.firmy.forEach(firma => {
             firma.editMode = false;
         });
+    };
+
+    var onFirmaComplete = function (response) {
+        $scope.firma = response.data;
+        $scope.firma.editMode = false; 
     };
 
     var onSaveFirmaComplete = function (response) {
@@ -34,12 +39,19 @@ var firmaController = function ($scope, $http) {
         $http.put('http://localhost:8080/firmy/' + firma.id_firmy, firma);
     };
 
+    var detailFirma = function(id){
+        $http.get("http://localhost:8080/firmy/"+id).then(onFirmaComplete, onError);
 
-    $http.get("http://localhost:8080/firmy").then(onFirmaComplete, onError);
+    }
+
+    if($location.url()=="/firmy")
+    $http.get("http://localhost:8080/firmy").then(onFirmyComplete, onError);
+    else
+    detailFirma($routeParams.id);
     $scope.saveFirma = saveFirma;
     $scope.deleteFirma = deleteFirma;
     $scope.updateFirma = updateFirma;
 };
 
-angular.module('myApp').controller("firmaController", ['$scope', '$http', firmaController]);
+angular.module('myApp').controller("firmaController", ['$scope','$routeParams','$http','$location', firmaController]);
 }()) 

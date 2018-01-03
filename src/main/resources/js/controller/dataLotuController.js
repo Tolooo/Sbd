@@ -1,7 +1,7 @@
 (function(){
- var dataLotuController = function ($scope, $http) {
+ var dataLotuController = function ($scope,$routeParams,$http,$location) {
 
-    var onDateComplete = function (response) {
+    var onDatesComplete = function (response) {
         $scope.dates = response.data; 
         $scope.dates.forEach(date => {
             date.editMode = false;
@@ -9,7 +9,10 @@
             date.przylot=new Date(date.przylot);
         });
     };
-
+    var onDateComplete = function (response) {
+        $scope.date = response.data;
+        $scope.date.editMode = false; 
+    };
     var onSaveDateComplete = function (response) {
         $scope.dates.push(response.data);
     };
@@ -35,13 +38,19 @@
         delete date.editMode;
         $http.put('http://localhost:8080/daty/' + date.id_daty, date);
     };
+    var detailDate = function(id){
+        $http.get("http://localhost:8080/daty/"+id).then(onDateComplete, onError);
 
+    }
 
-    $http.get("http://localhost:8080/daty").then(onDateComplete, onError);
+    if($location.url()=="/daty")
+    $http.get("http://localhost:8080/daty").then(onDatesComplete, onError);
+    else
+    detailDate($routeParams.id);
     $scope.saveDate = saveDate;
     $scope.deleteDate = deleteDate;
     $scope.updateDate = updateDate;
 };
 
-angular.module('myApp').controller("dataLotuController", ['$scope', '$http', dataLotuController]);
+angular.module('myApp').controller("dataLotuController", ['$scope','$routeParams','$http','$location', dataLotuController]);
 }())

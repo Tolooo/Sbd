@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>Id biletu:</th>
+                <td colspan="3">{{bilet.id_biletu}}</td>
+            </tr>
+            <tr>
+                <td>Klasa:</th>
+                    <td colspan="3">{{bilet.klasa}}</td>
+            </tr>
+            <tr>
+                <td>Nr miejsca:</th>
+                    <td colspan="3">{{bilet.nr_miejsca}}</td>
+            </tr>
+            <tr>
+                <td>Id lotu:</td>
+                <td colspan="3">
+                    <a ng-href="http://localhost:8081/#!/loty/{{bilet.lot.id_lotu}}">{{bilet.lot.id_lotu}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>ID daty lotu:</td>
+                <td>
+                    <a ng-href="http://localhost:8081/#!/daty/{{bilet.dataLotu.id_daty}}">{{bilet.dataLotu.id_daty}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4"></td>
+            </tr>
+        </table>
+    </div>
+</div>

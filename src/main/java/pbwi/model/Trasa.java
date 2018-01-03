@@ -20,6 +20,10 @@ public class Trasa implements Serializable {
     @JoinColumn(name = "POCZATEK")
     private Lotnisko poczatek;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "KONIEC")
+    private Lotnisko koniec;
+
 
     public long getId_trasy() {
         return id_trasy;
@@ -35,5 +39,13 @@ public class Trasa implements Serializable {
 
     public void setPoczatek(Lotnisko poczatek) {
         this.poczatek = poczatek;
+    }
+
+    public Lotnisko getKoniec() {
+        return koniec;
+    }
+
+    public void setKoniec(Lotnisko koniec) {
+        this.koniec = koniec;
     }
 }

@@ -38,8 +38,8 @@ var trasaController = function ($scope,$routeParams,$http,$location) {
         $http.put('http://localhost:8080/trasy/' + trasa.id_trasy, trasa);
     };
 
-    var detailTrasa = function(trasa_id){
-        $http.get("http://localhost:8080/trasy/"+trasa_id).then(onTrasaComplete, onError);
+    var detailTrasa = function(id){
+        $http.get("http://localhost:8080/trasy/"+id).then(onTrasaComplete, onError);
 
     }
 

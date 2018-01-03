@@ -1,34 +1,35 @@
 <div class="container">
     <div class="row">
         <table class="table">
-            <tr>
+            <!-- <tr>
                 <th>Id trasy:</th>
-                <td colspan="5">{{trasa.id_trasy}}</td>
+                <td colspan="3">{{trasa.id_trasy}}</td>
+            </tr> -->
+            <tr>
+                <th colspan="4">Początek trasy:</th>
             </tr>
             <tr>
-                <th colspan="6">Początek trasy:</th>
-            </tr>
-            <tr>
-                <th>Id lotniska:</th>
-                <td>{{trasa.poczatek.id_lotniska}}</td>
-                <th>Iata:</th>
-                <td>{{trasa.poczatek.iata}}</td>
+                <!-- <th>Id lotniska:</th>
+                <td>{{trasa.poczatek.id_lotniska}}</td> -->
                 <th>Miejscowosc:</th>
                 <td>{{trasa.poczatek.miejscowosc}}</td>
-            </tr>
-            <tr>
-                <th colspan="6">Koniec trasy:</th>
-            </tr>
-            <tr>
-                <th>Id lotniska:</th>
-                <td>{{trasa.koniec.id_lotniska}}</td>
                 <th>Iata:</th>
-                <td>{{trasa.koniec.iata}}</td>
+                <td>{{trasa.poczatek.iata}}</td>
+            </tr>
+            <tr>
+                <th colspan="4">Koniec trasy:</th>
+            </tr>
+            <tr>
+
+                <!-- <th>Id lotniska:</th>
+                    <td>{{trasa.koniec.id_lotniska}}</td> -->
                 <th>Miejscowosc:</th>
                 <td>{{trasa.koniec.miejscowosc}}</td>
+                <th>Iata:</th>
+                <td>{{trasa.koniec.iata}}</td>
             </tr>
             <tr>
-                <td colspan="7"></td>
+                <td colspan="4"></td>
             </tr>
         </table>
     </div>
