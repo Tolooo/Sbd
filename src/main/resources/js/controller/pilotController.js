@@ -3,16 +3,20 @@
 
         var onPilotsComplete = function (response) {
             $scope.pilots = response.data;
-            $scope.pilots.forEach(pilot => {
-                pilot.editMode = false;
-            });
         };
 
         var onPilotComplete = function (response) {
             $scope.pilot = response.data;
-            $scope.pilot.editMode = false;
         };
 
+        var prepareNew = function () {
+            $scope.editMode = false;
+            $scope.pilot = {}
+        }; 
+        var prepare = function (pilot) {
+            $scope.editMode = true;
+            $scope.pilot = pilot;
+        }
 
         var onSavePilotComplete = function (response) {
             $scope.pilots.push(response.data);
@@ -26,18 +30,15 @@
         var onError = function (response) {
             $scope.error = response.error;
         };
-        var savePilot = function (name, surname) {
-            var pilot = { id_pilota: null, imie: name, nazwisko: surname };
-            $scope.pilot = pilot;
-            $http.post('http://localhost:8080/piloci', pilot).then(onSavePilotComplete, onError);
+        var savePilot = function () {
+            $http.post('http://localhost:8080/piloci', $scope.pilot).then(onSavePilotComplete, onError);
         };
         var deletePilot = function (pilot) {
             $http.delete('http://localhost:8080/piloci/' + pilot.id_pilota).then(onDeletePilotComplete, onError)
         };
 
-        var updatePilot = function (pilot) {
-            delete pilot.editMode;
-            $http.put('http://localhost:8080/piloci/' + pilot.id_pilota, pilot);
+        var updatePilot = function () {
+            $http.put('http://localhost:8080/piloci/' + $scope.pilot.id_pilota, $scope.pilot);
         };
 
         var detailPilot = function (id) {
@@ -48,6 +49,8 @@
             $http.get("http://localhost:8080/piloci").then(onPilotsComplete, onError);
         else
             detailPilot($routeParams.id);
+        $scope.prepare = prepare;
+        $scope.prepareNew = prepareNew;
         $scope.savePilot = savePilot;
         $scope.deletePilot = deletePilot;
         $scope.updatePilot = updatePilot;

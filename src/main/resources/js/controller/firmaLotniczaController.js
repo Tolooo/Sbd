@@ -1,17 +1,23 @@
 (function () {
-    var firmaLotniczaController = function ($scope,$routeParams,$http,$location) {
+    var firmaLotniczaController = function ($scope, $routeParams, $http, $location) {
 
         var onFirmyLotniczeComplete = function (response) {
             $scope.firmyLotnicze = response.data;
-            $scope.firmyLotnicze.forEach(firmaLotnicza => {
-                firmaLotnicza.editMode = false;
-            });
         };
 
         var onFirmaLotniczaComplete = function (response) {
             $scope.firmaLotnicza = response.data;
-            $scope.firmaLotnicza.editMode = false;
         };
+
+        var prepareNew = function () {
+            $scope.editMode = false;
+            $scope.firmaLotnicza = {}
+        };
+
+        var prepare = function (firmaLotnicza) {
+            $scope.editMode = true;
+            $scope.firmaLotnicza = firmaLotnicza;
+        }
 
         var onSaveFirmaLotniczaComplete = function (response) {
             $scope.firmyLotnicze.push(response.data);
@@ -24,18 +30,15 @@
         var onError = function (response) {
             $scope.error = response.error;
         };
-        var saveFirmaLotnicza = function (nazwa, nip, kraj, adres, iata) {
-            var firmaLotnicza = { id_firmyLotniczej: null, nazwa: nazwa, nip: nip, kraj: kraj, adres: adres, iata: iata };
-            $scope.firmaLotnicza = firmaLotnicza;
-            $http.post('http://localhost:8080/firmyLotnicze', firmaLotnicza).then(onSaveFirmaLotniczaComplete, onError);
+        var saveFirmaLotnicza = function () {
+            $http.post('http://localhost:8080/firmyLotnicze', $scope.firmaLotnicza).then(onSaveFirmaLotniczaComplete, onError);
         };
         var deleteFirmaLotnicza = function (firmaLotnicza) {
             $http.delete('http://localhost:8080/firmyLotnicze/' + firmaLotnicza.id_firmyLotniczej).then(onDeleteFirmaLotniczaComplete, onError)
         };
 
-        var updateFirmaLotnicza = function (firmaLotnicza) {
-            delete firmaLotnicza.editMode;
-            $http.put('http://localhost:8080/firmyLotnicze/' + firmaLotnicza.id_firmyLotniczej, firmaLotnicza);
+        var updateFirmaLotnicza = function () {
+            $http.put('http://localhost:8080/firmyLotnicze/' + $scope.firmaLotnicza.id_firmyLotniczej, $scope.firmaLotnicza);
         };
 
         var detailFirmaLotnicza = function (id) {
@@ -46,6 +49,8 @@
             $http.get("http://localhost:8080/firmyLotnicze").then(onFirmyLotniczeComplete, onError);
         else
             detailFirmaLotnicza($routeParams.id);
+        $scope.prepare = prepare;
+        $scope.prepareNew = prepareNew;
         $scope.saveFirmaLotnicza = saveFirmaLotnicza;
         $scope.deleteFirmaLotnicza = deleteFirmaLotnicza;
         $scope.updateFirmaLotnicza = updateFirmaLotnicza;

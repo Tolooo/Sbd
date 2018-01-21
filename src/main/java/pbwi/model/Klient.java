@@ -65,4 +65,8 @@ public class Klient implements Serializable {
     public void setBilety(Set<Bilet> bilety) {
         this.bilety = bilety;
     }
+
+    public void addBilet(Bilet bilet) {
+        this.bilety.add( bilet);
+    }
 }

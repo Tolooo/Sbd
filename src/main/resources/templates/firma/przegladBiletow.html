@@ -1,0 +1,47 @@
+<div class="container"> 
+        <div class="row">
+            <div class="col-sm-2">
+                Bilet id
+            </div>
+            <div class="col-sm-2">
+                Klasa
+            </div>
+            <div class="col-sm-2">
+                Nr miejsca
+            </div>
+            <div class="col-sm-2">
+                Nr lotu
+            </div>
+            <div class="col-sm-2">
+                Nr daty lotu
+            </div> 
+        </div>
+        <ul class="list-unstyled">
+            <li ng-repeat="bilet in bilety">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <span>
+                            <a ng-href="http://localhost:8081/#!/bilety/{{bilet.id_biletu}}">{{bilet.id_biletu}}</a>
+                        </span>
+                    </div>
+                    <div class="col-sm-2">
+                        <span  >{{bilet.klasa}}</span>
+                         
+                    </div>
+                    <div class="col-sm-2">
+                        <span >{{bilet.nr_miejsca}}</span>
+                         
+                    </div>
+                    <div class="col-sm-2">
+                        <span  >{{bilet.lot.id_lotu}}</span>
+                         
+                    </div>
+                    <div class="col-sm-2">
+                        <span  >{{bilet.dataLotu.id_daty}}</span>
+                         
+                    </div>
+                    
+                </div>
+            </li>
+        </ul>
+    </div>

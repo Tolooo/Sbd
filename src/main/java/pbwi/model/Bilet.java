@@ -20,12 +20,12 @@ public class Bilet implements Serializable {
 
     private long nr_miejsca;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "ID_LOTU")
     private Lot lot;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "ID_DATY")
     private Data_lotu dataLotu;
 

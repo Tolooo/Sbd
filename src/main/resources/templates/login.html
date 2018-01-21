@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="row">
+        <div class="w-100 alert alert-danger alert-dismissible fade show" ng-if="error" role="alert">
+            <strong>Błąd! </strong>{{error}}.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button> 
+        </div>
+    </div>
+    <div class="row">
+        <form name="loginForm" ng-submit="login(credentials)" novalidate>
+            <label for="username">Username:</label>
+            <input type="text" id="username" ng-model="credentials.user_name">
+            <label for="password">Password:</label>
+            <input type="password" id="password" ng-model="credentials.user_password">
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>

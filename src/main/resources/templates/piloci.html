@@ -1,29 +1,7 @@
 <div class="container">
-    <form>
-        <div class="form-group">
-            <div class="col-sm-3">
-                <span>
-                    Name:
-                </span>
-            </div>
-            <div class="col-sm-8">
-                <input class="form-control" type="text" ng-model="name" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-3">
-                <span>
-                    Surname:
-                </span>
-            </div>
-            <div class="col-sm-8">
-                <input class="form-control" type="text" ng-model="surname" />
-            </div>
-        </div>
-        <div class="col-sm">
-            <button ng-click="savePilot(name,surname)" type="submit" class="btn btn-submit">Submit</button>
-        </div>
-    </form>
+    <button ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Add new
+    </button>
     <div class="row">
         <div class="col-sm-2">
             Pilot id
@@ -50,22 +28,17 @@
                     </span>
                 </div>
                 <div class="col-sm-2">
-                    <span ng-if="!pilot.editMode">{{pilot.imie}}</span>
-                    <span ng-if="pilot.editMode">
-                        <input class="form-control" ng-model="pilot.imie">
-                        <span>
+                    <span>{{pilot.imie}}</span>
+
                 </div>
                 <div class="col-sm-3">
-                    <span ng-if="!pilot.editMode">{{pilot.nazwisko}}</span>
-                    <span ng-if="pilot.editMode">
-                        <input class="form-control" ng-model="pilot.nazwisko">
-                        <span>
+                    <span>{{pilot.nazwisko}}</span>
+
                 </div>
                 <div class="col-sm">
-                    <button ng-if="!pilot.editMode" type="button" ng-click="pilot.editMode=true;" value="Edit" class="btn">
-                        <i class="fas fa-edit"></i>
+                    <button ng-click="prepare(pilot)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Edit
                     </button>
-                    <button ng-if="pilot.editMode" class="btn" ng-click="updatePilot(pilot);pilot.editMode=false;">Save</button>
                 </div>
                 <div class="col-sm">
                     <button type="button" ng-click="deletePilot(pilot)" value="Delete" class="btn">
@@ -75,4 +48,48 @@
             </div>
         </li>
     </ul>
+    <div class="row">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edit pilot</h5>
+                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Add new pilot</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Name:
+                                    </span>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" ng-model="pilot.imie" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Surname:
+                                    </span>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" ng-model="pilot.nazwisko" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button ng-if="editMode" ng-click="updatePilot()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                        <button ng-if="!editMode" ng-click="savePilot()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

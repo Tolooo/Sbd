@@ -21,6 +21,7 @@ public abstract class AbstractController<T> {
         session.beginTransaction();
         session.save(entity);
         session.getTransaction().commit();
+        session.close();
         return entity;
     }
 
@@ -29,6 +30,7 @@ public abstract class AbstractController<T> {
         session.beginTransaction();
         session.update(entity);
         session.getTransaction().commit();
+        session.close();
     }
 
     public T delete(Object id) {
@@ -39,18 +41,23 @@ public abstract class AbstractController<T> {
         T entity=(T)query.getSingleResult();
         session.delete(entity);
         session.getTransaction().commit();
+        session.close();
         return entity;
     }
 
     public T find(Object id) {
         Session session = getSessionFactory().openSession();
-        return session.find(entityClass, id);
+        T entity=session.find(entityClass, id);
+        session.close();
+        return entity;
     }
 
     public List<T> findAll() {
         Session session = getSessionFactory().openSession();
         Query query = session.createNamedQuery(entityClass.getSimpleName() + ".findAll", entityClass);
-        return query.getResultList();
+        List<T> list=query.getResultList();
+        session.close();
+        return list;
     }
 
 }

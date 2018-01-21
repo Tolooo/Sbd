@@ -20,7 +20,7 @@ public class Samolot implements Serializable {
 
     private long iloscMiejsc;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "ID_FIRMYLOTNICZEJ")
     private FirmaLotnicza firmaLotnicza;
 

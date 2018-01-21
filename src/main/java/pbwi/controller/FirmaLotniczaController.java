@@ -1,13 +1,15 @@
 package pbwi.controller;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pbwi.HibernateUtil;
-import pbwi.model.FirmaLotnicza;
-import pbwi.model.Lotnisko;
-import pbwi.model.Samolot;
+import pbwi.model.*;
 
+import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -39,21 +41,75 @@ public class FirmaLotniczaController extends AbstractController<FirmaLotnicza> {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @RequestMapping(value = "/{id}/loty", method = RequestMethod.GET)
+    public List<Lot> findLoty(@PathVariable("id") long id) {
+        Session session = getSessionFactory().openSession();
+        session.beginTransaction();
+        Query query = session.createNamedQuery("Lot.findByIdFirmyLotniczej", Lot.class);
+        query.setParameter(1, id);
+        List<Lot> list = null;
+        list = (List<Lot>) query.getResultList();
+        session.close();
+        return list;
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @RequestMapping(value = "/{id}/trasy", method = RequestMethod.GET)
+    public List<Trasa> findTrasy(@PathVariable("id") long id) {
+        Session session = getSessionFactory().openSession();
+        session.beginTransaction();
+        FirmaLotnicza firmaLotnicza = super.find(id);
+        Query query = session.createNamedQuery("Trasa.findAll", Trasa.class);
+        List<Trasa> trasy = null;
+        List<Trasa> list = new ArrayList();
+        trasy = (List<Trasa>) query.getResultList();
+        for (Trasa trasa : trasy) {
+            for (FirmaLotnicza lotnicza : trasa.getPoczatek().getFirmyLotnicze()) {
+                if (firmaLotnicza.getId_firmyLotniczej() == (lotnicza.getId_firmyLotniczej())) {
+                    list.add(trasa);
+                    break;
+                }
+            }
+            for (FirmaLotnicza lotnicza : trasa.getKoniec().getFirmyLotnicze()) {
+                if (firmaLotnicza.getId_firmyLotniczej() == (lotnicza.getId_firmyLotniczej()) && !list.contains(trasa)) {
+                    list.add(trasa);
+                    break;
+                }
+            }
+
+        }
+        session.close();
+        return list;
+    }
+
+
+    @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/{id}/lotniska", method = RequestMethod.GET)
     public Set<Lotnisko> findAirports(@PathVariable("id") long id) {
-        return super.find(id).getLotniska();
+        Session session = getSessionFactory().openSession();
+        FirmaLotnicza firmaLotnicza=session.find(FirmaLotnicza.class,id);
+        Hibernate.initialize(firmaLotnicza.getLotniska());
+        session.close();
+        Set<Lotnisko> lotniska = firmaLotnicza.getLotniska();
+        return lotniska;
     }
+
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/{id}/samoloty", method = RequestMethod.GET)
     public Set<Samolot> findPlanes(@PathVariable("id") long id) {
-        return super.find(id).getSamoloty();
+        Session session = getSessionFactory().openSession();
+        FirmaLotnicza firmaLotnicza=session.find(FirmaLotnicza.class,id);
+        Hibernate.initialize(firmaLotnicza.getSamoloty());
+        session.close();
+        Set<Samolot> samoloty = firmaLotnicza.getSamoloty();
+        return samoloty;
     }
+
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public FirmaLotnicza delete(@PathVariable("id") long id) {
         return super.delete(id);
     }
-
 
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

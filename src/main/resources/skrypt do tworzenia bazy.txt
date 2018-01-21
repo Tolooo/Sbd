@@ -16,6 +16,8 @@ DROP TABLE  Data_lotu cascade constraints;
 CREATE TABLE  Lot  (
   id_lotu  number,
   id_samolotu  number,
+  klasa  varchar2(20),
+  iloscMiejsc  number,
   id_pilota  number,
   id_trasy  number,
   id_daty  number,
@@ -27,7 +29,7 @@ CREATE TABLE  Lot  (
 
 CREATE TABLE  Bilet  (
   id_biletu  number,
-  Klasa  varchar2(10),
+  Klasa  varchar2(20),
   Nr_miejsca  number(3),
   id_lotu  number,
   id_daty  number,
@@ -347,36 +349,36 @@ INSERT INTO Data_lotu VALUES(13,'2017/11/13','2017/11/14');
 INSERT INTO Data_lotu VALUES(14,'2017/11/14','2017/11/15');
 INSERT INTO Data_lotu VALUES(15,'2017/11/15','2017/11/16');
 
-INSERT INTO LOT VALUES(1,1,1,1,1);
-INSERT INTO LOT VALUES(2,2,1,2,2);
-INSERT INTO LOT VALUES(3,3,1,3,3);
-INSERT INTO LOT VALUES(4,4,1,4,4);
-INSERT INTO LOT VALUES(5,1,1,5,5);
-INSERT INTO LOT VALUES(6,2,1,6,7);
-INSERT INTO LOT VALUES(8,8,1,8,8);
-INSERT INTO LOT VALUES(9,9,1,9,9);
-INSERT INTO LOT VALUES(10,5,1,7,10);
-INSERT INTO LOT VALUES(11,6,1,8,12);
-INSERT INTO LOT VALUES(12,12,1,12,12);
-INSERT INTO LOT VALUES(13,13,1,13,13);
-INSERT INTO LOT VALUES(14,11,1,11,14);
-INSERT INTO LOT VALUES(15,10,1,5,15);
+INSERT INTO LOT VALUES(1,1,'Ekonomiczna',102,1,1,1);
+INSERT INTO LOT VALUES(2,2,'Ekonomiczna',102,1,2,2);
+INSERT INTO LOT VALUES(3,3,'Ekonomiczna',102,1,3,3);
+INSERT INTO LOT VALUES(4,4,'Ekonomiczna',102,1,4,4);
+INSERT INTO LOT VALUES(5,1,'Ekonomiczna',102,1,5,5);
+INSERT INTO LOT VALUES(6,2,'Ekonomiczna',102,1,6,7);
+INSERT INTO LOT VALUES(8,8,'Ekonomiczna',102,1,8,8);
+INSERT INTO LOT VALUES(9,9,'Ekonomiczna',102,1,9,9);
+INSERT INTO LOT VALUES(10,5,'Ekonomiczna',102,1,7,10);
+INSERT INTO LOT VALUES(11,6,'Ekonomiczna',102,1,8,12);
+INSERT INTO LOT VALUES(12,12,'Ekonomiczna',102,1,12,12);
+INSERT INTO LOT VALUES(13,13,'Ekonomiczna',102,1,13,13);
+INSERT INTO LOT VALUES(14,11,'Biznes',102,1,11,14);
+INSERT INTO LOT VALUES(15,10,'Ekonomiczna',102,1,5,15);
 
 INSERT INTO BILET VALUES(1,'Biznes',01,1,1);
 INSERT INTO BILET VALUES(2,'Biznes',02,1,1);
 INSERT INTO BILET VALUES(3,'Biznes',03,1,1);
-INSERT INTO BILET VALUES(4,'Ekonom',01,2,2);
-INSERT INTO BILET VALUES(5,'Ekonom',02,2,2);
-INSERT INTO BILET VALUES(6,'Ekonom',03,2,2);
-INSERT INTO BILET VALUES(7,'Pierw',01,5,5);
-INSERT INTO BILET VALUES(8,'Pierw',02,5,5);
-INSERT INTO BILET VALUES(9,'Pierw',03,5,5);
+INSERT INTO BILET VALUES(4,'Ekonomiczna',01,2,2);
+INSERT INTO BILET VALUES(5,'Ekonomiczna',02,2,2);
+INSERT INTO BILET VALUES(6,'Ekonomiczna',03,2,2);
+INSERT INTO BILET VALUES(7,'Pierwsza',01,5,5);
+INSERT INTO BILET VALUES(8,'Pierwsza',02,5,5);
+INSERT INTO BILET VALUES(9,'Pierwsza',03,5,5);
 INSERT INTO BILET VALUES(10,'Biznes',01,14,14);
 INSERT INTO BILET VALUES(11,'Biznes',02,14,14);
 INSERT INTO BILET VALUES(12,'Biznes',03,14,14);
-INSERT INTO BILET VALUES(13,'Ekonom',01,15,15);
-INSERT INTO BILET VALUES(14,'Ekonom',02,15,15);
-INSERT INTO BILET VALUES(15,'Ekonom',03,15,15);
+INSERT INTO BILET VALUES(13,'Ekonomiczna',01,15,15);
+INSERT INTO BILET VALUES(14,'Ekonomiczna',02,15,15);
+INSERT INTO BILET VALUES(15,'Ekonomiczna',03,15,15);
 
 INSERT INTO KLIENT VALUES(1,'Jan','Nowak');
 INSERT INTO KLIENT VALUES(2,'Andrzej','Nos');
@@ -426,5 +428,20 @@ INSERT INTO BILET_FIRMA VALUES(12,4);
 INSERT INTO BILET_FIRMA VALUES(13,3);
 INSERT INTO BILET_FIRMA VALUES(14,2);
 INSERT INTO BILET_FIRMA VALUES(15,1);
+
+drop table credentials;
+CREATE TABLE  Credentials  (
+  user_id number,
+  user_name  varchar2(25) not Null unique,
+  user_password  varchar2(25),
+  user_role  varchar2(25),
+  user_role_id  number(25),
+  constraint pk_credentials  PRIMARY KEY ( user_id )
+);
+
+INSERT INTO credentials VALUES (1,'admin','admin','admin',1);
+INSERT INTO credentials VALUES (2,'klient','klient','klient',1);
+INSERT INTO credentials VALUES (3,'firma','firma','firma',1);
+INSERT INTO credentials VALUES (4,'pilot','pilot','pilot',1);
 
 commit;

@@ -3,15 +3,14 @@
 
         var onSamolotyComplete = function (response) {
             $scope.samoloty = response.data;
-            $scope.samoloty.forEach(samolot => {
-                samolot.editMode = false;
-            });
         };
 
+        var onFirmyLotniczeComplete = function (response) {
+            $scope.firmyLotnicze = response.data;
+        };
 
         var onSamolotComplete = function (response) {
             $scope.samolot = response.data;
-            $scope.samolot.editMode = false;
         };
 
         var onSaveSamolotComplete = function (response) {
@@ -26,28 +25,54 @@
         var onError = function (response) {
             $scope.error = response.error;
         };
-        var saveSamolot = function (typ, iloscMiejsc) {
-            var samolot = { id_samolotu: null, typ: typ, iloscMiejsc: iloscMiejsc };
+
+        var prepareNew = function () {
+            $scope.editMode = false;
+            $scope.samolot = {}
+        };
+        var prepare = function (samolot) {
+            $scope.editMode = true;
             $scope.samolot = samolot;
-            $http.post('http://localhost:8080/samoloty', samolot).then(onSaveSamolotComplete, onError);
+            if ($scope.firmyLotnicze !== undefined)
+                $scope.samolot.firmaLotnicza = $scope.firmyLotnicze.filter(function (firmaLotnicza) {
+                    return firmaLotnicza.id_firmyLotniczej == $scope.samolot.firmaLotnicza.id_firmyLotniczej
+                })[0]
+        }
+
+        var saveSamolot = function () {
+            if ($location.url() == ("/firmyLotnicze/" + $routeParams.id + "/samoloty"))
+                $http.post('http://localhost:8080/samoloty/firmyLotnicze/' + $routeParams.id, $scope.samolot).then(onSaveSamolotComplete, onError);
+            else {
+                //moglo przestac dzialac xD
+                if ($scope.firmaLotnicza !== undefined) {
+                    $http.post('http://localhost:8080/samoloty/firmyLotnicze/' + $scope.firmaLotnicza, $scope.samolot).then(onSaveSamolotComplete, onError);
+                    //$http.post('http://localhost:8080/samoloty', samolot).then(onSaveSamolotComplete, onError);
+                }
+            }
         };
         var deleteSamolot = function (samolot) {
             $http.delete('http://localhost:8080/samoloty/' + samolot.id_samolotu).then(onDeleteSamolotComplete, onError)
         };
 
-        var updateSamolot = function (samolot) {
-            delete samolot.editMode;
-            $http.put('http://localhost:8080/samoloty/' + samolot.id_samolotu, samolot);
+        var updateSamolot = function () {
+            $http.put('http://localhost:8080/samoloty/' + $scope.samolot.id_samolotu, $scope.samolot);
         };
 
         var detailSamolot = function (id) {
             $http.get("http://localhost:8080/samoloty/" + id).then(onSamolotComplete, onError);
 
         }
-        if ($location.url() == "/samoloty")
+        $http.get("http://localhost:8080/firmyLotnicze").then(onFirmyLotniczeComplete, onError);
+        if ($location.url() == "/samoloty") {
             $http.get("http://localhost:8080/samoloty").then(onSamolotyComplete, onError);
-        else
+        }
+        else if ($location.url() == ("/firmyLotnicze/" + $routeParams.id + "/samoloty"))
+            $http.get("http://localhost:8080/firmyLotnicze/" + $routeParams.id + "/samoloty").then(onSamolotyComplete, onError);
+        else {
             detailSamolot($routeParams.id);
+        }
+        $scope.prepare = prepare;
+        $scope.prepareNew = prepareNew;
         $scope.saveSamolot = saveSamolot;
         $scope.deleteSamolot = deleteSamolot;
         $scope.updateSamolot = updateSamolot;

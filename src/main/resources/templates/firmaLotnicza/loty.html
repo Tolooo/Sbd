@@ -1,0 +1,169 @@
+<div class="container">
+        <button ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Add new
+        </button>
+        <div class="row">
+            <div class="col-sm">
+                Lot id
+            </div>
+            <div class="col-sm">
+                Samolot id
+            </div>
+            <div class="col-sm">
+                Pilot id
+            </div>
+            <div class="col-sm">
+                Trasa id
+            </div>
+            <div class="col-sm">
+                Data lotu id
+            </div>
+            <div class="col-sm-2">
+                Edit
+            </div>
+            <div class="col-sm-2">
+                Delete
+            </div>
+        </div>
+        <ul class="list-unstyled">
+            <li ng-repeat="lot in loty">
+                <div class="row">
+                    <div class="col-sm">
+                        <span>
+                            <a ng-href="http://localhost:8081/#!/loty/{{lot.id_lotu}}">{{lot.id_lotu}}</a>
+                        </span>
+                    </div>
+                    <div class="col-sm">
+                        <span>{{lot.samolot.id_samolotu}}</span>
+    
+                    </div>
+                    <div class="col-sm">
+                        <span>{{lot.pilot.id_pilota}}</span>
+    
+                    </div>
+                    <div class="col-sm">
+                        <span>{{lot.trasa.id_trasy}}</span>
+    
+                    </div>
+                    <div class="col-sm">
+                        <span>{{lot.dataLotu.id_daty}}</span>
+    
+                    </div>
+                    <div class="col-sm-2">
+                        <button ng-click="prepare(lot)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            Edit
+                        </button>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" ng-click="deleteLot(lot)" value="Delete" class="btn">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="row">
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edit lot</h5>
+                            <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Add new lot</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <span>
+                                            Samolot:
+                                        </span>
+                                    </div>
+                                    <div class="mw-100 col-sm-3">
+                                        <select class="custom-select" ng-model="lot.samolot" ng-options="samolot.typ for samolot in samoloty"></select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <div class="form-group">
+                                            <div class="mw-100 col-sm-3">
+                                                <span>
+                                                    Klasa:
+                                                </span>
+                                            </div>
+                                            <div class="mw-100 col-sm-3">
+                                                <select class="custom-select" ng-model="lot.klasa">
+                                                    <option value="Ekonomiczna">Ekonomiczna</option>
+                                                    <option value="Biznes">Biznes</option>
+                                                    <option value="Pierwsza">Pierwsza</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="form-group">
+                                            <div class="mw-100 col-sm-3">
+                                                <span>
+                                                    Ilosc miejsc:
+                                                </span>
+                                            </div>
+                                            <div class="mw-100 col-sm-3">
+                                                <input class="form-control" type="number" ng-model="lot.iloscMiejsc" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <span>
+                                            Pilot:
+                                        </span>
+                                    </div>
+                                    <div class="mw-100 col-sm-3">
+                                        <select class="custom-select" ng-model="lot.pilot" ng-options="pilot.imie+' '+pilot.nazwisko for pilot in pilots"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <span>
+                                            Trasa:
+                                        </span>
+                                    </div>
+                                    <div class="mw-100 col-sm-3">
+                                        <select class="custom-select" ng-model="lot.trasa" ng-options="trasa.poczatek.miejscowosc+'('+trasa.poczatek.iata+') -> '+trasa.koniec.miejscowosc+'('+trasa.koniec.iata+')' for trasa in trasy"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <span>
+                                            Departure date:
+                                        </span>
+                                    </div>
+                                    <div class="mw-100 col-sm-3">
+                                        <input class="form-control" type="datetime-local" ng-model="lot.dataLotu.wylot" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <span>
+                                            Date of arrival:
+                                        </span>
+                                    </div>
+                                    <div class="mw-100 col-sm-3">
+                                        <input class="form-control" type="datetime-local" ng-model="lot.dataLotu.przylot" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button ng-if="editMode" ng-click="updateLot()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                            <button ng-if="!editMode" ng-click="saveLot()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

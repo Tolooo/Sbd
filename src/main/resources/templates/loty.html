@@ -1,49 +1,7 @@
 <div class="container">
-    <form>
-        <div class="form-group">
-            <div class="col-sm-3">
-                <span>
-                    Samolot id:
-                </span>
-            </div>
-            <div class="col-sm-8">
-                <input class="form-control" type="number" ng-model="samolot" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-3">
-                <span>
-                    Pilot id:
-                </span>
-            </div>
-            <div class="col-sm-8">
-                <input class="form-control" type="number" ng-model="pilot" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-3">
-                <span>
-                    Trasa id:
-                </span>
-            </div>
-            <div class="col-sm-8">
-                <input class="form-control" type="number" ng-model="trasa" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-3">
-                <span>
-                    Data lotu id:
-                </span>
-            </div>
-            <div class="col-sm-8">
-                <input class="form-control" type="number" ng-model="dataLotu" />
-            </div>
-        </div>
-        <div class="col-sm">
-            <button ng-click="saveLot(samolot,pilot,trasa,dataLotu)" type="submit" class="btn btn-submit">Submit</button>
-        </div>
-    </form>
+    <button ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Add new
+    </button>
     <div class="row">
         <div class="col-sm">
             Lot id
@@ -76,34 +34,25 @@
                     </span>
                 </div>
                 <div class="col-sm">
-                    <span ng-if="!lot.editMode">{{lot.samolot.id_samolotu}}</span>
-                    <span ng-if="lot.editMode">
-                        <input class="form-control" type="text" ng-model="lot.samolot.id_samolotu">
-                        <span>
+                    <span>{{lot.samolot.id_samolotu}}</span>
+
                 </div>
                 <div class="col-sm">
-                    <span ng-if="!lot.editMode">{{lot.pilot.id_pilota}}</span>
-                    <span ng-if="lot.editMode">
-                        <input class="form-control" type="number" ng-model="lot.pilot.id_pilota">
-                        <span>
+                    <span>{{lot.pilot.id_pilota}}</span>
+
                 </div>
                 <div class="col-sm">
-                    <span ng-if="!lot.editMode">{{lot.trasa.id_trasy}}</span>
-                    <span ng-if="lot.editMode">
-                        <input class="form-control" type="text" ng-model="lot.trasa.id_trasy">
-                        <span>
+                    <span>{{lot.trasa.id_trasy}}</span>
+
                 </div>
                 <div class="col-sm">
-                    <span ng-if="!lot.editMode">{{lot.dataLotu.id_daty}}</span>
-                    <span ng-if="lot.editMode">
-                        <input class="form-control" type="text" ng-model="lot.dataLotu.id_daty">
-                        <span>
+                    <span>{{lot.dataLotu.id_daty}}</span>
+
                 </div>
                 <div class="col-sm-2">
-                    <button ng-if="!lot.editMode" type="button" ng-click="lot.editMode=true;" value="Edit" class="btn">
-                        <i class="fas fa-edit"></i>
+                    <button ng-click="prepare(lot)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Edit
                     </button>
-                    <button ng-if="lot.editMode" class="btn" ng-click="updateLot(lot);lot.editMode=false;">Save</button>
                 </div>
                 <div class="col-sm-2">
                     <button type="button" ng-click="deleteLot(lot)" value="Delete" class="btn">
@@ -113,4 +62,108 @@
             </div>
         </li>
     </ul>
+    <div class="row">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edit lot</h5>
+                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Add new lot</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Samolot:
+                                    </span>
+                                </div>
+                                <div class="mw-100 col-sm-3">
+                                    <select class="custom-select" ng-model="lot.samolot" ng-options="samolot.typ for samolot in samoloty"></select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <div class="mw-100 col-sm-3">
+                                            <span>
+                                                Klasa:
+                                            </span>
+                                        </div>
+                                        <div class="mw-100 col-sm-3">
+                                            <select class="custom-select" ng-model="lot.klasa">
+                                                <option value="Ekonomiczna">Ekonomiczna</option>
+                                                <option value="Biznes">Biznes</option>
+                                                <option value="Pierwsza">Pierwsza</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <div class="mw-100 col-sm-3">
+                                            <span>
+                                                Ilosc miejsc:
+                                            </span>
+                                        </div>
+                                        <div class="mw-100 col-sm-3">
+                                            <input class="form-control" type="number" ng-model="lot.iloscMiejsc" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Pilot:
+                                    </span>
+                                </div>
+                                <div class="mw-100 col-sm-3">
+                                    <select class="custom-select" ng-model="lot.pilot" ng-options="pilot.imie+' '+pilot.nazwisko for pilot in pilots"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Trasa:
+                                    </span>
+                                </div>
+                                <div class="mw-100 col-sm-3">
+                                    <select class="custom-select" ng-model="lot.trasa" ng-options="trasa.poczatek.miejscowosc+'('+trasa.poczatek.iata+') -> '+trasa.koniec.miejscowosc+'('+trasa.koniec.iata+')' for trasa in trasy"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Departure date:
+                                    </span>
+                                </div>
+                                <div class="mw-100 col-sm-3">
+                                    <input class="form-control" type="datetime-local" ng-model="lot.dataLotu.wylot" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Date of arrival:
+                                    </span>
+                                </div>
+                                <div class="mw-100 col-sm-3">
+                                    <input class="form-control" type="datetime-local" ng-model="lot.dataLotu.przylot" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button ng-if="editMode" ng-click="updateLot()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                        <button ng-if="!editMode" ng-click="saveLot()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

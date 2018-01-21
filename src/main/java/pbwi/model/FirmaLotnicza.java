@@ -107,4 +107,19 @@ public class FirmaLotnicza implements Serializable {
     public void setLotniska(Set<Lotnisko> lotniska) {
         this.lotniska = lotniska;
     }
+
+    public void addSamolot(Samolot samolot) {
+        this.samoloty.add(samolot);
+    }
+
+    public void addLotnisko(Lotnisko lotnisko) {
+        this.lotniska.add(lotnisko);
+    }
+    public void removeSamolot(Samolot samolot) {
+        this.samoloty.remove(samolot);
+    }
+
+    public void removeLotnisko(Lotnisko lotnisko) {
+        this.lotniska.remove(lotnisko);
+    }
 }

@@ -1,29 +1,7 @@
 <div class="container">
-    <form>
-        <div class="form-group">
-            <div class="col-sm-3">
-                <span>
-                    Iata:
-                </span>
-            </div>
-            <div class="col-sm-8">
-                <input class="form-control" type="text" ng-model="iata" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-3">
-                <span>
-                    Miejscowosc:
-                </span>
-            </div>
-            <div class="col-sm-8">
-                <input class="form-control" type="text" ng-model="miejscowosc" />
-            </div>
-        </div>
-        <div class="col-sm">
-            <button ng-click="saveLotnisko(iata,miejscowosc)" type="submit" class="btn btn-submit">Submit</button>
-        </div>
-    </form>
+    <button ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Add new
+    </button>
     <div class="row">
         <div class="col-sm-2">
             Lotnisko id
@@ -50,22 +28,17 @@
                     </span>
                 </div>
                 <div class="col-sm-2">
-                    <span ng-if="!lotnisko.editMode">{{lotnisko.iata}}</span>
-                    <span ng-if="lotnisko.editMode">
-                        <input class="form-control" type="text" ng-model="lotnisko.iata">
-                        <span>
+                    <span>{{lotnisko.iata}}</span>
+
                 </div>
                 <div class="col-sm-2">
-                    <span ng-if="!lotnisko.editMode">{{lotnisko.miejscowosc}}</span>
-                    <span ng-if="lotnisko.editMode">
-                        <input class="form-control" type="text" ng-model="lotnisko.miejscowosc">
-                        <span>
+                    <span>{{lotnisko.miejscowosc}}</span>
+
                 </div>
                 <div class="col-sm">
-                    <button ng-if="!lotnisko.editMode" type="button" ng-click="lotnisko.editMode=true;" value="Edit" class="btn">
-                        <i class="fas fa-edit"></i>
+                    <button ng-click="prepare(lotnisko)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Edit
                     </button>
-                    <button ng-if="lotnisko.editMode" class="btn" ng-click="updateLotnisko(lotnisko);lotnisko.editMode=false;">Save</button>
                 </div>
                 <div class="col-sm">
                     <button type="button" ng-click="deleteLotnisko(lotnisko)" value="Delete" class="btn">
@@ -75,4 +48,49 @@
             </div>
         </li>
     </ul>
+    <div class="row">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edit lotnisko</h5>
+                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Add new lotnisko</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Miejscowosc:
+                                    </span>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" ng-model="lotnisko.miejscowosc" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Iata:
+                                    </span>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" ng-model="lotnisko.iata" />
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button ng-if="editMode" ng-click="updateLotnisko()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                        <button ng-if="!editMode" ng-click="saveLotnisko()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

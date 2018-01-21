@@ -18,4 +18,51 @@
             </tr>
         </table>
     </div>
+    <div class="row">
+        <button ng-click="prepare(firma)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Edit
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit firma</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Nazwa:
+                                    </span>
+                                </div>
+                                <div class="mw-100 col-sm-4">
+                                    <input class="form-control" type="text" ng-model="firma.nazwa" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Nip:
+                                    </span>
+                                </div>
+                                <div class="mw-100 col-sm-4">
+                                    <input class="form-control" type="number" ng-model="firma.nip" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button ng-click="updateFirma()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

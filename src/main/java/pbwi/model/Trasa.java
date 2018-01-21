@@ -8,7 +8,8 @@ import java.io.Serializable;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Trasa.findAll", query = "SELECT t FROM Trasa t")
-        , @NamedQuery(name = "Trasa.findById", query = "SELECT t FROM Trasa t WHERE t.id_trasy = ?1")})
+        , @NamedQuery(name = "Trasa.findById", query = "SELECT t FROM Trasa t WHERE t.id_trasy = ?1")
+})
 public class Trasa implements Serializable {
 
     @Id
@@ -16,11 +17,11 @@ public class Trasa implements Serializable {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id_trasy;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "POCZATEK")
     private Lotnisko poczatek;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "KONIEC")
     private Lotnisko koniec;
 

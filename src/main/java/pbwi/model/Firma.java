@@ -26,9 +26,9 @@ public class Firma implements Serializable {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Bilet_Firma", joinColumns = {
-            @JoinColumn(name = "id_firmy", nullable = false, updatable = false)},
+            @JoinColumn(name = "id_firmy", nullable = false, updatable = true)},
             inverseJoinColumns = {@JoinColumn(name = "id_biletu",
-                    nullable = false, updatable = false)})
+                    nullable = false, updatable = true)})
     private Set<Bilet> bilety = new HashSet<Bilet>(0);
 
     public Firma() {
@@ -64,5 +64,9 @@ public class Firma implements Serializable {
 
     public void setBilety(Set<Bilet> bilety) {
         this.bilety = bilety;
+    }
+
+    public void addBilet(Bilet bilet) {
+        this.bilety.add(bilet);
     }
 }

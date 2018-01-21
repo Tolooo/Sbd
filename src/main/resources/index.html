@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- bootstrap and icons -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+    <link rel="stylesheet" ng-href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
         crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -16,11 +16,13 @@
         crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.1/js/all.js"></script>
     <!-- angular-->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-route.js"></script>
-
+    <script src="//unpkg.com/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
+    <script src="//code.angularjs.org/1.6.0/angular-cookies.min.js"></script>
     <!-- app code-->
     <script type="text/javascript" src="./js/app.js"></script>
+    <script type="text/javascript" src="./js/controller/mainController.js"></script>
     <script type="text/javascript" src="./js/controller/homeController.js"></script>
     <script type="text/javascript" src="./js/controller/biletController.js"></script>
     <script type="text/javascript" src="./js/controller/dataLotuController.js"></script>
@@ -32,6 +34,8 @@
     <script type="text/javascript" src="./js/controller/pilotController.js"></script>
     <script type="text/javascript" src="./js/controller/samolotController.js"></script>
     <script type="text/javascript" src="./js/controller/trasaController.js"></script>
+    <script type="text/javascript" src="./js/service/AuthService.js"></script>
+    <script type="text/javascript" src="./js/controller/LoginController.js"></script>
     <title>Strona główna</title>
     <style>
         .view {
@@ -40,54 +44,13 @@
     </style>
 </head>
 
-<body>
-
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <a class="navbar-brand" href="#!/">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/bilety">Bilety</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/daty">Daty</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/firmy">Firmy</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/firmyLotnicze">Firmy Lotnicze</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/klienci">Klienci</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/loty">Loty</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/lotniska">Lotniska</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/piloci">Piloci</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/samoloty">Samoloty</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/trasy">Trasy</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div ng-view class="view"></div>
+<body  ng-controller="mainController">
+    <div >
+        <div ng-include="Navbar.navUrl()"></div>
+    </div>
+    <div>
+        <div ng-view class="view"></div>
+    </div>
 </body>
 
 </html>

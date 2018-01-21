@@ -1,0 +1,101 @@
+<div class="container">
+    <div class="row"> 
+        <div class="col-sm">Z</div> 
+        <div class="col-sm">Do</div>  
+        <div class="col-sm"></div>  
+    </div>
+    <form>
+        <div class="row">
+            <div class="col-sm">
+                <select class="custom-select" ng-model="lotnisko1">
+                    <option ng-repeat="lotnisko in lotniska" value="{{lotnisko.id_lotniska}}">{{lotnisko.miejscowosc}}</option>
+                </select>
+            </div>
+            <div class="col-sm">
+                <select class="custom-select" ng-model="lotnisko2">
+                    <option ng-repeat="lotnisko in lotniska" value="{{lotnisko.id_lotniska}}">{{lotnisko.miejscowosc}}</option>
+                </select>
+            </div>
+            <div class="col-sm">
+                <div class="col-sm">
+                    <button class="btn" ng-click="search()">Szukaj</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- <div class="row">
+        <div class="col-sm">
+            Klasa:
+        </div>
+        <div class="col-sm">
+            <select class="custom-select" ng-model="klasa">
+                <option selected value="Ekonomiczna">Ekonomiczna</option>
+                <option value="Biznes">Biznes</option>
+                <option value="Pierwsza">Pierwsza</option>
+            </select>
+        </div>
+        <div class="col-sm">
+            <button class="btn" ng-click="search()" >Szukaj</button>
+        </div>
+    </div> -->
+    <div class="row" ng-if="loty!==null">
+        <div class="col-sm text-center">
+            Lot id
+        </div>
+        <div class="col-sm-2 text-center">
+            Klasa
+        </div>
+        <div class="col-sm text-center">
+            Ilosc miejsc
+        </div>
+        <div class="col-sm text-center">
+            Wylot z
+        </div>
+        <div class="col-sm text-center">
+            Przylot do
+        </div>
+        <div class="col-sm-2 text-center">
+            Wylot
+        </div>
+        <div class="col-sm-2 text-center">
+            Przylot
+        </div>
+        <div class="col-sm-2 text-center">
+            Zakup
+        </div>
+    </div>
+
+    <ul class="list-unstyled" ng-if="loty!==null">
+        <li ng-repeat="lot in loty"> 
+            <div class="row">
+                <div class="col-sm text-center">
+                    <span>
+                        <a ng-href="http://localhost:8081/#!/loty/{{lot.id_lotu}}">{{lot.id_lotu}}</a>
+                    </span>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <span>{{lot.klasa}}</span>
+                </div>
+                <div class="col-sm-1 text-center">
+                    <span>{{lot.iloscMiejsc}}</span>
+                </div>
+                <div class="col-sm text-center">
+                    <span>{{lot.trasa.poczatek.miejscowosc}}</span>
+                </div>
+                <div class="col-sm text-center">
+                    <span>{{lot.trasa.koniec.miejscowosc}}</span>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <span>{{lot.dataLotu.wylot|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <span>{{lot.dataLotu.przylot|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <button class="btn" ng-click="kupBilet(lot)">Buy</button>
+                </div>
+
+            </div>
+        </li>
+    </ul>
+</div>

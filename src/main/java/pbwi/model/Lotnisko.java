@@ -61,4 +61,12 @@ public class Lotnisko implements Serializable {
     public void setFirmyLotnicze(Set<FirmaLotnicza> firmyLotnicze) {
         this.firmyLotnicze = firmyLotnicze;
     }
+
+    public void addFirmaLotnicza(FirmaLotnicza firmaLotnicza) {
+        this.firmyLotnicze.add(firmaLotnicza);
+    }
+
+    public void removeFirmaLotnicza(FirmaLotnicza firmaLotnicza) {
+        this.firmyLotnicze.remove(firmaLotnicza);
+    }
 }

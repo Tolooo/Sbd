@@ -45,13 +45,120 @@
             </tr>
             <tr>
                 <td>Wylot:</td>
-                <td>{{lot.dataLotu.wylot|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{lot.dataLotu.wylot|date:'yyyy-MM-dd HH:mm'}}</td>
                 <td>Przylot:</td>
-                <td>{{lot.dataLotu.przylot|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{lot.dataLotu.przylot|date:'yyyy-MM-dd HH:mm'}}</td>
             </tr>
             <tr>
                 <td colspan="4"></td>
             </tr>
         </table>
+    </div>
+    <div class="row">
+        <button ng-click="prepare(lot)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Edit
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit lot</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Samolot:
+                                    </span>
+                                </div>
+                                <div class="mw-100 col-sm-3">
+                                    <select class="custom-select" ng-model="lot.samolot" ng-options="samolot.typ for samolot in samoloty"></select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <div class="mw-100 col-sm-3">
+                                            <span>
+                                                Klasa:
+                                            </span>
+                                        </div>
+                                        <div class="mw-100 col-sm-3">
+                                            <select class="custom-select" ng-model="lot.klasa">
+                                                <option value="Ekonomiczna">Ekonomiczna</option>
+                                                <option value="Biznes">Biznes</option>
+                                                <option value="Pierwsza">Pierwsza</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <div class="mw-100 col-sm-3">
+                                            <span>
+                                                Ilosc miejsc:
+                                            </span>
+                                        </div>
+                                        <div class="mw-100 col-sm-3">
+                                            <input class="form-control" type="number" ng-model="lot.iloscMiejsc" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Pilot:
+                                    </span>
+                                </div>
+                                <div class="mw-100 col-sm-3">
+                                    <select class="custom-select" ng-model="lot.pilot" ng-options="pilot.imie+' '+pilot.nazwisko for pilot in pilots"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Trasa:
+                                    </span>
+                                </div>
+                                <div class="mw-100 col-sm-3">
+                                    <select class="custom-select" ng-model="lot.trasa" ng-options="trasa.poczatek.miejscowosc+'('+trasa.poczatek.iata+') -> '+trasa.koniec.miejscowosc+'('+trasa.koniec.iata+')' for trasa in trasy"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Departure date:
+                                    </span>
+                                </div>
+                                <div class="mw-100 col-sm-3">
+                                    <input class="form-control" type="datetime-local" ng-model="lot.dataLotu.wylot" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <span>
+                                        Date of arrival:
+                                    </span>
+                                </div>
+                                <div class="mw-100 col-sm-3">
+                                    <input class="form-control" type="datetime-local" ng-model="lot.dataLotu.przylot" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button ng-click="updateLot()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
