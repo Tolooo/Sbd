@@ -18,6 +18,20 @@
         pilot: 'pilot',
         lotnisko: 'lotnisko'
     });
+    app.directive('pwCheck', [function () {
+        return {
+            require: 'ngModel',
+            link: function (scope, elem, attrs, ctrl) {
+                var firstPassword = '#' + attrs.pwCheck;
+                elem.add(firstPassword).on('keyup', function () {
+                    scope.$apply(function () {
+                        var v = elem.val() === $(firstPassword).val();
+                        ctrl.$setValidity('pwmatch', v);
+                    });
+                });
+            }
+        }
+    }]);
     app.service('Session', function () {
         this.create = function (sessionId, userId, userRole) {
             this.id = sessionId;
@@ -63,7 +77,7 @@
         // console.log($rootScope.globals.currentUser)
         // console.log(Session)
         Navbar.refreshNav();
-        $rootScope.$on('$routeChangeStart', function (event, next) {  
+        $rootScope.$on('$routeChangeStart', function (event, next) {
             if (AuthService.isAuthenticated() && ($location.path() == "/login" || $location.path() === "/register")) {
                 $location.path("/")
                 return
@@ -121,7 +135,14 @@
                 }
             })
             .when('/register', {
-                controller: 'RegisterController',
+                controller: 'LoginController',
+                templateUrl: '/templates/register.html',
+                data: {
+                    authorizedRoles: [USER_ROLES.all]
+                }
+            })
+            .when('/register/next', {
+                controller: 'LoginController',
                 templateUrl: '/templates/register.html',
                 data: {
                     authorizedRoles: [USER_ROLES.all]
@@ -194,21 +215,21 @@
                 controller: 'klientController',
                 templateUrl: "/templates/details/detailKlient.html",
                 data: {
-                    authorizedRoles: [USER_ROLES.admin,USER_ROLES.klient]
+                    authorizedRoles: [USER_ROLES.admin, USER_ROLES.klient]
                 }
             })
             .when("/klienci/:id/bilety", {
                 controller: 'klientController',
                 templateUrl: "/templates/klient/przegladBiletow.html",
                 data: {
-                    authorizedRoles: [USER_ROLES.admin,USER_ROLES.klient]
+                    authorizedRoles: [USER_ROLES.admin, USER_ROLES.klient]
                 }
             })
             .when("/firmy/:id/bilety", {
                 controller: 'firmaController',
                 templateUrl: "/templates/firma/przegladBiletow.html",
                 data: {
-                    authorizedRoles: [USER_ROLES.admin,USER_ROLES.firma]
+                    authorizedRoles: [USER_ROLES.admin, USER_ROLES.firma]
                 }
             })
             .when('/loty', {

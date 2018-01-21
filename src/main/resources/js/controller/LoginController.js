@@ -1,5 +1,5 @@
 (function () {
-  var LoginController = function ($scope, $rootScope, AUTH_EVENTS, AuthService, $location, $cookies, Navbar) {
+  var LoginController = function ($scope, $rootScope, $http, AUTH_EVENTS, AuthService, $location, $cookies, Navbar) {
 
     $rootScope.setCurrentUser = function (user) {
 
@@ -21,16 +21,53 @@
       $cookies.putObject('globals', $rootScope.globals, { expires: cookieExp });
     }
 
-
-
-
-
     $scope.error = null;
     $scope.credentials = {
       user_name: '',
       user_password: '',
       user_role: ""
     };
+
+    $scope.prepare = function (user_name, pass1, pass2, user_role) {
+      if (!$scope.registerForm.$invalid) {
+        console.log("valid")
+        $("#" + user_role).modal({ show: true });
+        return true;
+      }
+      else {
+        console.log("invalid")
+        return false;
+      }
+    }
+
+    $scope.register = function (user_name, pass1, pass2, user_role, user_role_id) {
+      if ($scope.prepare) {
+        let credentials = {
+          user_name: user_name,
+          user_password: pass1,
+          user_role: user_role,
+          user_role_id: user_role_id
+        }
+        AuthService.register(credentials).then(function (user) {
+          if (user !== null) {
+            // console.log(user)
+            $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+            $rootScope.setCurrentUser(user);
+            $rootScope.registerSuccess = true;
+            $location.path("/");
+            Navbar.refreshNav();
+
+          }
+          else
+            $scope.error = "Podano niepoprawne dane"
+        }, function (error) {
+          $scope.error = error;
+          $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+        });
+      }
+    }
+
+
     $scope.login = function (credentials) {
       AuthService.login(credentials).then(function (user) {
         if (user !== null) {
@@ -51,6 +88,75 @@
     };
     $rootScope.logoutSuccess = false;
 
+    $scope.saveFirma = function () {
+      if (!$scope.registerForm.$invalid && !$scope.formFirma.$invalid)
+        $http.post('http://localhost:8080/firmy', $scope.firma).then(onSaveFirmaComplete, onError);
+      else {
+        console.log("invalid")
+        return false;
+      }
+    };
+
+    var onSaveFirmaComplete = function (response) {
+      $scope.register($scope.user_name, $scope.pass1, $scope.pass2, $scope.user_role, response.data.id_firmy)
+    }
+
+    $scope.saveFirmaLotnicza = function () {
+      if (!$scope.registerForm.$invalid && !$scope.formFirmaLotnicza.$invalid)
+        $http.post('http://localhost:8080/firmyLotnicze', $scope.firmaLotnicza).then(onSaveFirmaLotniczaComplete, onError);
+      else {
+        console.log("invalid")
+        return false;
+      }
+    };
+
+    var onSaveFirmaLotniczaComplete = function (response) {
+      $scope.register($scope.user_name, $scope.pass1, $scope.pass2, $scope.user_role, response.data.id_firmyLotniczej)
+    }
+
+    $scope.saveKlient = function () {
+      if (!$scope.registerForm.$invalid && !$scope.formKlient.$invalid)
+        $http.post('http://localhost:8080/klienci', $scope.klient).then(onSaveKlientComplete, onError);
+      else {
+        console.log("invalid")
+        return false;
+      }
+    };
+
+    var onSaveKlientComplete = function (response) {
+      $scope.register($scope.user_name, $scope.pass1, $scope.pass2, $scope.user_role, response.data.id_klienta)
+    }
+
+    $scope.saveLotnisko = function () {
+      if (!$scope.registerForm.$invalid && !$scope.formLotnisko.$invalid)
+        $http.post('http://localhost:8080/lotniska', $scope.lotnisko).then(onSaveLotniskoComplete, onError);
+      else {
+        console.log("invalid")
+        return false;
+      }
+    };
+
+    var onSaveLotniskoComplete = function (response) {
+      $scope.register($scope.user_name, $scope.pass1, $scope.pass2, $scope.user_role, response.data.id_lotniska)
+    }
+
+    $scope.savePilot = function () {
+      if (!$scope.registerForm.$invalid && !$scope.formPilot.$invalid)
+        $http.post('http://localhost:8080/piloci', $scope.pilot).then(onSavePilotComplete, onError);
+      else {
+        console.log("invalid")
+        return false;
+      }
+    };
+
+    var onSavePilotComplete = function (response) {
+      $scope.register($scope.user_name, $scope.pass1, $scope.pass2, $scope.user_role, response.data.id_pilota)
+    }
+
+    var onError = function (response) {
+      $scope.error = response.error;
+    };
+
     if ($location.url() === "/logout") {
       if (AuthService.isAuthenticated()) {
         AuthService.logout();
@@ -64,5 +170,5 @@
     }
   };
 
-  angular.module('myApp').controller("LoginController", ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthService', '$location', "$cookies", "Navbar", LoginController]);
+  angular.module('myApp').controller("LoginController", ['$scope', '$rootScope', '$http', 'AUTH_EVENTS', 'AuthService', '$location', "$cookies", "Navbar", LoginController]);
 }()) 

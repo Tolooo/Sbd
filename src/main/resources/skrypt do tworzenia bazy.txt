@@ -443,5 +443,7 @@ INSERT INTO credentials VALUES (1,'admin','admin','admin',1);
 INSERT INTO credentials VALUES (2,'klient','klient','klient',1);
 INSERT INTO credentials VALUES (3,'firma','firma','firma',1);
 INSERT INTO credentials VALUES (4,'pilot','pilot','pilot',1);
+INSERT INTO credentials VALUES (5,'firmaLotnicza','firmaLotnicza','firmaLotnicza',1);
+INSERT INTO credentials VALUES (6,'lotnisko','lotnisko','lotnisko',1);
 
 commit;

@@ -5,7 +5,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pbwi.HibernateUtil;
-import pbwi.model.Credentials;
+import pbwi.model.*;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -15,7 +15,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/users")
 @RestController
-public class CredentialsController extends  AbstractController<Credentials> {
+public class CredentialsController extends AbstractController<Credentials> {
 
     private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
@@ -29,24 +29,24 @@ public class CredentialsController extends  AbstractController<Credentials> {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value ="/register",method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public Credentials create(@RequestBody Credentials credentials) {
         return super.create(credentials);
     }
 
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Credentials login(@RequestBody Credentials credentials) {
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
-        Query query = session.createNamedQuery(    "Credentials.findByLoginAndPassword", Credentials.class);
-        query.setParameter(1,credentials.getUser_name());
-        query.setParameter(2,credentials.getUser_password());
-        Credentials entity=null;
-        try{
-          entity=(Credentials)query.getSingleResult();}
-        catch (NoResultException nre){
-            }
+        Query query = session.createNamedQuery("Credentials.findByLoginAndPassword", Credentials.class);
+        query.setParameter(1, credentials.getUser_name());
+        query.setParameter(2, credentials.getUser_password());
+        Credentials entity = null;
+        try {
+            entity = (Credentials) query.getSingleResult();
+        } catch (NoResultException nre) {
+        }
         session.close();
         return entity;
     }

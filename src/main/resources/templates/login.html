@@ -4,16 +4,20 @@
             <strong>Błąd! </strong>{{error}}.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
-            </button> 
+            </button>
         </div>
     </div>
     <div class="row">
         <form name="loginForm" ng-submit="login(credentials)" novalidate>
-            <label for="username">Username:</label>
-            <input type="text" id="username" ng-model="credentials.user_name">
-            <label for="password">Password:</label>
-            <input type="password" id="password" ng-model="credentials.user_password">
-            <button type="submit">Login</button>
+            <div class="center-block form-group">
+                <label for="username">Username:</label>
+                <input class="form-control" type="text" id="username" ng-model="credentials.user_name">
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input class="form-control" type="password" id="password" ng-model="credentials.user_password">
+                </div>
+                <button class="btn btn-primary" type="submit">Login</button> 
         </form>
+        </div>
     </div>
-</div>

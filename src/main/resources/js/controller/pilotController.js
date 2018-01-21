@@ -12,7 +12,7 @@
         var prepareNew = function () {
             $scope.editMode = false;
             $scope.pilot = {}
-        }; 
+        };
         var prepare = function (pilot) {
             $scope.editMode = true;
             $scope.pilot = pilot;
