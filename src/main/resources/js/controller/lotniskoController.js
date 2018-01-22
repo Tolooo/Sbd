@@ -3,6 +3,7 @@
 
         var onLotniskaComplete = function (response) {
             $scope.lotniska = response.data;
+            $(".se-pre-con").hide("slow");
         };
         var onAllLotniskaComplete = function (response) {
             $scope.all_lotniska = response.data;

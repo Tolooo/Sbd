@@ -2,6 +2,7 @@
     var trasaController = function ($scope, $routeParams, $http, $location, Session) {
         var onTrasyComplete = function (response) {
             $scope.trasy = response.data;
+            $(".se-pre-con").hide("slow");
         };
 
         var onLotniskaComplete = function (response) {

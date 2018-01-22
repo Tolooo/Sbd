@@ -41,11 +41,32 @@
         .view {
             padding: 70px
         }
+
+        .no-js #loader {
+            display: none;
+        }
+
+        .js #loader {
+            display: block;
+            position: absolute;
+            left: 100px;
+            top: 0;
+        }
+
+        .se-pre-con {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url(images/Spinner-1s-200px.gif) center no-repeat #fff;
+        }
     </style>
 </head>
 
-<body  ng-controller="mainController">
-    <div >
+<body ng-controller="mainController">
+    <div>
         <div ng-include="Navbar.navUrl()"></div>
     </div>
     <div>

@@ -3,6 +3,7 @@
 
         var onFirmyComplete = function (response) {
             $scope.firmy = response.data;
+            $(".se-pre-con").hide("slow");
         };
 
         var onFirmaComplete = function (response) {
@@ -84,6 +85,7 @@
 
         var onBiletyComplete = function (response) {
             $scope.bilety = response.data;
+            $(".se-pre-con").hide("slow");
         }
 
         if ($location.url() == "/firmy")

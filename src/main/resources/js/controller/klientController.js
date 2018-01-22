@@ -3,6 +3,7 @@
 
         var onKlienciComplete = function (response) {
             $scope.klienci = response.data;
+            $(".se-pre-con").hide("slow");
         };
 
         var onKlientComplete = function (response) {
@@ -82,6 +83,7 @@
 
         var onBiletyComplete = function (response) {
             $scope.bilety = response.data;
+            $(".se-pre-con").hide("slow");
         }
 
         if ($location.url() == "/klienci")

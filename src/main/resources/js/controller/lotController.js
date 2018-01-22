@@ -4,10 +4,12 @@
         $scope.loty = null
         var onLotniskaComplete = function (response) {
             $scope.lotniska = response.data;
+            $(".se-pre-con").hide("slow");
         };
 
         var onLotyComplete = function (response) {
             $scope.loty = response.data;
+            $(".se-pre-con").hide("slow");
         };
 
         var onDatesComplete = function (response) {
@@ -78,6 +80,7 @@
 
         var onPilotaLotyComplete = function (response) {
             $scope.loty = response.data;
+            $(".se-pre-con").hide("slow");
         };
 
         var onLotComplete = function (response) {
@@ -157,9 +160,11 @@
                 $scope.loty = null
                 $scope.info = "Nie znaleziono takich połączeń!"
             }
+            $(".se-pre-con").hide("slow");
         };
         var search = function () {
             // $("#alert").hide();
+            $(".se-pre-con").show("slow");
             $scope.info = ""
             $http.get("http://localhost:8080/loty").then(filterResult, onError)
         };

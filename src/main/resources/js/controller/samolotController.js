@@ -3,6 +3,7 @@
 
         var onSamolotyComplete = function (response) {
             $scope.samoloty = response.data;
+            $(".se-pre-con").hide("slow");
         };
 
         var onFirmyLotniczeComplete = function (response) {

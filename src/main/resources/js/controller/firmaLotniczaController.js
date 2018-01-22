@@ -3,6 +3,7 @@
 
         var onFirmyLotniczeComplete = function (response) {
             $scope.firmyLotnicze = response.data;
+            $(".se-pre-con").hide("slow");
         };
 
         var onFirmaLotniczaComplete = function (response) {

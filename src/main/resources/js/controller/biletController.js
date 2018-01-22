@@ -2,10 +2,8 @@
     var biletController = function ($scope, $routeParams, $http, $location) {
 
         var onBiletyComplete = function (response) {
-            $scope.bilety = response.data;
-            $scope.bilety.forEach(bilet => {
-                bilet.editMode = false;
-            });
+            $scope.bilety = response.data; 
+            $(".se-pre-con").hide("slow");
         };
 
         var onDatesComplete = function (response) {
@@ -50,6 +48,7 @@
             }
         };
         var onLotniskaBiletyComplete = function (response) {
+            $(".se-pre-con").hide("slow");
             $scope.bilety = response.data.filter(function (bilet) {
                 return bilet.lot.trasa.poczatek.id_lotniska == $routeParams.id || bilet.lot.trasa.koniec.id_lotniska == $routeParams.id
             });

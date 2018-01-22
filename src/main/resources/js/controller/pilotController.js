@@ -3,6 +3,7 @@
 
         var onPilotsComplete = function (response) {
             $scope.pilots = response.data;
+            $(".se-pre-con").hide("slow");
         };
 
         var onPilotComplete = function (response) {

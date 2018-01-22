@@ -6,7 +6,8 @@
             $scope.dates.forEach(date => {
                 date.wylot = new Date(date.wylot);
                 date.przylot = new Date(date.przylot);
-            });
+            }); 
+            $(".se-pre-con").hide("slow");
         };
 
         var prepareNew = function () {
