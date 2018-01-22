@@ -19,7 +19,7 @@
     <!-- Button trigger modal -->
     <div class="row">
         <button ng-click="prepare(date)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Edit
+            Edytuj
         </button>
 
         <!-- Modal -->
@@ -27,38 +27,52 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit data lotu</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Edytuj datę lotu</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <div class="col-sm-3">
-                                    <span>
-                                        Departure date:
-                                    </span>
+                            <form name="formDataLotu" novalidate>
+                                <div class="form-group" ng-class="{ 'text-danger' : formDataLotu.wylot.$invalid && (formDataLotu.$submitted || formDataLotu.wylot.$touched)}">
+                                    <div class="mw-100 col-sm-3">
+                                        <span>
+                                            Departure date:
+                                        </span>
+                                    </div>
+                                    <div class="mw-100 col-sm-3">
+                                        <input class="form-control" type="datetime-local" name="wylot" id="wylot" ng-model="date.wylot" required ng-class="{ 'is-invalid' : formDataLotu.wylot.$invalid && (formDataLotu.$submitted || formDataLotu.wylot.$touched) }"
+                                        />
+                                    </div>
+                                    <div class="mw-100 col-sm-4" ng-show="formDataLotu.$submitted || formDataLotu.wylot.$touched">
+                                        <div ng-show="formDataLotu.wylot.$error.required">
+                                            Pole wymagane!</div>
+                                    </div>
                                 </div>
-                                <div class="mw-100 col-sm-3">
-                                    <input class="form-control" type="datetime-local" ng-model="date.wylot" />
+                                <div class="form-group" ng-class="{ 'text-danger' : formDataLotu.przylot.$invalid && (formDataLotu.$submitted || formDataLotu.przylot.$touched)}">
+                                    <div class="mw-100 col-sm-3">
+                                        <span>
+                                            Date of arrival:
+                                        </span>
+                                    </div>
+                                    <div class="mw-100 col-sm-3">
+                                        <input class="form-control" type="datetime-local" name="przylot" dataCheck='wylot' ng-model="date.przylot" required ng-class="{ 'is-invalid' : formDataLotu.przylot.$invalid && (formDataLotu.$submitted || formDataLotu.przylot.$touched) }"
+                                        />
+                                    </div>
+                                    <div class="mw-100 col-sm-4" ng-show="formDataLotu.$submitted || formDataLotu.przylot.$touched">
+                                        <div ng-show="formDataLotu.przylot.$error.required">
+                                            Pole wymagane!</div>
+                                    </div>
+                                    <div ng-show="formDataLotu.$submitted || formDataLotu.przylot.$touched">
+                                        <div ng-show="formDataLotu.przylot.$error.afterDate">
+                                            Date is not after departure date!</div>
+                                    </div> 
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
-                                    <span>
-                                        Date of arrival:
-                                    </span>
-                                </div>
-                                <div class="mw-100 col-sm-3">
-                                    <input class="form-control" type="datetime-local" ng-model="date.przylot" />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                            </form>
+                        </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button ng-click="updateDate()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                        <button ng-click="updateDate()" type="submit" class="btn btn-primary">Zapisz</button>
                     </div>
                 </div>
             </div>

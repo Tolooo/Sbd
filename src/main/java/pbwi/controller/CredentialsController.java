@@ -52,6 +52,25 @@ public class CredentialsController extends AbstractController<Credentials> {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @RequestMapping(value = "/{username}", method = RequestMethod.POST)
+    public boolean checkUser(@PathVariable("username") String username) {
+        Session session = getSessionFactory().openSession();
+        session.beginTransaction();
+        Query query = session.createNamedQuery("Credentials.findByLogin", Credentials.class);
+        query.setParameter(1, username);
+        Credentials entity = null;
+        try {
+            entity = (Credentials) query.getSingleResult();
+        } catch (NoResultException nre) {
+        }
+        session.close();
+        if (entity != null)
+            return true;
+        else
+            return false;
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Credentials find(@PathVariable("id") long id) {
         return super.find(id);

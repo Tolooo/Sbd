@@ -1,23 +1,39 @@
 <div class="container">
     <div class="row">
         <div class="w-100 alert alert-danger alert-dismissible fade show" ng-if="error" role="alert">
-            <strong>Błąd! </strong>{{error}}.
+            <strong>{{error}}</strong>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
     </div>
-    <div class="row">
-        <form name="loginForm" ng-submit="login(credentials)" novalidate>
-            <div class="center-block form-group">
-                <label for="username">Username:</label>
-                <input class="form-control" type="text" id="username" ng-model="credentials.user_name">
-
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input class="form-control" type="password" id="password" ng-model="credentials.user_password">
+    <div class="jumbotron">
+        <div class="row justify-content-center">
+            <h1>Panel logowania</h1>
+        </div>
+        <div class="row justify-content-center">
+            <form name="loginForm" ng-submit="login(credentials)" novalidate>
+                <div class="form-group" ng-class="{ 'text-danger' : loginForm.username.$invalid && (loginForm.$submitted || loginForm.username.$touched)}">
+                    <label for="username">Nazwa użytkownika:</label>
+                    <input class="form-control" required type="text" id="username" name="username" ng-model="credentials.user_name" ng-class="{ 'is-invalid' : loginForm.username.$invalid && (loginForm.$submitted || loginForm.username.$touched) }">
+                    <div ng-show="loginForm.$submitted || loginForm.username.$touched">
+                        <div ng-show="loginForm.username.$error.required">
+                            Pole wymagane!</div>
+                    </div>
                 </div>
-                <button class="btn btn-primary" type="submit">Login</button> 
-        </form>
+                <div class="form-group" ng-class="{ 'text-danger' : loginForm.pass1.$invalid && (loginForm.$submitted || loginForm.pass1.$touched)}">
+                    <label for="pass1">Hasło:</label>
+                    <input class="form-control" required ng-class="{ 'is-invalid' : loginForm.pass1.$invalid && (loginForm.$submitted || loginForm.pass1.$touched) }"
+                        type="password" name="pass1" id="pass1" ng-model="credentials.user_password">
+                    <div ng-show="loginForm.$submitted || loginForm.pass1.$touched">
+                        <div ng-show="loginForm.pass1.$error.required">
+                            Pole wymagane!</div>
+                    </div>
+                </div>
+                <div class="row justify-content-end" style="margin-right: 0px">
+                    <button class="btn btn-primary" type="submit">Zaloguj</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>

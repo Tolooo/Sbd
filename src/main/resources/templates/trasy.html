@@ -1,93 +1,102 @@
 <div class="container">
-    <button ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Add new
-    </button>
-    <div class="row">
-        <div class="col-sm">
-            Trasa id
+    <div class="row justify-content-end">
+        <div class="mw-100 col-4">
+            <h4 style="margin: 20px">Dane tabeli trasa:</h4>
         </div>
-        <div class="col-sm">
-            Poczatek
+        <div class="mw-100 col-3 text-right">
+            <p style="margin-top: 25px;">
+                <b>Dodaj nową trasę:</b>
+            </p>
         </div>
-        <div class="col-sm">
-            Koniec
-        </div>
-        <div class="col-sm">
-            Edit
-        </div>
-        <div class="col-sm">
-            Delete
+        <div class="mw-100 col-1">
+            <button style="margin: 20px" ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
         </div>
     </div>
-    <ul class="list-unstyled">
-        <li ng-repeat="trasa in trasy">
-            <div class="row">
-                <div class="col-sm">
-                    <span>
-                        <a ng-href="http://localhost:8081/#!/trasy/{{trasa.id_trasy}}">{{trasa.id_trasy}}</a>
-                    </span>
-                </div>
-                <div class="col-sm">
-                    <span>{{trasa.poczatek.id_lotniska}}</span>
-
-                </div>
-                <div class="col-sm">
-                    <span>{{trasa.koniec.id_lotniska}}</span>
-
-                </div>
-                <div class="col-sm">
-                    <button ng-click="prepare(trasa)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Edit
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Trasa id</th>
+                <th scope="col">Poczatek</th>
+                <th scope="col">Koniec</th>
+                <th scope="col">Edytuj</th>
+                <th scope="col">Usuń</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="t in trasy">
+                <th scope="row">
+                    <a ng-href="http://localhost:8081/#!/trasy/{{t.id_trasy}}">{{t.id_trasy}}</a>
+                </th>
+                <td>
+                    <span>{{t.poczatek.miejscowosc}} ({{t.poczatek.iata}})</span>
+                </td>
+                <td>
+                    <span>{{t.koniec.miejscowosc}} ({{t.koniec.iata}})</span>
+                </td>
+                <td>
+                    <button ng-click="prepare(t)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        <i class="fa fa-edit"></i>
                     </button>
-                </div>
-                <div class="col-sm">
-                    <button type="button" ng-click="deleteTrasa(trasa)" value="Delete" class="btn">
-                        <i class="fas fa-trash-alt"></i>
+                </td>
+                <td>
+                    <button type="button" ng-click="deleteTrasa(t)" value="Delete" class="btn btn-primary">
+                        <i class="fa fa-trash-alt"></i>
                     </button>
-                </div>
-            </div>
-        </li>
-    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <div class="row">
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edit trasa</h5>
-                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Add new trasa</h5>
+                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edytuj trasę</h5>
+                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Dodaj nową trasę</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                        <form name="formTrasa" novalidate>
+                            <div class="form-group" ng-class="{ 'text-danger' : formTrasa.poczatek.$invalid && (formTrasa.$submitted || formTrasa.poczatek.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Poczatek:
                                     </span>
                                 </div>
                                 <div class="mw-100 col-sm-8">
-                                    <select class="custom-select" ng-model="trasa.poczatek" ng-options="lotnisko.miejscowosc+' ('+lotnisko.iata+')'  for lotnisko in lotniska"></select>
+                                    <select class="custom-select" name="poczatek" ng-model="trasa.poczatek" ng-options="lotnisko.miejscowosc+' ('+lotnisko.iata+')'  for lotnisko in lotniska"
+                                        required ng-class="{ 'is-invalid' : formTrasa.poczatek.$invalid && (formTrasa.$submitted || formTrasa.poczatek.$touched) }"></select>
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formTrasa.$submitted || formTrasa.poczatek.$touched">
+                                    <div ng-show="formTrasa.poczatek.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-8">
+                            <div class="form-group" ng-class="{ 'text-danger' : formTrasa.koniec.$invalid && (formTrasa.$submitted || formTrasa.koniec.$touched)}">
+                                <div class="mw-100 col-sm-8">
                                     <span>
                                         Koniec:
                                     </span>
                                 </div>
                                 <div class="mw-100 col-sm-3">
-                                    <select class="custom-select" ng-model="trasa.koniec" ng-options="lotnisko.miejscowosc+' ('+lotnisko.iata+')'  for lotnisko in lotniska"></select>
-
+                                    <select class="custom-select" name="koniec" ng-model="trasa.koniec" ng-options="lotnisko.miejscowosc+' ('+lotnisko.iata+')'  for lotnisko in lotniska"
+                                        required ng-class="{ 'is-invalid' : formTrasa.koniec.$invalid && (formTrasa.$submitted || formTrasa.koniec.$touched) }"></select>
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formTrasa.$submitted || formTrasa.koniec.$touched">
+                                    <div ng-show="formTrasa.koniec.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button ng-if="editMode" ng-click="updateTrasa()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
-                        <button ng-if="!editMode" ng-click="saveTrasa()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                        <button ng-if="editMode" ng-click="updateTrasa()" type="submit" class="btn btn-primary">Zapisz</button>
+                        <button ng-if="!editMode" ng-click="saveTrasa()" type="submit" class="btn btn-primary">Zapisz</button>
                     </div>
                 </div>
             </div>

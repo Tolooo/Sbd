@@ -1,166 +1,208 @@
 <div class="container">
-    <button ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Add new
-    </button>
-    <div class="row">
-        <div class="col-sm">
-            Lot id
+    <div class="row justify-content-end">
+        <div class="mw-100 col-4">
+            <h4 style="margin: 20px">Dane tabeli lot:</h4>
         </div>
-        <div class="col-sm">
-            Samolot id
+        <div class="mw-100 col-3 text-right">
+            <p style="margin-top: 25px;">
+                <b>Dodaj nowy lot:</b>
+            </p>
         </div>
-        <div class="col-sm">
-            Pilot id
-        </div>
-        <div class="col-sm">
-            Trasa id
-        </div>
-        <div class="col-sm">
-            Data lotu id
-        </div>
-        <div class="col-sm-2">
-            Edit
-        </div>
-        <div class="col-sm-2">
-            Delete
+        <div class="mw-100 col-1">
+            <button style="margin: 20px" ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
         </div>
     </div>
-    <ul class="list-unstyled">
-        <li ng-repeat="lot in loty">
-            <div class="row">
-                <div class="col-sm">
-                    <span>
-                        <a ng-href="http://localhost:8081/#!/loty/{{lot.id_lotu}}">{{lot.id_lotu}}</a>
-                    </span>
-                </div>
-                <div class="col-sm">
-                    <span>{{lot.samolot.id_samolotu}}</span>
-
-                </div>
-                <div class="col-sm">
-                    <span>{{lot.pilot.id_pilota}}</span>
-
-                </div>
-                <div class="col-sm">
-                    <span>{{lot.trasa.id_trasy}}</span>
-
-                </div>
-                <div class="col-sm">
-                    <span>{{lot.dataLotu.id_daty}}</span>
-
-                </div>
-                <div class="col-sm-2">
-                    <button ng-click="prepare(lot)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Edit
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Lot id</th>
+                <th scope="col">Klasa</th>
+                <th scope="col">Ilosc miejsc</th>
+                <th scope="col">Pilot</th>
+                <th scope="col">Trasa</th>
+                <th scope="col">Wylot</th>
+                <th scope="col">Przylot</th>
+                <th scope="col">Edytuj</th>
+                <th scope="col">Usuń</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="l in loty">
+                <th scope="row">
+                    <a ng-href="http://localhost:8081/#!/loty/{{l.id_lotu}}">{{l.id_lotu}}</a>
+                </th>
+                <td>
+                    <span>{{l.klasa}}</span>
+                </td>
+                <td>
+                    <span>{{l.iloscMiejsc}}</span>
+                </td>
+                <td>
+                    <span>{{l.pilot.imie}} {{l.pilot.nazwisko}}</span>
+                </td>
+                <td>
+                    <span>{{l.trasa.poczatek.miejscowosc}} ({{l.trasa.poczatek.iata}}) -> {{l.trasa.koniec.miejscowosc}}
+                        ({{l.trasa.koniec.iata}})</span>
+                </td>
+                <td>
+                    <span>{{l.dataLotu.wylot|date:'yyyy-MM-dd HH:mm'}}</span>
+                </td>
+                <td>
+                    <span>{{l.dataLotu.przylot|date:'yyyy-MM-dd HH:mm'}}</span>
+                </td>
+                <td>
+                    <button ng-click="prepare(l)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        <i class="fa fa-edit"></i>
                     </button>
-                </div>
-                <div class="col-sm-2">
-                    <button type="button" ng-click="deleteLot(lot)" value="Delete" class="btn">
-                        <i class="fas fa-trash-alt"></i>
+                </td>
+                <td>
+                    <button type="button" ng-click="deleteLot(l)" value="Delete" class="btn btn-primary">
+                        <i class="fa fa-trash-alt"></i>
                     </button>
-                </div>
-            </div>
-        </li>
-    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <div class="row">
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edit lot</h5>
-                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Add new lot</h5>
+                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edytuj lot</h5>
+                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Dodaj nowy lot</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                        <form name="formLot" novalidate>
+                            <div class="form-group" ng-class="{ 'text-danger' : formLot.samolot.$invalid && (formLot.$submitted || formLot.samolot.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Samolot:
                                     </span>
                                 </div>
                                 <div class="mw-100 col-sm-3">
-                                    <select class="custom-select" ng-model="lot.samolot" ng-options="samolot.typ for samolot in samoloty"></select>
+                                    <select class="custom-select" name="samolot" ng-model="lot.samolot" ng-options="samolot.typ for samolot in samoloty" required
+                                        ng-class="{ 'is-invalid' : formLot.samolot.$invalid && (formLot.$submitted || formLot.samolot.$touched) }"></select>
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formLot.$submitted || formLot.samolot.$touched">
+                                    <div ng-show="formLot.samolot.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm">
-                                    <div class="form-group">
+                                <div class="mw-100 col-sm">
+                                    <div class="form-group" ng-class="{ 'text-danger' : formLot.klasa.$invalid && (formLot.$submitted || formLot.klasa.$touched)}">
                                         <div class="mw-100 col-sm-3">
                                             <span>
                                                 Klasa:
                                             </span>
                                         </div>
                                         <div class="mw-100 col-sm-3">
-                                            <select class="custom-select" ng-model="lot.klasa">
+                                            <select class="custom-select" name="klasa" ng-model="lot.klasa" required ng-class="{ 'is-invalid' : formLot.klasa.$invalid && (formLot.$submitted || formLot.klasa.$touched) }">
                                                 <option value="Ekonomiczna">Ekonomiczna</option>
                                                 <option value="Biznes">Biznes</option>
                                                 <option value="Pierwsza">Pierwsza</option>
                                             </select>
                                         </div>
+                                        <div class="mw-100 col-sm-4" ng-show="formLot.$submitted || formLot.klasa.$touched">
+                                            <div ng-show="formLot.klasa.$error.required">
+                                                Pole wymagane!</div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-sm">
-                                    <div class="form-group">
+                                <div class="mw-100 col-sm">
+                                    <div class="form-group" ng-class="{ 'text-danger' : formLot.iloscMiejsc.$invalid && (formLot.$submitted || formLot.iloscMiejsc.$touched)}">
                                         <div class="mw-100 col-sm-3">
                                             <span>
                                                 Ilosc miejsc:
                                             </span>
                                         </div>
                                         <div class="mw-100 col-sm-3">
-                                            <input class="form-control" type="number" ng-model="lot.iloscMiejsc" />
+                                            <input class="form-control" name="iloscMiejsc" type="number" ng-model="lot.iloscMiejsc" required ng-class="{ 'is-invalid' : formLot.iloscMiejsc.$invalid && (formLot.$submitted || formLot.iloscMiejsc.$touched) }"
+                                            />
+                                        </div>
+                                        <div class="mw-100 col-sm-4" ng-show="formLot.$submitted || formLot.iloscMiejsc.$touched">
+                                            <div ng-show="formLot.iloscMiejsc.$error.required">
+                                                Pole wymagane!</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formLot.pilot.$invalid && (formLot.$submitted || formLot.pilot.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Pilot:
                                     </span>
                                 </div>
                                 <div class="mw-100 col-sm-3">
-                                    <select class="custom-select" ng-model="lot.pilot" ng-options="pilot.imie+' '+pilot.nazwisko for pilot in pilots"></select>
+                                    <select class="custom-select" name="pilot" ng-model="lot.pilot" ng-options="pilot.imie+' '+pilot.nazwisko for pilot in pilots"
+                                        required ng-class="{ 'is-invalid' : formLot.pilot.$invalid && (formLot.$submitted || formLot.pilot.$touched) }"></select>
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formLot.$submitted || formLot.pilot.$touched">
+                                    <div ng-show="formLot.pilot.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formLot.trasa.$invalid && (formLot.$submitted || formLot.trasa.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Trasa:
                                     </span>
                                 </div>
                                 <div class="mw-100 col-sm-3">
-                                    <select class="custom-select" ng-model="lot.trasa" ng-options="trasa.poczatek.miejscowosc+'('+trasa.poczatek.iata+') -> '+trasa.koniec.miejscowosc+'('+trasa.koniec.iata+')' for trasa in trasy"></select>
+                                    <select class="custom-select" name="trasa" ng-model="lot.trasa" ng-options="trasa.poczatek.miejscowosc+'('+trasa.poczatek.iata+') -> '+trasa.koniec.miejscowosc+'('+trasa.koniec.iata+')' for trasa in trasy"
+                                        required ng-class="{ 'is-invalid' : formLot.trasa.$invalid && (formLot.$submitted || formLot.trasa.$touched) }"></select>
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formLot.$submitted || formLot.trasa.$touched">
+                                    <div ng-show="formLot.trasa.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formLot.wylot.$invalid && (formLot.$submitted || formLot.wylot.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Departure date:
                                     </span>
                                 </div>
                                 <div class="mw-100 col-sm-3">
-                                    <input class="form-control" type="datetime-local" ng-model="lot.dataLotu.wylot" />
+                                    <input class="form-control" name="wylot" id="wylot" type="datetime-local" ng-model="lot.dataLotu.wylot" required ng-class="{ 'is-invalid' : formLot.wylot.$invalid && (formLot.$submitted || formLot.wylot.$touched) }"
+                                    />
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formLot.$submitted || formLot.wylot.$touched">
+                                    <div ng-show="formLot.wylot.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formLot.przylot.$invalid && (formLot.$submitted || formLot.przylot.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Date of arrival:
                                     </span>
                                 </div>
                                 <div class="mw-100 col-sm-3">
-                                    <input class="form-control" type="datetime-local" ng-model="lot.dataLotu.przylot" />
+                                    <input class="form-control" dataCheck='wylot' name="przylot" type="datetime-local" ng-model="lot.dataLotu.przylot" required
+                                        ng-class="{ 'is-invalid' : formLot.przylot.$invalid && (formLot.$submitted || formLot.przylot.$touched) }"
+                                    />
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formLot.$submitted || formLot.przylot.$touched">
+                                    <div ng-show="formLot.przylot.$error.required">
+                                        Pole wymagane!</div>
+                                </div>
+                                <div ng-show="formLot.$submitted || formLot.przylot.$touched">
+                                    <div ng-show="formLot.przylot.$error.afterDate">
+                                        Date is not after departure date!</div>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button ng-if="editMode" ng-click="updateLot()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
-                        <button ng-if="!editMode" ng-click="saveLot()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                        <button ng-if="editMode" ng-click="updateLot()" type="submit" class="btn btn-primary">Zapisz</button>
+                        <button ng-if="!editMode" ng-click="saveLot()" type="submit" class="btn btn-primary">Zapisz</button>
                     </div>
                 </div>
             </div>

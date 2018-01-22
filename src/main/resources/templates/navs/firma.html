@@ -6,21 +6,18 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto"> 
             <li class="nav-item">
-                <a class="nav-link" ng-href="#!/home">Home</a>
+                <a class="nav-link" ng-href="#!/firmy/{{Navbar.id()}}">Szczegóły</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" ng-href="#!/firmy/{{Navbar.id()}}">Details</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" ng-href="#!/przegladLotow/">Loty</a>
+                <a class="nav-link" ng-href="#!/przegladLotow">Loty</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" ng-href="#!/firmy/{{Navbar.id()}}/bilety">Bilety</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" ng-href="#!/logout">Logout</a>
+                <a class="nav-link" ng-href="#!/logout">Wyloguj</a>
             </li>
         </ul>
     </div>

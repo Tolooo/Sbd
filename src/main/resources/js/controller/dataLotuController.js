@@ -15,7 +15,7 @@
         };
         var prepare = function (date) {
             $scope.editMode = true;
-            $scope.date = date;
+            $scope.date = angular.copy(date);
         }
         var onDateComplete = function (response) {
             $scope.date = response.data;
@@ -29,20 +29,47 @@
         var onDeleteDateComplete = function (response) {
             $scope.dates = $scope.dates.filter(function (el) { return el.id_daty != response.data.id_daty });
         };
-
+        var contains = function (a, obj) {
+            var i = a.length;
+            while (i--) {
+                if (a[i].id_daty === obj.id_daty) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        var onUpdateComplete = function (response) {
+            if ($scope.dates) {
+                var i = contains($scope.dates, $scope.date)
+                if (i != -1) {
+                    $scope.dates[i] = $scope.date;
+                }
+            }
+        };
 
         var onError = function (response) {
             $scope.error = response.error;
         };
         var saveDate = function () {
-            $http.post('http://localhost:8080/daty', $scope.date).then(onSaveDateComplete, onError);
+            if (!$scope.formDataLotu.$invalid) {
+                $("#exampleModal").modal('hide')
+                $http.post('http://localhost:8080/daty', $scope.date).then(onSaveDateComplete, onError);
+            } else {
+                $("#exampleModal").modal({ show: true });
+            }
         };
         var deleteDate = function (date) {
             $http.delete('http://localhost:8080/daty/' + date.id_daty).then(onDeleteDateComplete, onError)
         };
 
-        var updateDate = function (departureDate, dateOfArrival) {
-            $http.put('http://localhost:8080/daty/' + $scope.date.id_daty, $scope.date);
+        var updateDate = function () {
+            if (!$scope.formDataLotu.$invalid) {
+                $("#exampleModal").modal('hide')
+                $http.put('http://localhost:8080/daty/' + $scope.date.id_daty, $scope.date).then(onUpdateComplete, onError);
+            }
+            else {
+                $("#exampleModal").modal({ show: true });
+            }
         };
         var detailDate = function (id) {
             $http.get("http://localhost:8080/daty/" + id).then(onDateComplete, onError);

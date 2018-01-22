@@ -1,5 +1,5 @@
 (function () {
-    var klientController = function ($scope, $routeParams, $http, $location) {
+    var klientController = function ($scope, $rootScope, $routeParams, $http, $location) {
 
         var onKlienciComplete = function (response) {
             $scope.klienci = response.data;
@@ -15,9 +15,25 @@
         };
         var prepare = function (klient) {
             $scope.editMode = true;
-            $scope.klient = klient;
+            $scope.klient = angular.copy(klient);
         }
-
+        var contains = function (a, obj) {
+            var i = a.length;
+            while (i--) {
+                if (a[i].id_klienta === obj.id_klienta) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        var onUpdateComplete = function (response) {
+            if ($scope.klienci) {
+                var i = contains($scope.klienci, $scope.klient)
+                if (i != -1) {
+                    $scope.klienci[i] = $scope.klient;
+                }
+            }
+        };
 
         var onSaveKlientComplete = function (response) {
             $scope.klienci.push(response.data);
@@ -32,14 +48,31 @@
             $scope.error = response.error;
         };
         var saveKlient = function () {
-            $http.post('http://localhost:8080/klienci', $scope.klient).then(onSaveKlientComplete, onError);
+            if (!$scope.formKlient.$invalid) {
+                $("#exampleModal").modal('hide')
+                $http.post('http://localhost:8080/klienci', $scope.klient).then(onSaveKlientComplete, onError);
+            }
+            else {
+                $("#exampleModal").modal({ show: true });
+            }
         };
         var deleteKlient = function (klient) {
             $http.delete('http://localhost:8080/klienci/' + klient.id_klienta).then(onDeleteKlientComplete, onError)
         };
 
+        if ($rootScope.success) {
+            $scope.success = $rootScope.success;
+            $rootScope.success = "";
+        }
+
         var updateKlient = function () {
-            $http.put('http://localhost:8080/klienci/' + $scope.klient.id_klienta, $scope.klient);
+            if (!$scope.formKlient.$invalid) {
+                $("#exampleModal").modal('hide')
+                $http.put('http://localhost:8080/klienci/' + $scope.klient.id_klienta, $scope.klient).then(onUpdateComplete, onError);
+            }
+            else {
+                $("#exampleModal").modal({ show: true });
+            }
         };
 
         var detailKlient = function (id) {
@@ -64,5 +97,5 @@
         $scope.updateKlient = updateKlient;
     };
 
-    angular.module('myApp').controller("klientController", ['$scope', '$routeParams', '$http', '$location', klientController]);
+    angular.module('myApp').controller("klientController", ['$scope', '$rootScope', '$routeParams', '$http', '$location', klientController]);
 }()) 

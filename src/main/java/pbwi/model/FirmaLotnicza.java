@@ -115,6 +115,7 @@ public class FirmaLotnicza implements Serializable {
     public void addLotnisko(Lotnisko lotnisko) {
         this.lotniska.add(lotnisko);
     }
+
     public void removeSamolot(Samolot samolot) {
         this.samoloty.remove(samolot);
     }

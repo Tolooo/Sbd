@@ -45,7 +45,7 @@
         </table>
     </div>
     <button ng-click="prepare(bilet)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Edit
+        Edytuj
     </button>
     <!-- Button trigger modal -->
     <div class="row">
@@ -55,60 +55,74 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit bilet</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Edytuj bilet</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <div class="col-sm-3">
-                                    Klasa:
+                            <form name=formBilet novalidate>
+                                <div class="form-group" ng-class="{ 'text-danger' : formBilet.klasa.$invalid && (formBilet.$submitted || formBilet.klasa.$touched)}">
+                                    <div class="mw-100 col-sm-3">
+                                        Klasa:
+                                    </div>
+                                    <div class="mw-100 col-sm-3">
+                                        <select class="custom-select" name="klasa" ng-model="bilet.klasa" required ng-class="{ 'is-invalid' : formBilet.klasa.$invalid && (formBilet.$submitted || formBilet.klasa.$touched) }">
+                                            <option selected value="Ekonomiczna">Ekonomiczna</option>
+                                            <option value="Biznes">Biznes</option>
+                                            <option value="Pierwsza">Pierwsza</option>
+                                        </select>
+                                    </div>
+                                    <div class="mw-100 col-sm-4" ng-show="formBilet.$submitted || formBilet.klasa.$touched">
+                                        <div ng-show="formBilet.klasa.$error.required">
+                                            Pole wymagane!</div>
+                                    </div>
                                 </div>
-                                <div class="col-sm-3">
-                                    <select class="custom-select" ng-model="bilet.klasa">
-                                        <option selected value="Ekonomiczna">Ekonomiczna</option>
-                                        <option value="Biznes">Biznes</option>
-                                        <option value="Pierwsza">Pierwsza</option>
-                                    </select>
+                                <div class="form-group" ng-class="{ 'text-danger' : formBilet.nr_miejsca.$invalid && (formBilet.$submitted || formBilet.nr_miejsca.$touched)}">
+                                    <div class="mw-100 col-sm-3">
+                                        <span>
+                                            Nr miejsca:
+                                        </span>
+                                    </div>
+                                    <div class="mw-100 col-sm-3">
+                                        <input class="form-control" type="number" ng-model="bilet.nr_miejsca" name="nr_miejsca" required ng-class="{ 'is-invalid' : formBilet.nr_miejsca.$invalid && (formBilet.$submitted || formBilet.nr_miejsca.$touched) }"
+                                        />
+                                    </div>
+                                    <div class="mw-100 col-sm-4" ng-show="formBilet.$submitted || formBilet.nr_miejsca.$touched">
+                                        <div ng-show="formBilet.nr_miejsca.$error.required">
+                                            Pole wymagane!</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
-                                    <span>
-                                        Nr miejsca:
-                                    </span>
+                                <div class="form-group" ng-class="{ 'text-danger' : formBilet.id_lotu.$invalid && (formBilet.$submitted || formBilet.id_lotu.$touched)}">
+                                    <div class="mw-100 col-sm-3">
+                                        <span>
+                                            Nr lotu:
+                                        </span>
+                                    </div>
+                                    <div class="mw-100 col-sm-3">
+                                        <select class="custom-select" name="id_lotu" ng-model="bilet.lot" ng-options="lot.id_lotu for lot in loty" required ng-class="{ 'is-invalid' : formBilet.id_lotu.$invalid && (formBilet.$submitted || formBilet.id_lotu.$touched) }">
+                                        </select>
+                                    </div>
+                                    <div class="mw-100 col-sm-4" ng-show="formBilet.$submitted || formBilet.id_lotu.$touched">
+                                        <div ng-show="formBilet.id_lotu.$error.required">
+                                            Pole wymagane!</div>
+                                    </div>
                                 </div>
-                                <div class="col-sm-3">
-                                    <input class="form-control" type="number" ng-model="bilet.nr_miejsca" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
-                                    <span>
-                                        Nr lotu:
-                                    </span>
-                                </div>
-                                <div class="mw-100 col-sm-3">
-                                    <select class="custom-select" ng-model="bilet.lot" ng-options="lot.id_lotu for lot in loty"></select>
-                                </div>
-                            </div>
-                            <!-- <div class="form-group">
-                                <div class="col-sm-3">
-                                    <span>
-                                        Data lotu:
-                                    </span>
-                                </div>
-                                <div class="mw-100 col-sm-3">
-                                    <select class="custom-select" ng-model="bilet.dataLotu" ng-options="(data.wylot|date:'yyyy-MM-dd HH:mm')+' -> '+ (data.przylot|date:'yyyy-MM-dd HH:mm') for data in dates"></select>
-                                </div>
-                            </div> -->
-                        </form>
-                    </div>
+                                <!-- <div class="form-group">
+                                    <div class="mw-100 col-sm-3">
+                                        <span>
+                                            Data lotu:
+                                        </span>
+                                    </div>
+                                    <div class="mw-100 col-sm-3">
+                                        <select class="custom-select" ng-model="bilet.dataLotu" ng-options="(data.wylot|date:'yyyy-MM-dd HH:mm')+' -> '+ (data.przylot|date:'yyyy-MM-dd HH:mm') for data in dates"></select>
+                                    </div>
+                                </div> -->
+                            </form>
+                        </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button ng-click="updateBilet()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                        <button ng-click="updateBilet()" type="submit" class="btn btn-primary">Zapisz</button>
                     </div>
                 </div>
             </div>

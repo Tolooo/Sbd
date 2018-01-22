@@ -18,7 +18,7 @@
         };
         var prepare = function (bilet) {
             $scope.editMode = true;
-            $scope.bilet = bilet;
+            $scope.bilet = angular.copy(bilet);
             if ($scope.dates !== undefined)
                 $scope.bilet.dataLotu = $scope.dates.filter(function (dataLotu) { return dataLotu.id_daty == $scope.bilet.dataLotu.id_daty; })[0];
             if ($scope.loty !== undefined)
@@ -32,8 +32,27 @@
 
         var onBiletComplete = function (response) {
             $scope.bilet = response.data;
-            $scope.bilet.editMode = false;
+        };
 
+        var contains = function (a, obj) {
+            var i = a.length;
+            while (i--) {
+                if (a[i].id_biletu === obj.id_biletu) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        var onUpdateComplete = function (response) {
+            var i = contains($scope.bilety, $scope.bilet)
+            if (i != -1) {
+                $scope.bilety[i] = $scope.bilet;
+            }
+        };
+        var onLotniskaBiletyComplete = function (response) {
+            $scope.bilety = response.data.filter(function (bilet) {
+                return bilet.lot.trasa.poczatek.id_lotniska == $routeParams.id || bilet.lot.trasa.koniec.id_lotniska == $routeParams.id
+            });
         };
         var onSaveBiletComplete = function (response) {
             $scope.bilety.push(response.data);
@@ -47,16 +66,28 @@
             $scope.error = response.error;
         };
         var saveBilet = function () {
-            $scope.bilet.dataLotu = $scope.bilet.lot.dataLotu;
-            $http.post('http://localhost:8080/bilety', $scope.bilet).then(onSaveBiletComplete, onError);
+            if (!$scope.formBilet.$invalid) {
+                $("#exampleModal").modal('hide')
+                $scope.bilet.dataLotu = $scope.bilet.lot.dataLotu;
+                $http.post('http://localhost:8080/bilety', $scope.bilet).then(onSaveBiletComplete, onError);
+            }
+            else {
+                $("#exampleModal").modal({ show: true });
+            }
         };
         var deleteBilet = function (bilet) {
             $http.delete('http://localhost:8080/bilety/' + bilet.id_biletu).then(onDeleteBiletComplete, onError)
         };
 
         var updateBilet = function () {
-            $scope.bilet.dataLotu = $scope.bilet.lot.dataLotu;
-            $http.put('http://localhost:8080/bilety/' + $scope.bilet.id_biletu, $scope.bilet);
+            if (!$scope.formBilet.$invalid) {
+                $("#exampleModal").modal('hide')
+                $scope.bilet.dataLotu = $scope.bilet.lot.dataLotu;
+                $http.put('http://localhost:8080/bilety/' + $scope.bilet.id_biletu, $scope.bilet).then(onUpdateComplete, onError);
+            }
+            else {
+                $("#exampleModal").modal({ show: true });
+            }
         };
         var detailBilet = function (id) {
             $http.get("http://localhost:8080/bilety/" + id).then(onBiletComplete, onError);
@@ -70,6 +101,8 @@
         if ($location.url() == "/bilety") {
 
         }
+        else if ($location.url() == ("/lotniska/" + $routeParams.id + "/bilety"))
+            $http.get("http://localhost:8080/bilety").then(onLotniskaBiletyComplete, onError);
         else
             detailBilet($routeParams.id);
         $scope.prepare = prepare;

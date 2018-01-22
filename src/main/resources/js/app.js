@@ -18,8 +18,9 @@
         pilot: 'pilot',
         lotnisko: 'lotnisko'
     });
-    app.directive('pwCheck', [function () {
+    app.directive('pwCheck2', [function () {
         return {
+            restrict: 'A',
             require: 'ngModel',
             link: function (scope, elem, attrs, ctrl) {
                 var firstPassword = '#' + attrs.pwCheck;
@@ -32,6 +33,22 @@
             }
         }
     }]);
+    app.directive('pwCheck', [function () {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function (scope, elem, attrs, ctrl) {
+                var firstPassword = '#' + attrs.pwCheck;
+                elem.add(firstPassword).on('keyup', function () {
+                    scope.$apply(function () {
+                        var v = elem.val() === $(firstPassword).val();
+                        ctrl.$setValidity('pwmatch', v);
+                    });
+                });
+            }
+        }
+    }]);
+    
     app.service('Session', function () {
         this.create = function (sessionId, userId, userRole) {
             this.id = sessionId;
@@ -140,14 +157,7 @@
                 data: {
                     authorizedRoles: [USER_ROLES.all]
                 }
-            })
-            .when('/register/next', {
-                controller: 'LoginController',
-                templateUrl: '/templates/register.html',
-                data: {
-                    authorizedRoles: [USER_ROLES.all]
-                }
-            })
+            }) 
             .when('/bilety', {
                 controller: 'biletController',
                 templateUrl: '/templates/bilety.html',
@@ -220,14 +230,14 @@
             })
             .when("/klienci/:id/bilety", {
                 controller: 'klientController',
-                templateUrl: "/templates/klient/przegladBiletow.html",
+                templateUrl: "/templates/przegladBiletow.html",
                 data: {
                     authorizedRoles: [USER_ROLES.admin, USER_ROLES.klient]
                 }
             })
             .when("/firmy/:id/bilety", {
                 controller: 'firmaController',
-                templateUrl: "/templates/firma/przegladBiletow.html",
+                templateUrl: "/templates/przegladBiletow.html",
                 data: {
                     authorizedRoles: [USER_ROLES.admin, USER_ROLES.firma]
                 }
@@ -241,7 +251,7 @@
             })
             .when('/przegladLotow', {
                 controller: 'lotController',
-                templateUrl: '/templates/klient/przegladLotow.html',
+                templateUrl: '/templates/przegladLotow.html',
                 data: {
                     authorizedRoles: [USER_ROLES.admin, USER_ROLES.klient, USER_ROLES.firma]
                 }
@@ -275,14 +285,14 @@
                 }
             })
             .when("/lotniska/:id/bilety", {
-                controller: 'lotniskoController',
-                templateUrl: "/templates/bilety.html",
+                controller: 'biletController',
+                templateUrl: "/templates/przegladBiletow.html",
                 data: {
                     authorizedRoles: [USER_ROLES.admin, USER_ROLES.lotnisko]
                 }
             })
             .when("/lotniska/:id/firmyLotnicze", {
-                controller: 'lotniskoController',
+                controller: 'firmaLotniczaController',
                 templateUrl: "/templates/firmyLotnicze.html",
                 data: {
                     authorizedRoles: [USER_ROLES.admin, USER_ROLES.lotnisko]
@@ -318,7 +328,7 @@
             })
             .when('/firmyLotnicze/:id/lotniska', {
                 controller: 'lotniskoController',
-                templateUrl: '/templates/lotniska.html',
+                templateUrl: '/templates/firmaLotnicza/lotniska.html',
                 data: {
                     authorizedRoles: [USER_ROLES.admin, USER_ROLES.firmaLotnicza]
                 }

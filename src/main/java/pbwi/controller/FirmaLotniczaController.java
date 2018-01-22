@@ -87,7 +87,7 @@ public class FirmaLotniczaController extends AbstractController<FirmaLotnicza> {
     @RequestMapping(value = "/{id}/lotniska", method = RequestMethod.GET)
     public Set<Lotnisko> findAirports(@PathVariable("id") long id) {
         Session session = getSessionFactory().openSession();
-        FirmaLotnicza firmaLotnicza=session.find(FirmaLotnicza.class,id);
+        FirmaLotnicza firmaLotnicza = session.find(FirmaLotnicza.class, id);
         Hibernate.initialize(firmaLotnicza.getLotniska());
         session.close();
         Set<Lotnisko> lotniska = firmaLotnicza.getLotniska();
@@ -98,7 +98,7 @@ public class FirmaLotniczaController extends AbstractController<FirmaLotnicza> {
     @RequestMapping(value = "/{id}/samoloty", method = RequestMethod.GET)
     public Set<Samolot> findPlanes(@PathVariable("id") long id) {
         Session session = getSessionFactory().openSession();
-        FirmaLotnicza firmaLotnicza=session.find(FirmaLotnicza.class,id);
+        FirmaLotnicza firmaLotnicza = session.find(FirmaLotnicza.class, id);
         Hibernate.initialize(firmaLotnicza.getSamoloty());
         session.close();
         Set<Samolot> samoloty = firmaLotnicza.getSamoloty();
@@ -114,7 +114,13 @@ public class FirmaLotniczaController extends AbstractController<FirmaLotnicza> {
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable("id") long id, @RequestBody FirmaLotnicza firmaLotnicza) {
-        super.update(firmaLotnicza);
+        FirmaLotnicza firmaToUpdate = super.find(firmaLotnicza.getId_firmyLotniczej());
+        firmaToUpdate.setIATA(firmaLotnicza.getIATA());
+        firmaToUpdate.setNIP(firmaLotnicza.getNIP());
+        firmaToUpdate.setNazwa(firmaLotnicza.getNazwa());
+        firmaToUpdate.setAdres(firmaLotnicza.getAdres());
+        firmaToUpdate.setKraj(firmaLotnicza.getKraj());
+        super.update(firmaToUpdate);
     }
 
     @Override

@@ -28,71 +28,82 @@
       user_role: ""
     };
 
+    var onCheckUserName = function (response) {
+      if (!response.data) {
+        $("#" + $scope.user_role).modal({ show: true });
+      }
+      else {
+        $('#username').one('input', function () {
+          $scope.error = ""
+          $("#alert").hide();
+        });
+        $scope.error = "Użytkownik z podaną nazwą już istnieje. Wybierz inną nazwę!";
+      }
+    }
     $scope.prepare = function (user_name, pass1, pass2, user_role) {
       if (!$scope.registerForm.$invalid) {
-        console.log("valid")
-        $("#" + user_role).modal({ show: true });
+        // console.log("valid")
+        $http.post('http://localhost:8080/users/' + user_name).then(onCheckUserName, onError);
         return true;
       }
       else {
-        console.log("invalid")
+
         return false;
       }
     }
 
     $scope.register = function (user_name, pass1, pass2, user_role, user_role_id) {
-      if ($scope.prepare) {
-        let credentials = {
-          user_name: user_name,
-          user_password: pass1,
-          user_role: user_role,
-          user_role_id: user_role_id
-        }
-        AuthService.register(credentials).then(function (user) {
-          if (user !== null) {
-            // console.log(user)
-            $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-            $rootScope.setCurrentUser(user);
-            $rootScope.registerSuccess = true;
-            $location.path("/");
-            Navbar.refreshNav();
-
-          }
-          else
-            $scope.error = "Podano niepoprawne dane"
-        }, function (error) {
-          $scope.error = error;
-          $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
-        });
+      let credentials = {
+        user_name: user_name,
+        user_password: pass1,
+        user_role: user_role,
+        user_role_id: user_role_id
       }
-    }
-
-
-    $scope.login = function (credentials) {
-      AuthService.login(credentials).then(function (user) {
+      AuthService.register(credentials).then(function (user) {
         if (user !== null) {
           // console.log(user)
           $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
           $rootScope.setCurrentUser(user);
-          $rootScope.loginSuccess = true;
+          $rootScope.success = "Zarejestrowano pomyślnie!";
           $location.path("/");
           Navbar.refreshNav();
 
         }
         else
-          $scope.error = "Podano niepoprawne dane"
-      }, function () {
-        $scope.error = "Sprawdź czy dane zostały wpisane poprawnie, lub spróbuj ponownie później"
+          $scope.error = "Podano niepoprawne dane!"
+      }, function (error) {
+        $scope.error = error;
         $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
       });
+    }
+
+
+    $scope.login = function (credentials) {
+      if (!$scope.loginForm.$invalid)
+        AuthService.login(credentials).then(function (user) {
+          if (user !== null) {
+            // console.log(user)
+            $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+            $rootScope.setCurrentUser(user);
+            $rootScope.success = "Zalogowano pomyślnie!";
+            $location.path("/");
+            Navbar.refreshNav();
+
+          }
+          else
+            $scope.error = "Podano niepoprawne dane!"
+        }, function () {
+          $scope.error = "Sprawdź czy dane zostały wpisane poprawnie, lub spróbuj ponownie później."
+          $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+        });
     };
     $rootScope.logoutSuccess = false;
 
     $scope.saveFirma = function () {
-      if (!$scope.registerForm.$invalid && !$scope.formFirma.$invalid)
+      if (!$scope.registerForm.$invalid && !$scope.formFirma.$invalid) {
+        $("#" + $scope.user_role).modal('hide');
         $http.post('http://localhost:8080/firmy', $scope.firma).then(onSaveFirmaComplete, onError);
-      else {
-        console.log("invalid")
+      } else {
         return false;
       }
     };
@@ -102,10 +113,11 @@
     }
 
     $scope.saveFirmaLotnicza = function () {
-      if (!$scope.registerForm.$invalid && !$scope.formFirmaLotnicza.$invalid)
+      if (!$scope.registerForm.$invalid && !$scope.formFirmaLotnicza.$invalid) {
+        $("#" + $scope.user_role).modal('hide');
         $http.post('http://localhost:8080/firmyLotnicze', $scope.firmaLotnicza).then(onSaveFirmaLotniczaComplete, onError);
-      else {
-        console.log("invalid")
+      } else {
+
         return false;
       }
     };
@@ -115,10 +127,11 @@
     }
 
     $scope.saveKlient = function () {
-      if (!$scope.registerForm.$invalid && !$scope.formKlient.$invalid)
+      if (!$scope.registerForm.$invalid && !$scope.formKlient.$invalid) {
+        $("#" + $scope.user_role).modal('hide');
         $http.post('http://localhost:8080/klienci', $scope.klient).then(onSaveKlientComplete, onError);
-      else {
-        console.log("invalid")
+      } else {
+
         return false;
       }
     };
@@ -128,10 +141,11 @@
     }
 
     $scope.saveLotnisko = function () {
-      if (!$scope.registerForm.$invalid && !$scope.formLotnisko.$invalid)
+      if (!$scope.registerForm.$invalid && !$scope.formLotnisko.$invalid) {
+        $("#" + $scope.user_role).modal('hide');
         $http.post('http://localhost:8080/lotniska', $scope.lotnisko).then(onSaveLotniskoComplete, onError);
-      else {
-        console.log("invalid")
+      } else {
+
         return false;
       }
     };
@@ -141,10 +155,11 @@
     }
 
     $scope.savePilot = function () {
-      if (!$scope.registerForm.$invalid && !$scope.formPilot.$invalid)
+      if (!$scope.registerForm.$invalid && !$scope.formPilot.$invalid) {
+        $("#" + $scope.user_role).modal('hide');
         $http.post('http://localhost:8080/piloci', $scope.pilot).then(onSavePilotComplete, onError);
-      else {
-        console.log("invalid")
+      } else {
+
         return false;
       }
     };
@@ -161,7 +176,7 @@
       if (AuthService.isAuthenticated()) {
         AuthService.logout();
         $location.path("/");
-        $rootScope.logoutSuccess = true;
+        $rootScope.success = "Wylogowano pomyślnie!";
         $rootScope.globals = {};
         $cookies.remove('globals');
       }

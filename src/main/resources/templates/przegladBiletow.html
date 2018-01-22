@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="w-100 alert alert-success alert-dismissible fade show" ng-if="success" id='alert' role="alert">
+        <strong>{{success}}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="row justify-content-center">
+            <div class="mw-100 col-4">
+                <h4 style="margin-bottom: 30px">Zakupione bilety:</h4>
+            </div> 
+        </div>
+    <table class="table table-striped" >
+        <thead>
+            <tr>
+                <th scope="col">Bilet id</th>
+                <th scope="col">Klasa</th>
+                <th scope="col">Nr miejsca</th>
+                <th scope="col">Nr lotu</th>
+                <th scope="col">Data lotu</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="bilet in bilety">
+                <th scope="row">
+                    <a ng-href="http://localhost:8081/#!/bilety/{{bilet.id_biletu}}">{{bilet.id_biletu}}</a>
+                </th>
+                <td>
+                    <span>{{bilet.klasa}}</span>
+                </td>
+                <td>
+                    <span>{{bilet.nr_miejsca}}</span>
+                </td>
+                <td>
+                    <span>{{bilet.lot.id_lotu}}</span>
+                </td>
+                <td>
+                    <span>{{bilet.dataLotu.wylot|date:'yyyy-MM-dd HH:mm'}} -> {{bilet.dataLotu.przylot|date:'yyyy-MM-dd HH:mm'}}</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

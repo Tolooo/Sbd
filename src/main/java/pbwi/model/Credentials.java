@@ -10,6 +10,7 @@ import java.io.Serializable;
 @NamedQueries({
         @NamedQuery(name = "Credentials.findAll", query = "SELECT c FROM Credentials c")
         , @NamedQuery(name = "Credentials.findById", query = "SELECT c FROM Credentials c WHERE c.user_id = ?1")
+        , @NamedQuery(name = "Credentials.findByLogin", query = "SELECT c FROM Credentials c WHERE c.user_name = ?1 ")
         , @NamedQuery(name = "Credentials.findByLoginAndPassword", query = "SELECT c FROM Credentials c WHERE c.user_name = ?1 and c.user_password=?2")})
 public class Credentials implements Serializable {
 

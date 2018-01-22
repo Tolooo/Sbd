@@ -43,7 +43,7 @@
     </div>
     <div class="row">
         <button ng-click="prepare(samolot)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Edit
+            Edytuj
         </button>
 
         <!-- Modal -->
@@ -51,48 +51,63 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit samolot</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Edytuj samolot</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                        <form name="formSamolot" novalidate>
+                            <div class="form-group" ng-class="{ 'text-danger' : formSamolot.typ.$invalid && (formSamolot.$submitted || formSamolot.typ.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Typ:
                                     </span>
                                 </div>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" ng-model="samolot.typ" />
+                                <div class="mw-100 col-sm-8">
+                                    <input class="form-control" type="text" name='typ' ng-model="samolot.typ" required ng-class="{ 'is-invalid' : formSamolot.typ.$invalid && (formSamolot.$submitted || formSamolot.typ.$touched) }"
+                                    />
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formSamolot.$submitted || formSamolot.typ.$touched">
+                                    <div ng-show="formSamolot.typ.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formSamolot.iloscMiejsc.$invalid && (formSamolot.$submitted || formSamolot.iloscMiejsc.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Ilosc miejsc:
                                     </span>
                                 </div>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" ng-model="samolot.iloscMiejsc" />
+                                <div class="mw-100 col-sm-8">
+                                    <input class="form-control" type="number" name='iloscMiejsc' ng-model="samolot.iloscMiejsc" required ng-class="{ 'is-invalid' : formSamolot.iloscMiejsc.$invalid && (formSamolot.$submitted || formSamolot.iloscMiejsc.$touched) }"
+                                    />
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formSamolot.$submitted || formSamolot.iloscMiejsc.$touched">
+                                    <div ng-show="formSamolot.iloscMiejsc.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formSamolot.firmaLotnicza.$invalid && (formSamolot.$submitted || formSamolot.firmaLotnicza.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Firma lotnicza:
                                     </span>
                                 </div>
-                                <div class="col-sm-8">
-                                    <select class="custom-select" ng-model="samolot.firmaLotnicza" ng-options="firma.nazwa+' '+firma.kraj for firma in firmyLotnicze"></select>
+                                <div class="mw-100 col-sm-8">
+                                    <select class="custom-select" ng-model="samolot.firmaLotnicza" name='firmaLotnicza' required ng-options="firma.nazwa+' '+firma.kraj for firma in firmyLotnicze"
+                                        ng-class="{ 'is-invalid' : formSamolot.firmaLotnicza.$invalid && (formSamolot.$submitted || formSamolot.firmaLotnicza.$touched) }"></select>
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formSamolot.$submitted || formSamolot.firmaLotnicza.$touched">
+                                    <div ng-show="formSamolot.firmaLotnicza.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button ng-click="updateSamolot()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                        <button ng-click="updateSamolot()" type="submit" class="btn btn-primary">Zapisz</button>
                     </div>
                 </div>
             </div>

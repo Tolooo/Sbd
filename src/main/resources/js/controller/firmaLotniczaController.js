@@ -16,9 +16,26 @@
 
         var prepare = function (firmaLotnicza) {
             $scope.editMode = true;
-            $scope.firmaLotnicza = firmaLotnicza;
+            $scope.firmaLotnicza = angular.copy(firmaLotnicza); 
         }
 
+        var contains = function (a, obj) {
+            var i = a.length;
+            while (i--) {
+                if (a[i].id_firmyLotniczej === obj.id_firmyLotniczej) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        var onUpdateComplete = function (response) {
+            if ($scope.firmyLotnicze) {
+                var i = contains($scope.firmyLotnicze, $scope.firmaLotnicza)
+                if (i != -1) {
+                    $scope.firmyLotnicze[i] = $scope.firmaLotnicza;
+                }
+            }
+        };
         var onSaveFirmaLotniczaComplete = function (response) {
             $scope.firmyLotnicze.push(response.data);
         };
@@ -31,14 +48,26 @@
             $scope.error = response.error;
         };
         var saveFirmaLotnicza = function () {
-            $http.post('http://localhost:8080/firmyLotnicze', $scope.firmaLotnicza).then(onSaveFirmaLotniczaComplete, onError);
+            if (!$scope.formFirmaLotnicza.$invalid) {
+                $("#exampleModal").modal('hide')
+                $http.post('http://localhost:8080/firmyLotnicze', $scope.firmaLotnicza).then(onSaveFirmaLotniczaComplete, onError);
+            }
+            else {
+                $("#exampleModal").modal({ show: true });
+            }
         };
         var deleteFirmaLotnicza = function (firmaLotnicza) {
             $http.delete('http://localhost:8080/firmyLotnicze/' + firmaLotnicza.id_firmyLotniczej).then(onDeleteFirmaLotniczaComplete, onError)
         };
 
         var updateFirmaLotnicza = function () {
-            $http.put('http://localhost:8080/firmyLotnicze/' + $scope.firmaLotnicza.id_firmyLotniczej, $scope.firmaLotnicza);
+            if (!$scope.formFirmaLotnicza.$invalid) {
+                $("#exampleModal").modal('hide')
+                $http.put('http://localhost:8080/firmyLotnicze/' + $scope.firmaLotnicza.id_firmyLotniczej, $scope.firmaLotnicza).then(onUpdateComplete, onError);
+            }
+            else {
+                $("#exampleModal").modal({ show: true });
+            }
         };
 
         var detailFirmaLotnicza = function (id) {
@@ -47,6 +76,8 @@
         }
         if ($location.url() == "/firmyLotnicze")
             $http.get("http://localhost:8080/firmyLotnicze").then(onFirmyLotniczeComplete, onError);
+        else if ($location.url() == ("/lotniska/" + $routeParams.id + "/firmyLotnicze"))
+            $http.get("http://localhost:8080/lotniska/" + $routeParams.id + "/firmyLotnicze").then(onFirmyLotniczeComplete, onError);
         else
             detailFirmaLotnicza($routeParams.id);
         $scope.prepare = prepare;

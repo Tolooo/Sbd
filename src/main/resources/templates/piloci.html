@@ -1,92 +1,102 @@
 <div class="container">
-    <button ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Add new
-    </button>
-    <div class="row">
-        <div class="col-sm-2">
-            Pilot id
+    <div class="row justify-content-end">
+        <div class="mw-100 col-4">
+            <h4 style="margin: 20px">Dane tabeli pilot:</h4>
         </div>
-        <div class="col-sm-2">
-            Name
+        <div class="mw-100 col-3 text-right">
+            <p style="margin-top: 25px;">
+                <b>Dodaj nowego pilota:</b>
+            </p>
         </div>
-        <div class="col-sm-3">
-            Surname
-        </div>
-        <div class="col-sm">
-            Edit
-        </div>
-        <div class="col-sm">
-            Delete
+        <div class="mw-100 col-1">
+            <button style="margin: 20px" ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
         </div>
     </div>
-    <ul class="list-unstyled">
-        <li ng-repeat="pilot in pilots">
-            <div class="row">
-                <div class="col-sm-2">
-                    <span>
-                        <a ng-href="http://localhost:8081/#!/piloci/{{pilot.id_pilota}}">{{pilot.id_pilota}}</a>
-                    </span>
-                </div>
-                <div class="col-sm-2">
-                    <span>{{pilot.imie}}</span>
-
-                </div>
-                <div class="col-sm-3">
-                    <span>{{pilot.nazwisko}}</span>
-
-                </div>
-                <div class="col-sm">
-                    <button ng-click="prepare(pilot)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Edit
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Pilot id</th>
+                <th scope="col">Imie</th>
+                <th scope="col">Nazwisko</th>
+                <th scope="col">Edytuj</th>
+                <th scope="col">Usuń</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="p in pilots">
+                <th scope="row">
+                    <a ng-href="http://localhost:8081/#!/piloci/{{p.id_pilota}}">{{p.id_pilota}}</a>
+                </th>
+                <td>
+                    <span>{{p.imie}}</span>
+                </td>
+                <td>
+                    <span>{{p.nazwisko}}</span>
+                </td>
+                <td>
+                    <button ng-click="prepare(p)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        <i class="fa fa-edit"></i>
                     </button>
-                </div>
-                <div class="col-sm">
-                    <button type="button" ng-click="deletePilot(pilot)" value="Delete" class="btn">
-                        <i class="fas fa-trash-alt"></i>
+                </td>
+                <td>
+                    <button type="button" ng-click="deletePilot(p)" value="Delete" class="btn btn-primary">
+                        <i class="fa fa-trash-alt"></i>
                     </button>
-                </div>
-            </div>
-        </li>
-    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <div class="row">
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edit pilot</h5>
-                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Add new pilot</h5>
+                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edytuj pilota</h5>
+                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Dodaj nowego pilota</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                        <form name="formPilot" novalidate>
+                            <div class="form-group" ng-class="{ 'text-danger' : formPilot.imie.$invalid && (formPilot.$submitted || formPilot.imie.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Name:
                                     </span>
                                 </div>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" ng-model="pilot.imie" />
+                                <div class="mw-100 col-sm-8">
+                                    <input class="form-control" name="imie" type="text" ng-model="pilot.imie" required ng-class="{ 'is-invalid' : formPilot.imie.$invalid && (formPilot.$submitted || formPilot.imie.$touched) }"
+                                    />
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formPilot.$submitted || formPilot.imie.$touched">
+                                    <div ng-show="formPilot.imie.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formPilot.nazwisko.$invalid && (formPilot.$submitted || formPilot.nazwisko.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Surname:
                                     </span>
                                 </div>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" ng-model="pilot.nazwisko" />
+                                <div class="mw-100 col-sm-8">
+                                    <input class="form-control" name="nazwisko" type="text" ng-model="pilot.nazwisko" required ng-class="{ 'is-invalid' : formPilot.nazwisko.$invalid && (formPilot.$submitted || formPilot.nazwisko.$touched) }"
+                                    />
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formPilot.$submitted || formPilot.nazwisko.$touched">
+                                    <div ng-show="formPilot.nazwisko.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button ng-if="editMode" ng-click="updatePilot()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
-                        <button ng-if="!editMode" ng-click="savePilot()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                        <button ng-if="editMode" ng-click="updatePilot()" type="submit" class="btn btn-primary">Zapisz</button>
+                        <button ng-if="!editMode" ng-click="savePilot()" type="submit" class="btn btn-primary">Zapisz</button>
                     </div>
                 </div>
             </div>

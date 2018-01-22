@@ -1,0 +1,112 @@
+<div class="container">
+    <div class="w-100 alert alert-info alert-dismissible fade show" ng-if="info" id='alert' role="alert">
+        <strong>{{info}}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <!-- <div class="row justify-content-center">
+        <div class="mw-100 col-4">
+            <h4 style="margin: 20px">Dane tabeli lot:</h4>
+        </div>
+        <div class="mw-100 col-3 text-right">
+            <p style="margin-top: 25px;">
+                <b>Dodaj nowy lot:</b>
+            </p>
+        </div>
+        <div class="mw-100 col-1">
+            <button style="margin: 20px" ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">Z</div>
+        <div class="col-sm">Do</div>
+        <div class="col-sm"></div>
+    </div> -->
+    <form>
+        <div class="form-group row" style="margin:10px">
+            <h1>Wybór lotów:</h1>
+        </div>
+        <div class="form-group row" style="margin:30px">
+            <label for="poczatek" class="col-sm-1 col-form-label ">Z: </label>
+            <div class="mw-100 col-sm-1">
+                <select class="custom-select" id="poczatek" ng-model="lotnisko1">
+                    <option ng-repeat="lotnisko in lotniska" value="{{lotnisko.id_lotniska}}">{{lotnisko.miejscowosc}} ({{lotnisko.iata}})</option>
+                </select>
+            </div>
+            <label for="koniec" class="col-sm-3 col-form-label  text-right">Do: </label>
+            <div class="mw-100 col-sm-1">
+                <select class="custom-select" id="koniec" ng-model="lotnisko2">
+                    <option ng-repeat="lotnisko in lotniska" value="{{lotnisko.id_lotniska}}">{{lotnisko.miejscowosc}} ({{lotnisko.iata}})</option>
+                </select>
+            </div>
+            <div class="mw-100 col-sm-1">
+                <button class="btn btn-primary" ng-click="search()">Szukaj</button>
+            </div>
+        </div>
+    </form>
+    <!-- <div class="row">
+        <div class="col-sm">
+            Klasa:
+        </div>
+        <div class="col-sm">
+            <select class="custom-select" ng-model="klasa">
+                <option selected value="Ekonomiczna">Ekonomiczna</option>
+                <option value="Biznes">Biznes</option>
+                <option value="Pierwsza">Pierwsza</option>
+            </select>
+        </div>
+        <div class="col-sm">
+            <button class="btn" ng-click="search()" >Szukaj</button>
+        </div>
+    </div> --> 
+    <table class="table table-striped" ng-if="loty">
+        <thead>
+            <tr>
+                <th scope="col">Lot id</th>
+                <th scope="col">Klasa</th>
+                <th scope="col">Ilosc miejsc</th>
+                <th scope="col">Pilot</th>
+                <th scope="col">Trasa</th>
+                <th scope="col">Wylot</th>
+                <th scope="col">Przylot</th>
+                <th scope="col">Zakup</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="lot in loty">
+                <th scope="row">
+                    <a ng-href="http://localhost:8081/#!/loty/{{lot.id_lotu}}">{{lot.id_lotu}}</a>
+                </th>
+                <td>
+                    <span>{{lot.klasa}}</span>
+                </td>
+                <td>
+                    <span>{{lot.iloscMiejsc}}</span>
+                </td>
+                <td>
+                    <span>{{lot.pilot.imie}} {{lot.pilot.nazwisko}}</span>
+                </td>
+                <td>
+                    <span>{{lot.trasa.poczatek.miejscowosc}} ({{lot.trasa.poczatek.iata}}) -> {{lot.trasa.koniec.miejscowosc}}
+                        ({{lot.trasa.koniec.iata}})
+                    </span>
+                </td>
+                <td>
+                    <span>{{lot.dataLotu.wylot|date:'yyyy-MM-dd HH:mm'}}</span>
+                </td>
+                <td>
+                    <span>{{lot.dataLotu.przylot|date:'yyyy-MM-dd HH:mm'}}</span>
+                </td>
+                <td>
+                    <button class="btn btn-primary" ng-click="kupBilet(lot)">Buy
+                        <i class="fa fa-shopping-cart"></i>
+                    </button>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>

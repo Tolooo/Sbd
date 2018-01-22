@@ -32,22 +32,45 @@
         };
         var prepare = function (samolot) {
             $scope.editMode = true;
-            $scope.samolot = samolot;
+            $scope.samolot = angular.copy(samolot);
             if ($scope.firmyLotnicze !== undefined)
                 $scope.samolot.firmaLotnicza = $scope.firmyLotnicze.filter(function (firmaLotnicza) {
                     return firmaLotnicza.id_firmyLotniczej == $scope.samolot.firmaLotnicza.id_firmyLotniczej
                 })[0]
         }
+        var contains = function (a, obj) {
+            var i = a.length;
+            while (i--) {
+                if (a[i].id_samolotu === obj.id_samolotu) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        var onUpdateComplete = function (response) {
+            if ($scope.samoloty) {
+                var i = contains($scope.samoloty, $scope.samolot)
+                if (i != -1) {
+                    $scope.samoloty[i] = $scope.samolot;
+                }
+            }
+        };
 
         var saveSamolot = function () {
-            if ($location.url() == ("/firmyLotnicze/" + $routeParams.id + "/samoloty"))
-                $http.post('http://localhost:8080/samoloty/firmyLotnicze/' + $routeParams.id, $scope.samolot).then(onSaveSamolotComplete, onError);
-            else {
-                //moglo przestac dzialac xD
-                if ($scope.firmaLotnicza !== undefined) {
-                    $http.post('http://localhost:8080/samoloty/firmyLotnicze/' + $scope.firmaLotnicza, $scope.samolot).then(onSaveSamolotComplete, onError);
-                    //$http.post('http://localhost:8080/samoloty', samolot).then(onSaveSamolotComplete, onError);
+            if (!$scope.formSamolot.$invalid) {
+                $("#exampleModal").modal('hide')
+                if ($location.url() == ("/firmyLotnicze/" + $routeParams.id + "/samoloty"))
+                    $http.post('http://localhost:8080/samoloty/firmyLotnicze/' + $routeParams.id, $scope.samolot).then(onSaveSamolotComplete, onError);
+                else {
+                    //moglo przestac dzialac xD
+                    if ($scope.firmaLotnicza !== undefined) {
+                        $http.post('http://localhost:8080/samoloty/firmyLotnicze/' + $scope.firmaLotnicza, $scope.samolot).then(onSaveSamolotComplete, onError);
+                        //$http.post('http://localhost:8080/samoloty', samolot).then(onSaveSamolotComplete, onError);
+                    }
                 }
+            }
+            else {
+                $("#exampleModal").modal({ show: true });
             }
         };
         var deleteSamolot = function (samolot) {
@@ -55,7 +78,13 @@
         };
 
         var updateSamolot = function () {
-            $http.put('http://localhost:8080/samoloty/' + $scope.samolot.id_samolotu, $scope.samolot);
+            if (!$scope.formSamolot.$invalid) {
+                $("#exampleModal").modal('hide')
+                $http.put('http://localhost:8080/samoloty/' + $scope.samolot.id_samolotu, $scope.samolot).then(onUpdateComplete, onError);
+            }
+            else {
+                $("#exampleModal").modal({ show: true });
+            }
         };
 
         var detailSamolot = function (id) {

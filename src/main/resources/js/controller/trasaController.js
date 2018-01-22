@@ -1,5 +1,5 @@
 (function () {
-    var trasaController = function ($scope, $routeParams, $http, $location,Session) {
+    var trasaController = function ($scope, $routeParams, $http, $location, Session) {
         var onTrasyComplete = function (response) {
             $scope.trasy = response.data;
         };
@@ -27,7 +27,7 @@
 
         var prepare = function (trasa) {
             $scope.editMode = true;
-            $scope.trasa = trasa;
+            $scope.trasa = angular.copy(trasa);
             if ($scope.lotniska !== undefined) {
                 $scope.trasa.poczatek = $scope.lotniska.filter(function (lotnisko) {
                     return lotnisko.id_lotniska == $scope.trasa.poczatek.id_lotniska
@@ -38,19 +38,48 @@
 
             }
         }
+        var contains = function (a, obj) {
+            var i = a.length;
+            while (i--) {
+                if (a[i].id_trasy === obj.id_trasy) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        var onUpdateComplete = function (response) {
+            if ($scope.trasy) {
+                var i = contains($scope.trasy, $scope.trasa)
+                if (i != -1) {
+                    $scope.trasy[i] = $scope.trasa;
+                }
+            }
+        };
 
         var onError = function (response) {
             $scope.error = response.error;
         };
         var saveTrasa = function (poczatek, koniec) {
-            $http.post('http://localhost:8080/trasy', $scope.trasa).then(onSaveTrasaComplete, onError);
+            if (!$scope.formTrasa.$invalid) {
+                $("#exampleModal").modal('hide')
+                $http.post('http://localhost:8080/trasy', $scope.trasa).then(onSaveTrasaComplete, onError);
+            }
+            else {
+                $("#exampleModal").modal({ show: true });
+            }
         };
         var deleteTrasa = function (trasa) {
             $http.delete('http://localhost:8080/trasy/' + trasa.id_trasy).then(onDeleteTrasaComplete, onError)
         };
 
         var updateTrasa = function () {
-            $http.put('http://localhost:8080/trasy/' + $scope.trasa.id_trasy, $scope.trasa);
+            if (!$scope.formTrasa.$invalid) {
+                $("#exampleModal").modal('hide')
+                $http.put('http://localhost:8080/trasy/' + $scope.trasa.id_trasy, $scope.trasa).then(onUpdateComplete, onError);
+            }
+            else {
+                $("#exampleModal").modal({ show: true });
+            }
         };
 
         var detailTrasa = function (id) {
@@ -77,5 +106,5 @@
         $scope.detailTrasa = detailTrasa;
     };
 
-    angular.module('myApp').controller("trasaController", ['$scope', '$routeParams', '$http', '$location','Session', trasaController]);
+    angular.module('myApp').controller("trasaController", ['$scope', '$routeParams', '$http', '$location', 'Session', trasaController]);
 }()) 

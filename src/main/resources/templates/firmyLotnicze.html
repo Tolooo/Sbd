@@ -1,8 +1,20 @@
 <div class="container">
-    <button ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Add new
-    </button>
-    <table class="table">
+    <div class="row justify-content-end">
+        <div class="mw-100 col-4">
+            <h4 style="margin: 20px">Dane tabeli firma lotnicza:</h4>
+        </div>
+        <div class="mw-100 col-3 text-right">
+            <p style="margin-top: 25px;">
+                <b>Dodaj nową firmę lotniczą:</b>
+            </p>
+        </div>
+        <div class="mw-100 col-1">
+            <button style="margin: 20px" ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">Firma lotnicza id</th>
@@ -11,45 +23,45 @@
                 <th scope="col">Kraj</th>
                 <th scope="col">Adres</th>
                 <th scope="col">Iata</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Delete</th>
+                <th scope="col">Edytuj</th>
+                <th scope="col">Usuń</th>
 
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="firmaLotnicza in firmyLotnicze">
+            <tr ng-repeat="f in firmyLotnicze">
                 <th scope="row">
-                    <a ng-href="http://localhost:8081/#!/firmyLotnicze/{{firmaLotnicza.id_firmyLotniczej}}">{{firmaLotnicza.id_firmyLotniczej}}</a>
+                    <a ng-href="http://localhost:8081/#!/firmyLotnicze/{{f.id_firmyLotniczej}}">{{f.id_firmyLotniczej}}</a>
                 </th>
 
                 <td>
-                    <span>{{firmaLotnicza.nazwa}}</span>
+                    <span>{{f.nazwa}}</span>
 
                 </td>
                 <td>
-                    <span>{{firmaLotnicza.nip}}</span>
+                    <span>{{f.nip}}</span>
 
                 </td>
                 <td>
-                    <span>{{firmaLotnicza.kraj}}</span>
+                    <span>{{f.kraj}}</span>
 
                 </td>
                 <td>
-                    <span>{{firmaLotnicza.adres}}</span>
+                    <span>{{f.adres}}</span>
 
                 </td>
                 <td>
-                    <span>{{firmaLotnicza.iata}}</span>
+                    <span>{{f.iata}}</span>
 
                 </td>
                 <td>
-                    <button ng-click="prepare(firmaLotnicza)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Edit
+                    <button ng-click="prepare(f)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        <i class="fa fa-edit"></i>
                     </button>
                 </td>
                 <td>
-                    <button type="button" ng-click="deleteFirma(firmaLotnicza)" value="Delete" class="btn">
-                        <i class="fas fa-trash-alt"></i>
+                    <button type="button" ng-click="deleteFirma(f)" value="Delete" class="btn btn-primary">
+                        <i class="fa fa-trash-alt"></i>
                     </button>
                 </td>
             </tr>
@@ -60,70 +72,99 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edit firma lotnicza</h5>
-                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Add new firma lotnicza</h5>
+                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edytuj firmę lotniczą</h5>
+                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Dodaj nową firmę lotniczą</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                        <form name="formFirmaLotnicza" novalidate>
+                            <div class="form-group" ng-class="{ 'text-danger' : formFirmaLotnicza.nazwa.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.nazwa.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Nazwa:
                                     </span>
                                 </div>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" ng-model="firmaLotnicza.nazwa" />
+                                <div class="mw-100 col-sm-8">
+                                    <input class="form-control" name="nazwa" type="text" ng-model="firmaLotnicza.nazwa" required ng-class="{ 'is-invalid' : formFirmaLotnicza.nazwa.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.nazwa.$touched) }"
+                                    />
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formFirmaLotnicza.$submitted || formFirmaLotnicza.nazwa.$touched">
+                                    <div ng-show="formFirmaLotnicza.nazwa.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formFirmaLotnicza.iata.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.iata.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Iata:
                                     </span>
                                 </div>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" ng-model="firmaLotnicza.iata" />
+                                <div class="mw-100 col-sm-8">
+                                    <input class="form-control" name="iata" minlength="2" maxlength="2" type="text" ng-model="firmaLotnicza.iata" required ng-class="{ 'is-invalid' : formFirmaLotnicza.iata.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.iata.$touched) }"
+                                    />
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formFirmaLotnicza.$submitted || formFirmaLotnicza.iata.$touched">
+                                    <div ng-show="formFirmaLotnicza.iata.$error.required">
+                                        Pole wymagane!</div>
+                                    <div ng-show="formFirmaLotnicza.iata.$error.minlength || formFirmaLotnicza.iata.$error.maxlength">
+                                        Wartość musi się składać z 2 znaków!</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formFirmaLotnicza.adres.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.adres.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Adres:
                                     </span>
                                 </div>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" maxlength="25" ng-model="firmaLotnicza.adres" />
+                                <div class="mw-100 col-sm-8">
+                                    <input class="form-control" name="adres" type="text" maxlength="25" ng-model="firmaLotnicza.adres" required ng-class="{ 'is-invalid' : formFirmaLotnicza.adres.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.adres.$touched) }"
+                                    />
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formFirmaLotnicza.$submitted || formFirmaLotnicza.adres.$touched">
+                                    <div ng-show="formFirmaLotnicza.adres.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formFirmaLotnicza.kraj.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.kraj.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Kraj:
                                     </span>
                                 </div>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" ng-model="firmaLotnicza.kraj" />
+                                <div class="mw-100 col-sm-8">
+                                    <input class="form-control" name="kraj" type="text" ng-model="firmaLotnicza.kraj" required ng-class="{ 'is-invalid' : formFirmaLotnicza.kraj.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.kraj.$touched) }"
+                                    />
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formFirmaLotnicza.$submitted || formFirmaLotnicza.kraj.$touched">
+                                    <div ng-show="formFirmaLotnicza.kraj.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formFirmaLotnicza.nip.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.nip.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Nip:
                                     </span>
                                 </div>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="number" ng-model="firmaLotnicza.nip" />
+                                <div class="mw-100 col-sm-4">
+                                    <input class="form-control" name="nip" ng-class="{ 'is-invalid' : formFirmaLotnicza.nip.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.nip.$touched) }"
+                                        type="number" ng-model="firmaLotnicza.nip" minlength="10" maxlength="10" required/>
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formFirmaLotnicza.$submitted || formFirmaLotnicza.nip.$touched">
+                                    <div ng-show="formFirmaLotnicza.nip.$error.required">
+                                        Pole wymagane!</div>
+                                    <div ng-show="formFirmaLotnicza.nip.$error.minlength || formFirmaLotnicza.nip.$error.maxlength">
+                                        Wartość musi się składać z 10 cyfr!</div>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button ng-if="editMode" ng-click="updateFirmaLotnicza()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
-                        <button ng-if="!editMode" ng-click="saveFirmaLotnicza()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                        <button ng-if="editMode" ng-click="updateFirmaLotnicza()" type="submit" class="btn btn-primary">Zapisz</button>
+                        <button ng-if="!editMode" ng-click="saveFirmaLotnicza()" type="submit" class="btn btn-primary">Zapisz</button>
                     </div>
                 </div>
             </div>

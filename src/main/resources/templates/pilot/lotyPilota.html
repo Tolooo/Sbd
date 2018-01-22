@@ -1,49 +1,39 @@
 <div class="container">
-    <div class="row">
-        <div class="col-sm text-center">
-            Lot id
-        </div>
-        <div class="col-sm-2 text-center">
-            Typ samolotu
-        </div>
-        <div class="col-sm text-center">
-            Wylot z
-        </div>
-        <div class="col-sm text-center">
-            Przylot do
-        </div>
-        <div class="col-sm-3 text-center">
-            Wylot
-        </div>
-        <div class="col-sm-3 text-center">
-            Przylot
+    <div class="row justify-content-end">
+        <div class="mw-100 col-4">
+            <h4 style="margin: 20px">Dane lotów pilota:</h4>
         </div>
     </div>
-    <ul class="list-unstyled">
-        <li ng-repeat="lot in loty">
-            <div class="row">
-                <div class="col-sm text-center">
-                    <span >
-                        <a ng-href="http://localhost:8081/#!/loty/{{lot.id_lotu}}">{{lot.id_lotu}}</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Lot id</th>
+                <th scope="col">Typ samolotu</th>
+                <th scope="col">Trasa</th>
+                <th scope="col">Wylot</th>
+                <th scope="col">Przylot</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="lot in loty">
+                <th scope="row">
+                    <a ng-href="http://localhost:8081/#!/loty/{{lot.id_lotu}}">{{lot.id_lotu}}</a>
+                </th>
+                <td>
+                    <span>{{lot.samolot.typ}}</span>
+                </td>
+                <td>
+                    <span>{{lot.trasa.poczatek.miejscowosc}} ({{lot.trasa.poczatek.iata}}) -> {{lot.trasa.koniec.miejscowosc}}
+                        ({{lot.trasa.koniec.iata}})
                     </span>
-                </div>
-                <div class="col-sm-2 text-center">
-                    <span >{{lot.samolot.typ}}</span>
-                </div>
-                <div class="col-sm text-center">
-                    <span >{{lot.trasa.poczatek.miejscowosc}}</span>
-                </div>
-                <div class="col-sm text-center">
-                    <span >{{lot.trasa.koniec.miejscowosc}}</span>
-                </div>
-                <div class="col-sm-3 text-center">
-                    <span >{{lot.dataLotu.wylot|date:'yyyy-MM-dd HH:mm:ss'}}</span>
-                </div>
-                <div class="col-sm-3 text-center">
-                    <span >{{lot.dataLotu.przylot|date:'yyyy-MM-dd HH:mm:ss'}}</span>
-                </div>
-
-            </div>
-        </li>
-    </ul>
+                </td>
+                <td>
+                    <span>{{lot.dataLotu.wylot|date:'yyyy-MM-dd HH:mm'}}</span>
+                </td>
+                <td>
+                    <span>{{lot.dataLotu.przylot|date:'yyyy-MM-dd HH:mm'}}</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

@@ -1,111 +1,123 @@
 <div class="container">
-    <button ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Add new
-    </button>
-    <div class="row">
-        <div class="col-sm">
-            Bilet id
+    <div class="row justify-content-end">
+        <div class="mw-100 col-4">
+            <h4 style="margin: 20px">Dane tabeli bilet:</h4>
         </div>
-        <div class="col-sm-2">
-            Klasa
+        <div class="mw-100 col-3 text-right">
+            <p style="margin-top: 25px;">
+                <b>Dodaj nowy bilet:</b>
+            </p>
         </div>
-        <div class="col-sm-2">
-            Nr miejsca
-        </div>
-        <div class="col-sm">
-            Nr lotu
-        </div>
-        <div class="col-sm-4">
-            Nr daty lotu
-        </div>
-        <div class="col-sm">
-            Edit
-        </div>
-        <div class="col-sm">
-            Delete
+        <div class="mw-100 col-1">
+            <button style="margin: 20px" ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
         </div>
     </div>
-    <ul class="list-unstyled">
-        <li ng-repeat="bilet in bilety">
-            <div class="row">
-                <div class="col-sm">
-                    <span>
-                        <a ng-href="http://localhost:8081/#!/bilety/{{bilet.id_biletu}}">{{bilet.id_biletu}}</a>
-                    </span>
-                </div>
-                <div class="col-sm-2">
-                    <span>{{bilet.klasa}}</span>
-                </div>
-                <div class="col-sm-2">
-                    <span>{{bilet.nr_miejsca}}</span>
-                </div>
-                <div class="col-sm">
-                    <span>{{bilet.lot.id_lotu}}</span>
-                </div>
-                <div class="col-sm-4">
-                    <span>{{bilet.dataLotu.wylot|date:'yyyy-MM-dd HH:mm'}} -> {{bilet.dataLotu.przylot|date:'yyyy-MM-dd HH:mm'}}</span>
-                </div>
-                <div class="col-sm">
-                    <button ng-click="prepare(bilet)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Edit
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Bilet id</th>
+                <th scope="col">Klasa</th>
+                <th scope="col">Nr miejsca</th>
+                <th scope="col">Nr lotu</th>
+                <th scope="col">Data lotu</th>
+                <th scope="col">Edytuj</th>
+                <th scope="col">Usuń</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="b in bilety">
+                <th scope="row">
+                    <a ng-href="http://localhost:8081/#!/bilety/{{b.id_biletu}}">{{b.id_biletu}}</a>
+                </th>
+                <td>
+                    <span>{{b.klasa}}</span>
+                </td>
+                <td>
+                    <span>{{b.nr_miejsca}}</span>
+                </td>
+                <td>
+                    <span>{{b.lot.id_lotu}}</span>
+                </td>
+                <td>
+                    <span>{{b.dataLotu.wylot|date:'yyyy-MM-dd HH:mm'}} -> {{b.dataLotu.przylot|date:'yyyy-MM-dd HH:mm'}}</span>
+                </td>
+                <td>
+                    <button ng-click="prepare(b)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        <i class="fa fa-edit"></i>
                     </button>
-                </div>
-                <div class="col-sm">
-                    <button type="button" ng-click="deleteBilet(bilet)" value="Delete" class="btn">
-                        <i class="fas fa-trash-alt"></i>
+                </td>
+                <td>
+                    <button type="button" ng-click="deleteBilet(b)" value="Delete" class="btn btn-primary">
+                        <i class="fa fa-trash-alt"></i>
                     </button>
-                </div>
-            </div>
-        </li>
-    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <div class="row">
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edit bilet</h5>
-                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Add new bilet</h5>
+                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edytuj bilet</h5>
+                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Dodaj nowy bilet</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                        <form name=formBilet novalidate>
+                            <div class="form-group" ng-class="{ 'text-danger' : formBilet.klasa.$invalid && (formBilet.$submitted || formBilet.klasa.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     Klasa:
                                 </div>
-                                <div class="col-sm-3">
-                                    <select class="custom-select" ng-model="bilet.klasa">
+                                <div class="mw-100 col-sm-3">
+                                    <select class="custom-select" name="klasa" ng-model="bilet.klasa" required ng-class="{ 'is-invalid' : formBilet.klasa.$invalid && (formBilet.$submitted || formBilet.klasa.$touched) }">
                                         <option selected value="Ekonomiczna">Ekonomiczna</option>
                                         <option value="Biznes">Biznes</option>
                                         <option value="Pierwsza">Pierwsza</option>
                                     </select>
                                 </div>
+                                <div class="mw-100 col-sm-4" ng-show="formBilet.$submitted || formBilet.klasa.$touched">
+                                    <div ng-show="formBilet.klasa.$error.required">
+                                        Pole wymagane!</div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formBilet.nr_miejsca.$invalid && (formBilet.$submitted || formBilet.nr_miejsca.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Nr miejsca:
                                     </span>
                                 </div>
-                                <div class="col-sm-3">
-                                    <input class="form-control" type="number" ng-model="bilet.nr_miejsca" />
+                                <div class="mw-100 col-sm-3">
+                                    <input class="form-control" type="number" ng-model="bilet.nr_miejsca" name="nr_miejsca" required ng-class="{ 'is-invalid' : formBilet.nr_miejsca.$invalid && (formBilet.$submitted || formBilet.nr_miejsca.$touched) }"
+                                    />
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formBilet.$submitted || formBilet.nr_miejsca.$touched">
+                                    <div ng-show="formBilet.nr_miejsca.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formBilet.id_lotu.$invalid && (formBilet.$submitted || formBilet.id_lotu.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Nr lotu:
                                     </span>
                                 </div>
                                 <div class="mw-100 col-sm-3">
-                                    <select class="custom-select" ng-model="bilet.lot" ng-options="lot.id_lotu for lot in loty"></select>
+                                    <select class="custom-select" name="id_lotu" ng-model="bilet.lot" ng-options="lot.id_lotu for lot in loty" required ng-class="{ 'is-invalid' : formBilet.id_lotu.$invalid && (formBilet.$submitted || formBilet.id_lotu.$touched) }">
+                                    </select>
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formBilet.$submitted || formBilet.id_lotu.$touched">
+                                    <div ng-show="formBilet.id_lotu.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
                             <!-- <div class="form-group">
-                                <div class="col-sm-3">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Data lotu:
                                     </span>
@@ -117,9 +129,9 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button ng-if="editMode" ng-click="updateBilet()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
-                        <button ng-if="!editMode" ng-click="saveBilet()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                        <button ng-if="editMode" ng-click="updateBilet()" type="submit" class="btn btn-primary">Zapisz</button>
+                        <button ng-if="!editMode" ng-click="saveBilet()" type="submit" class="btn btn-primary">Zapisz</button>
                     </div>
                 </div>
             </div>

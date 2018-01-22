@@ -1,91 +1,102 @@
 <div class="container">
-    <button ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Add new
-    </button>
-    <div class="row">
-        <div class="col-sm-2">
-            Klient id
+    <div class="row justify-content-end">
+        <div class="mw-100 col-4">
+            <h4 style="margin: 20px">Dane tabeli klient:</h4>
         </div>
-        <div class="col-sm-2">
-            Nazwisko
+        <div class="mw-100 col-3 text-right">
+            <p style="margin-top: 25px;">
+                <b>Dodaj nowego klienta:</b>
+            </p>
         </div>
-        <div class="col-sm-2">
-            Imie
-        </div>
-        <div class="col-sm">
-            Edit
-        </div>
-        <div class="col-sm">
-            Delete
+        <div class="mw-100 col-1">
+            <button style="margin: 20px" ng-click="prepareNew()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
         </div>
     </div>
-    <ul class="list-unstyled">
-        <li ng-repeat="klient in klienci">
-            <div class="row">
-                <div class="col-sm-2">
-                    <span>
-                        <a ng-href="http://localhost:8081/#!/klienci/{{klient.id_klienta}}">{{klient.id_klienta}}</a>
-                    </span>
-                </div>
-                <div class="col-sm-2">
-                    <span>{{klient.nazwisko}}</span>
-                </div>
-                <div class="col-sm-2">
-                    <span>{{klient.imie}}</span>
-                </div>
-                <div class="col-sm">
-                    <button ng-click="prepare(klient)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Edit
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Klient id</th>
+                <th scope="col">Nazwisko</th>
+                <th scope="col">Imie</th>
+                <th scope="col">Edytuj</th>
+                <th scope="col">Usuń</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="k in klienci">
+                <th scope="row">
+                    <a ng-href="http://localhost:8081/#!/klienci/{{k.id_klienta}}">{{k.id_klienta}}</a>
+                </th>
+                <td>
+                    <span>{{k.nazwisko}}</span>
+                </td>
+                <td>
+                    <span>{{k.imie}}</span>
+                </td>
+                <td>
+                    <button ng-click="prepare(k)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        <i class="fa fa-edit"></i>
                     </button>
-                </div>
-                <div class="col-sm">
-                    <button type="button" ng-click="deleteKlient(klient)" value="Delete" class="btn">
-                        <i class="fas fa-trash-alt"></i>
+                </td>
+                <td>
+                    <button type="button" ng-click="deleteKlient(k)" value="Delete" class="btn btn-primary">
+                        <i class="fa fa-trash-alt"></i>
                     </button>
-                </div>
-            </div>
-        </li>
-    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <div class="row">
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edit klient</h5>
-                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Add new klient</h5>
+                        <h5 ng-if="editMode" class="modal-title" id="exampleModalLabel">Edytuj klienta</h5>
+                        <h5 ng-if="!editMode" class="modal-title" id="exampleModalLabel">Dodaj nowego klienta</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                        <form name="formKlient" novalidate>
+                            <div class="form-group" ng-class="{ 'text-danger' : formKlient.imie.$invalid && (formKlient.$submitted || formKlient.imie.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Imie:
                                     </span>
                                 </div>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" ng-model="klient.imie" />
+                                <div class="mw-100 col-sm-8">
+                                    <input class="form-control" name="imie" ng-class="{ 'is-invalid' : formKlient.imie.$invalid && (formKlient.$submitted || formKlient.imie.$touched) }"
+                                        type="text" ng-model="klient.imie" required />
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formKlient.$submitted || formKlient.imie.$touched">
+                                    <div ng-show="formKlient.imie.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-3">
+                            <div class="form-group" ng-class="{ 'text-danger' : formKlient.nazwisko.$invalid && (formKlient.$submitted || formKlient.nazwisko.$touched)}">
+                                <div class="mw-100 col-sm-3">
                                     <span>
                                         Nazwisko:
                                     </span>
                                 </div>
-                                <div class="col-sm-8">
-                                    <input class="form-control" type="text" ng-model="klient.nazwisko" />
+                                <div class="mw-100 col-sm-8">
+                                    <input class="form-control" name="nazwisko" ng-class="{ 'is-invalid' : formKlient.nazwisko.$invalid && (formKlient.$submitted || formKlient.nazwisko.$touched) }"
+                                        type="text" ng-model="klient.nazwisko" required/>
+                                </div>
+                                <div class="mw-100 col-sm-4" ng-show="formKlient.$submitted || formKlient.nazwisko.$touched">
+                                    <div ng-show="formKlient.nazwisko.$error.required">
+                                        Pole wymagane!</div>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button ng-if="editMode" ng-click="updateKlient()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
-                        <button ng-if="!editMode" ng-click="saveKlient()" data-dismiss="modal" type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                        <button ng-if="editMode" ng-click="updateKlient()" type="submit" class="btn btn-primary">Zapisz</button>
+                        <button ng-if="!editMode" ng-click="saveKlient()" type="submit" class="btn btn-primary">Zapisz</button>
                     </div>
                 </div>
             </div>

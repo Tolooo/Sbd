@@ -1,5 +1,5 @@
 (function () {
-    var lotController = function ($scope, $routeParams, $http, $location, Session) {
+    var lotController = function ($scope, $rootScope, $routeParams, $http, $location, Session) {
 
         $scope.loty = null
         var onLotniskaComplete = function (response) {
@@ -36,7 +36,7 @@
 
         var prepare = function (lot) {
             $scope.editMode = true;
-            $scope.lot = lot;
+            $scope.lot = angular.copy(lot);
             if ($scope.dates !== undefined) {
                 $scope.lot.dataLotu = $scope.dates.filter(function (dataLotu) {
                     return dataLotu.id_daty == $scope.lot.dataLotu.id_daty
@@ -58,6 +58,24 @@
                 })[0]
         }
 
+        var contains = function (a, obj) {
+            var i = a.length;
+            while (i--) {
+                if (a[i].id_lotu === obj.id_lotu) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        var onUpdateComplete = function (response) {
+            if ($scope.loty) {
+                var i = contains($scope.loty, $scope.lot)
+                if (i != -1) {
+                    $scope.loty[i] = $scope.lot;
+                }
+            }
+        };
+
         var onPilotaLotyComplete = function (response) {
             $scope.loty = response.data;
         };
@@ -69,7 +87,7 @@
         };
 
         var onSaveLotComplete = function (response) {
-            let lot=response.data;
+            let lot = response.data;
             lot.dataLotu.wylot = new Date(lot.dataLotu.wylot);
             lot.dataLotu.przylot = new Date(lot.dataLotu.przylot);
             $scope.loty.push(lot);
@@ -85,14 +103,26 @@
             $scope.error = response.error;
         };
         var saveLot = function () {
-            $http.post('http://localhost:8080/loty', $scope.lot).then(onSaveLotComplete, onError);
+            if (!$scope.formLot.$invalid) {
+                $("#exampleModal").modal('hide')
+                $http.post('http://localhost:8080/loty', $scope.lot).then(onSaveLotComplete, onError);
+            }
+            else {
+                $("#exampleModal").modal({ show: true });
+            }
         };
         var deleteLot = function (lot) {
             $http.delete('http://localhost:8080/loty/' + lot.id_lotu).then(onDeleteLotComplete, onError)
         };
 
         var updateLot = function () {
-            $http.put('http://localhost:8080/loty/' + $scope.lot.id_lotu, $scope.lot);
+            if (!$scope.formLot.$invalid) {
+                $("#exampleModal").modal('hide')
+                $http.put('http://localhost:8080/loty/' + $scope.lot.id_lotu, $scope.lot).then(onUpdateComplete, onError);
+            }
+            else {
+                $("#exampleModal").modal({ show: true });
+            }
         };
 
         var detailLot = function (id) {
@@ -105,7 +135,12 @@
 
         var onBuyResult = function (response) {
             if (response.data !== null) {
-                console.log("Success")
+                $rootScope.success = "Zakup przeprowadzono pomyślnie!"
+                if (Session.userRole == "klient") {
+                    $location.path("/klienci/" + Session.userId + "/bilety");
+                } else {
+                    $location.path("/firmy/" + Session.userId + "/bilety");
+                }
             }
         }
 
@@ -118,17 +153,24 @@
                     return lot.trasa.koniec.id_lotniska == $scope.lotnisko2
                 })
             // .filter(function(lot){return lot.klasa==$scope.klasa}) 
-            if ($scope.loty.length === 0)
+            if ($scope.loty.length === 0) {
                 $scope.loty = null
+                $scope.info = "Nie znaleziono takich połączeń!"
+            }
         };
         var search = function () {
+            // $("#alert").hide();
+            $scope.info = ""
             $http.get("http://localhost:8080/loty").then(filterResult, onError)
         };
         var kupBilet = function (lot) {
-            if (Session.userRole == "klient")
+            if (Session.userRole == "klient") {
                 $http.post("http://localhost:8080/klienci/" + Session.userId + "/kupBilet", lot).then(onBuyResult, onError)
-            else
+            }
+            else {
                 $http.post("http://localhost:8080/firmy/" + Session.userId + "/kupBilet", lot).then(onBuyResult, onError)
+
+            }
         };
 
         if ($location.url() === "/loty" || $location.url() === "/loty/" + $routeParams.id) {
@@ -164,5 +206,5 @@
         $scope.updateLot = updateLot;
     };
 
-    angular.module('myApp').controller("lotController", ['$scope', '$routeParams', '$http', '$location', 'Session', lotController]);
+    angular.module('myApp').controller("lotController", ['$scope', '$rootScope', '$routeParams', '$http', '$location', 'Session', lotController]);
 }()) 

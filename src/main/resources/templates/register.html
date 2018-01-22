@@ -1,67 +1,68 @@
 <div class="container">
-    <div class="row">
-        <div class="w-100 alert alert-danger alert-dismissible fade show" ng-if="errors.length>0" role="alert">
-            <ul class="list-unstyled">
-                <li ng-repeat="error in errors">
-                    <strong>{{error}}</strong>
-                </li>
-            </ul>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+    <div class="w-100 alert alert-danger alert-dismissible fade show" ng-if="error" id="alert" role="alert">
+        <strong>{{error}}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-    <div class="row">
-        <form name="registerForm" novalidate>
-            <div class="form-group" ng-class="{ 'text-danger' : registerForm.username.$invalid && (registerForm.$submitted || registerForm.username.$touched)}">
-                <label for="username">Username:</label>
-                <input class="form-control" ng-class="{ 'is-invalid' : registerForm.username.$invalid && (registerForm.$submitted || registerForm.username.$touched) }"
-                    type="text" name="username" ng-model="user_name" required>
-                <div ng-show="registerForm.$submitted || registerForm.username.$touched">
-                    <div ng-show="registerForm.username.$error.required">
-                        Required!</div>
+    <div class="jumbotron">
+        <div class="row justify-content-center">
+            <h1 style="margin-bottom:25px">Panel rejestracji</h1>
+        </div>
+        <div class="row justify-content-center">
+            <form name="registerForm" novalidate>
+                <div class="form-group" ng-class="{ 'text-danger' : registerForm.username.$invalid && (registerForm.$submitted || registerForm.username.$touched)}">
+                    <label for="username">Nazwa użytkownika:</label>
+                    <input class="form-control" ng-class="{ 'is-invalid' : registerForm.username.$invalid && (registerForm.$submitted || registerForm.username.$touched) }"
+                        type="text" name="username" id="username" ng-model="user_name" required>
+                    <div ng-show="registerForm.$submitted || registerForm.username.$touched">
+                        <div ng-show="registerForm.username.$error.required">
+                            Pole wymagane!</div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group" ng-class="{ 'text-danger' : registerForm.pass1.$invalid && (registerForm.$submitted || registerForm.pass1.$touched)}">
-                <label for="pass1">Password:</label>
-                <input class="form-control" ng-class="{ 'is-invalid' : registerForm.pass1.$invalid && (registerForm.$submitted || registerForm.pass1.$touched) }"
-                    type="password" name="pass1" id="pass1" ng-model="pass1" required>
-                <div ng-show="registerForm.$submitted || registerForm.pass1.$touched">
-                    <div ng-show="registerForm.pass1.$error.required">
-                        Required!</div>
+                <div class="form-group" ng-class="{ 'text-danger' : registerForm.pass1.$invalid && (registerForm.$submitted || registerForm.pass1.$touched)}">
+                    <label for="pass1">Hasło:</label>
+                    <input class="form-control" ng-class="{ 'is-invalid' : registerForm.pass1.$invalid && (registerForm.$submitted || registerForm.pass1.$touched) }"
+                        type="password" name="pass1" id="pass1" ng-model="pass1" required>
+                    <div ng-show="registerForm.$submitted || registerForm.pass1.$touched">
+                        <div ng-show="registerForm.pass1.$error.required">
+                            Pole wymagane!</div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group" ng-class="{ 'text-danger' : registerForm.pass2.$invalid && (registerForm.$submitted || registerForm.pass2.$touched)}">
-                <label for="pass2">Confirm password:</label>
-                <input class="form-control" type="password" ng-class="{ 'is-invalid' : registerForm.pass2.$invalid && (registerForm.$submitted || registerForm.pass2.$touched) }"
-                    name="pass2" id="pass2" ng-model="pass2" required pw-check='pass1'>
-                <div ng-show="registerForm.$submitted || registerForm.pass2.$touched">
-                    <div ng-show="registerForm.pass2.$error.required">
-                        Required!</div>
+                <div class="form-group" ng-class="{ 'text-danger' : registerForm.pass2.$invalid && (registerForm.$submitted || registerForm.pass2.$touched)}">
+                    <label for="pass2">Potwierdź hasło:</label>
+                    <input class="form-control" type="password" ng-class="{ 'is-invalid' : registerForm.pass2.$invalid && (registerForm.$submitted || registerForm.pass2.$touched) }"
+                        name="pass2" id="pass2" ng-model="pass2" required pw-check='pass1'>
+                    <div ng-show="registerForm.$submitted || registerForm.pass2.$touched">
+                        <div ng-show="registerForm.pass2.$error.required">
+                            Pole wymagane!</div>
+                    </div>
+                    <div ng-show="registerForm.$submitted || registerForm.pass2.$touched">
+                        <div ng-show="registerForm.pass2.$error.pwmatch">
+                            Hasła się nie zgadzają!</div>
+                    </div>
                 </div>
-                <div ng-show="registerForm.$submitted || registerForm.pass2.$touched">
-                    <div ng-show="registerForm.pass2.$error.pwmatch">
-                        Passwords don't match!</div>
+                <div class="form-group" ng-class="{ 'text-danger' : registerForm.role.$invalid && (registerForm.$submitted || registerForm.role.$touched)}">
+                    <label for="role">Rola:</label>
+                    <select class="form-control" name="role" ng-model="user_role" required ng-class="{ 'is-invalid' : registerForm.role.$invalid && (registerForm.$submitted || registerForm.role.$touched) }">
+                        <option value="klient">Klient</option>
+                        <option value="firma">Firma</option>
+                        <option value="pilot">Pilot</option>
+                        <option value="firmaLotnicza">Firma Lotnicza</option>
+                        <option value="lotnisko">Lotnisko</option>
+                    </select>
+                    <div ng-show="registerForm.$submitted || registerForm.role.$touched">
+                        <div ng-show="registerForm.role.$error.required">
+                            Pole wymagane!</div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group" ng-class="{ 'text-danger' : registerForm.role.$invalid && (registerForm.$submitted || registerForm.role.$touched)}">
-                <label for="role">Role:</label>
-                <select class="form-control" name="role" ng-model="user_role" required>
-                    <option value="klient">Klient</option>
-                    <option value="firma">Firma</option>
-                    <option value="pilot">Pilot</option>
-                    <option value="firmaLotnicza">Firma Lotnicza</option>
-                    <option value="lotnisko">Lotnisko</option>
-                </select>
-                <div ng-show="registerForm.$submitted || registerForm.role.$touched">
-                    <div ng-show="registerForm.role.$error.required">
-                        Required!</div>
+                <div class="row justify-content-end" style="margin-right: 0px">
+                    <button ng-click="prepare(user_name,pass1,pass2,user_role)" type="submit" class="btn btn-primary">
+                        Dalej
+                    </button>
                 </div>
-            </div>
-            <button ng-click="prepare(user_name,pass1,pass2,user_role)" type="submit" class="btn btn-primary">
-                Next
-            </button>
-        </form>
+            </form>
+        </div>
         <!-- ng-submit="register(user_name,pass1,pass2,user_role)" -->
     </div>
 </div>
@@ -70,7 +71,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add new klient</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Dodaj nowego klienta</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -89,7 +90,7 @@
                             </div>
                             <div class="mw-100 col-sm-4" ng-show="formKlient.$submitted || formKlient.imie.$touched">
                                 <div ng-show="formKlient.imie.$error.required">
-                                    Required!</div>
+                                    Pole wymagane!</div>
                             </div>
                         </div>
                         <div class="form-group" ng-class="{ 'text-danger' : formKlient.nazwisko.$invalid && (formKlient.$submitted || formKlient.nazwisko.$touched)}">
@@ -104,14 +105,14 @@
                             </div>
                             <div class="mw-100 col-sm-4" ng-show="formKlient.$submitted || formKlient.nazwisko.$touched">
                                 <div ng-show="formKlient.nazwisko.$error.required">
-                                    Required!</div>
+                                    Pole wymagane!</div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button ng-click="saveKlient()" data-dismiss="modal" type="submit" class="btn btn-primary">Register</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                    <button ng-click="saveKlient()" type="submit" class="btn btn-primary">Zarejestruj</button>
                 </div>
             </div>
         </div>
@@ -122,7 +123,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add new firma</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Dodaj nową firmę</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -141,7 +142,7 @@
                             </div>
                             <div class="mw-100 col-sm-4" ng-show="formFirma.$submitted || formFirma.nazwa.$touched">
                                 <div ng-show="formFirma.nazwa.$error.required">
-                                    Required!</div>
+                                    Pole wymagane!</div>
                             </div>
                         </div>
                         <div class="form-group" ng-class="{ 'text-danger' : formFirma.nip.$invalid && (formFirma.$submitted || formFirma.nip.$touched)}">
@@ -156,16 +157,16 @@
                             </div>
                             <div class="mw-100 col-sm-4" ng-show="formFirma.$submitted || formFirma.nip.$touched">
                                 <div ng-show="formFirma.nip.$error.required">
-                                    Required!</div>
+                                    Pole wymagane!</div>
                                 <div ng-show="formFirma.nip.$error.minlength || formFirma.nip.$error.maxlength">
-                                    The value must have 10 digits!</div>
+                                    Wartość musi mieć 10 cyfr!</div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button ng-click="saveFirma()" data-dismiss="modal" type="submit" class="btn btn-primary">Register</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                    <button ng-click="saveFirma()" type="submit" class="btn btn-primary">Zarejestruj</button>
                 </div>
             </div>
         </div>
@@ -176,7 +177,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add new pilot</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Dodaj nowego pilota</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -186,7 +187,7 @@
                         <div class="form-group" ng-class="{ 'text-danger' : formPilot.imie.$invalid && (formPilot.$submitted || formPilot.imie.$touched)}">
                             <div class="col-sm-3">
                                 <span>
-                                    Name:
+                                    Imie:
                                 </span>
                             </div>
                             <div class="col-sm-8">
@@ -195,13 +196,13 @@
                             </div>
                             <div class="mw-100 col-sm-4" ng-show="formPilot.$submitted || formPilot.imie.$touched">
                                 <div ng-show="formPilot.imie.$error.required">
-                                    Required!</div>
+                                    Pole wymagane!</div>
                             </div>
                         </div>
                         <div class="form-group" ng-class="{ 'text-danger' : formPilot.nazwisko.$invalid && (formPilot.$submitted || formPilot.nazwisko.$touched)}">
                             <div class="col-sm-3">
                                 <span>
-                                    Surname:
+                                    Nazwisko:
                                 </span>
                             </div>
                             <div class="col-sm-8">
@@ -210,14 +211,14 @@
                             </div>
                             <div class="mw-100 col-sm-4" ng-show="formPilot.$submitted || formPilot.nazwisko.$touched">
                                 <div ng-show="formPilot.nazwisko.$error.required">
-                                    Required!</div>
+                                    Pole wymagane!</div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button ng-click="savePilot()" data-dismiss="modal" type="submit" class="btn btn-primary">Register</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                    <button ng-click="savePilot()" type="submit" class="btn btn-primary">Zarejestruj</button>
                 </div>
             </div>
         </div>
@@ -228,7 +229,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add new firma lotnicza</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Dodaj nową firmę lotniczą</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -247,7 +248,7 @@
                             </div>
                             <div class="mw-100 col-sm-4" ng-show="formFirmaLotnicza.$submitted || formFirmaLotnicza.nazwa.$touched">
                                 <div ng-show="formFirmaLotnicza.nazwa.$error.required">
-                                    Required!</div>
+                                    Pole wymagane!</div>
                             </div>
                         </div>
                         <div class="form-group" ng-class="{ 'text-danger' : formFirmaLotnicza.iata.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.iata.$touched)}">
@@ -262,9 +263,9 @@
                             </div>
                             <div class="mw-100 col-sm-4" ng-show="formFirmaLotnicza.$submitted || formFirmaLotnicza.iata.$touched">
                                 <div ng-show="formFirmaLotnicza.iata.$error.required">
-                                    Required!</div>
-                                    <div ng-show="formFirmaLotnicza.iata.$error.minlength || formFirmaLotnicza.iata.$error.maxlength">
-                                        The value must have 2 characters!</div>
+                                    Pole wymagane!</div>
+                                <div ng-show="formFirmaLotnicza.iata.$error.minlength || formFirmaLotnicza.iata.$error.maxlength">
+                                    Wartość musi mieć 2 znaki!</div>
                             </div>
                         </div>
                         <div class="form-group" ng-class="{ 'text-danger' : formFirmaLotnicza.adres.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.adres.$touched)}">
@@ -279,7 +280,7 @@
                             </div>
                             <div class="mw-100 col-sm-4" ng-show="formFirmaLotnicza.$submitted || formFirmaLotnicza.adres.$touched">
                                 <div ng-show="formFirmaLotnicza.adres.$error.required">
-                                    Required!</div>
+                                    Pole wymagane!</div>
                             </div>
                         </div>
                         <div class="form-group" ng-class="{ 'text-danger' : formFirmaLotnicza.kraj.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.kraj.$touched)}">
@@ -294,7 +295,7 @@
                             </div>
                             <div class="mw-100 col-sm-4" ng-show="formFirmaLotnicza.$submitted || formFirmaLotnicza.kraj.$touched">
                                 <div ng-show="formFirmaLotnicza.kraj.$error.required">
-                                    Required!</div>
+                                    Pole wymagane!</div>
                             </div>
                         </div>
                         <div class="form-group" ng-class="{ 'text-danger' : formFirmaLotnicza.nip.$invalid && (formFirmaLotnicza.$submitted || formFirmaLotnicza.nip.$touched)}">
@@ -309,16 +310,16 @@
                             </div>
                             <div class="mw-100 col-sm-4" ng-show="formFirmaLotnicza.$submitted || formFirmaLotnicza.nip.$touched">
                                 <div ng-show="formFirmaLotnicza.nip.$error.required">
-                                    Required!</div>
+                                    Pole wymagane!</div>
                                 <div ng-show="formFirmaLotnicza.nip.$error.minlength || formFirmaLotnicza.nip.$error.maxlength">
-                                    The value must have 10 digits!</div>
+                                    Wartość musi mieć 10 cyfr!</div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button ng-click="saveFirmaLotnicza()" data-dismiss="modal" type="submit" class="btn btn-primary">Register</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                    <button ng-click="saveFirmaLotnicza()" type="submit" class="btn btn-primary">Zarejestruj</button>
                 </div>
             </div>
         </div>
@@ -329,7 +330,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add new lotnisko</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Dodaj nowe lotnisko</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -348,7 +349,7 @@
                             </div>
                             <div class="mw-100 col-sm-4" ng-show="formLotnisko.$submitted || formLotnisko.miejscowosc.$touched">
                                 <div ng-show="formLotnisko.miejscowosc.$error.required">
-                                    Required!</div>
+                                    Pole wymagane!</div>
                             </div>
                         </div>
                         <div class="form-group" ng-class="{ 'text-danger' : formLotnisko.iata.$invalid && (formLotnisko.$submitted || formLotnisko.iata.$touched)}">
@@ -361,19 +362,18 @@
                                 <input class="form-control" name="iata" type="text" ng-model="lotnisko.iata" minlength="3" maxlength="3" required ng-class="{ 'is-invalid' : formLotnisko.iata.$invalid && (formLotnisko.$submitted || formLotnisko.iata.$touched) }"
                                 />
                             </div>
-
                             <div class="mw-100 col-sm-4" ng-show="formLotnisko.$submitted || formLotnisko.iata.$touched">
                                 <div ng-show="formLotnisko.iata.$error.required">
-                                    Required!</div>
+                                    Pole wymagane!</div>
                                 <div ng-show="formLotnisko.iata.$error.minlength || formLotnisko.iata.$error.maxlength">
-                                    The value must have 3 characters!</div>
+                                    Wartość musi mieć 3 znaki!</div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button ng-click="saveLotnisko()" data-dismiss="modal" type="submit" class="btn btn-primary">Register</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                    <button ng-click="saveLotnisko()" type="submit" class="btn btn-primary">Zarejestruj</button>
                 </div>
             </div>
         </div>
