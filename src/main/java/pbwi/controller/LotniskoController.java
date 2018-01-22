@@ -42,12 +42,16 @@ public class LotniskoController extends AbstractController<Lotnisko> {
         session.beginTransaction();
         Query query = session.createNamedQuery("FirmaLotnicza.findById", FirmaLotnicza.class);
         query.setParameter(1, id);
+        Query query2 = session.createNamedQuery("Lotnisko.findById", Lotnisko.class);
+        query2.setParameter(1, lotnisko.getId_lotniska());
         FirmaLotnicza firmaLotnicza = (FirmaLotnicza) query.getSingleResult();
-        lotnisko.addFirmaLotnicza(firmaLotnicza);
-        session.save(lotnisko);
-        if (lotnisko != null)
-            firmaLotnicza.addLotnisko(lotnisko);
-        session.update(firmaLotnicza);
+        Lotnisko lotnisko1 = (Lotnisko) query2.getSingleResult();
+        if (lotnisko != null) {
+            lotnisko1.addFirmaLotnicza(firmaLotnicza);
+            session.update(lotnisko1);
+            firmaLotnicza.addLotnisko(lotnisko1);
+            session.update(firmaLotnicza);
+        }
         session.getTransaction().commit();
         session.close();
         return lotnisko;
